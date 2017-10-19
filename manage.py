@@ -20,4 +20,6 @@ if __name__ == "__main__":
                 "forget to activate a virtual environment?"
             )
         raise
+    import settings
+    print(settings.SECRET_KEY)
     execute_from_command_line(cmdline.django_cmds)

@@ -6,7 +6,6 @@
 # @Blog : http://www.cnblogs.com/blackmatrix/
 # @File : view.py
 # @Software: PyCharm
-from app import settings
 from django.shortcuts import render
 
 __author__ = 'blackmatrix'

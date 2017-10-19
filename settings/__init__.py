@@ -7,6 +7,7 @@
 # @File : __init__.py
 # @Software: PyCharm
 from toolkit.cmdline import cmdline
+from settings.default import *
 
 __author__ = 'blackmatrix'
 
@@ -14,7 +15,7 @@ settings = {'default': 'settings.default'}
 
 current_settings = settings[cmdline.config]
 
-exec('from {} import *'.format(cmdline.config))
+exec('from {} import *'.format(current_settings))
 
 if __name__ == '__main__':
     pass
