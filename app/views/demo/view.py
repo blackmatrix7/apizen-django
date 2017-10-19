@@ -6,13 +6,15 @@
 # @Blog : http://www.cnblogs.com/blackmatrix/
 # @File : view.py
 # @Software: PyCharm
-from django.http import HttpResponse
+from django.shortcuts import render
 
 __author__ = 'blackmatrix'
 
 
 def hello(request):
-    return HttpResponse("Hello world ! ")
+    context = dict()
+    context['hello'] = 'Hello World!'
+    return render(request, 'app/index.html', context)
 
 if __name__ == '__main__':
     pass
