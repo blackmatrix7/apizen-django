@@ -32,7 +32,10 @@ class CmdLine:
 
     @property
     def django_cmd(self):
-        return self.main, self.command
+        from copy import copy
+        argv = copy(sys.argv)
+        del argv[1]
+        return argv
 
 cmdline = CmdLine()
 

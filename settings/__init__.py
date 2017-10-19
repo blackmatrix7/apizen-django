@@ -12,7 +12,7 @@ __author__ = 'blackmatrix'
 
 settings = {'default': 'settings.default'}
 
-current_settings = settings['default']
+current_settings = settings[cmdline.config]
 
 if __name__ == '__main__':
     pass
