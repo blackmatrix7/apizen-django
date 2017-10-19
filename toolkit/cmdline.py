@@ -17,6 +17,7 @@ class CmdLine:
         self._main = sys.argv[0]
         self._config = sys.argv[1] if len(sys.argv) >= 2 else 'default'
         self._command = sys.argv[2] if len(sys.argv) >= 3 else 'runserver'
+        self._django_cmds = None
 
     @property
     def main(self):
@@ -31,13 +32,14 @@ class CmdLine:
         return self._command
 
     @property
-    def django_cmd(self):
-        from copy import copy
-        argv = copy(sys.argv)
-        del argv[1]
-        return argv
+    def django_cmds(self):
+        if self._django_cmds:
+            return self._django_cmds
+        else:
+            from copy import copy
+            argv = copy(sys.argv)
+            del argv[1]
+            self._django_cmds = argv
+            return self._django_cmds
 
 cmdline = CmdLine()
-
-if __name__ == '__main__':
-    pass

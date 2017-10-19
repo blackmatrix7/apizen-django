@@ -4,7 +4,7 @@
 # @Author : Matrix
 # @Github : https://github.com/blackmatrix7/
 # @Blog : http://www.cnblogs.com/blackmatrix/
-# @File : __init__.py.py
+# @File : __init__.py
 # @Software: PyCharm
 from toolkit.cmdline import cmdline
 
@@ -13,6 +13,8 @@ __author__ = 'blackmatrix'
 settings = {'default': 'settings.default'}
 
 current_settings = settings[cmdline.config]
+
+exec('from {} import *'.format(cmdline.config))
 
 if __name__ == '__main__':
     pass
