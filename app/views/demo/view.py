@@ -6,6 +6,7 @@
 # @Blog : http://www.cnblogs.com/blackmatrix/
 # @File : view.py
 # @Software: PyCharm
+from app import settings
 from django.shortcuts import render
 
 __author__ = 'blackmatrix'
@@ -14,7 +15,7 @@ __author__ = 'blackmatrix'
 def hello(request):
     context = dict()
     context['hello'] = 'Hello World!'
-    return render(request, 'app/index.html', context)
+    return render(request, 'demo/index.html', context)
 
 if __name__ == '__main__':
     pass
