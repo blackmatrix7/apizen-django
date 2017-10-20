@@ -7,7 +7,6 @@
 # @File : __init__.py
 # @Software: PyCharm
 from toolkit.cmdline import cmdline
-from settings.default import *
 
 __author__ = 'blackmatrix'
 
