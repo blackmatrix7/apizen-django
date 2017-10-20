@@ -6,7 +6,7 @@
 # @Blog : http://www.cnblogs.com/blackmatrix/
 # @File : default.py
 # @Software: PyCharm
-from settings.common import *
+from .common import *
 
 __author__ = 'blackmatrix'
 

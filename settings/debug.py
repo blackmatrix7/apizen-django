@@ -6,7 +6,7 @@
 # @Blog : http://www.cnblogs.com/blackmatrix/
 # @File : debug.py
 # @Software: PyCharm
-
+from .common import *
 __author__ = 'blackmatrix'
 
 if __name__ == '__main__':
