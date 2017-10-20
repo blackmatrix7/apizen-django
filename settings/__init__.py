@@ -11,11 +11,6 @@ from settings.default import *
 
 __author__ = 'blackmatrix'
 
-settings = {'default': 'settings.default',
-            'debug': 'settings.debug'}
-
-current_settings = settings[cmdline.config]
-
 if cmdline.config == 'debug':
     from settings.debug import *
 else:

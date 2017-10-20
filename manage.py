@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 import os
 from toolkit.cmdline import cmdline
-from settings import current_settings
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", current_settings)
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
@@ -20,6 +19,4 @@ if __name__ == "__main__":
                 "forget to activate a virtual environment?"
             )
         raise
-    import settings
-    print(settings.SECRET_KEY)
     execute_from_command_line(cmdline.django_cmds)
