@@ -11,11 +11,15 @@ from settings.default import *
 
 __author__ = 'blackmatrix'
 
-settings = {'default': 'settings.default'}
+settings = {'default': 'settings.default',
+            'debug': 'settings.debug'}
 
 current_settings = settings[cmdline.config]
 
-exec('from {} import *'.format(current_settings))
+if cmdline.config == 'debug':
+    from settings.debug import *
+else:
+    from settings.default import *
 
 if __name__ == '__main__':
     pass
