@@ -21,4 +21,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^user/signin/', user.view.sign_in, name='sign_in'),
+    url(r'^user/signup/', user.view.sign_up, name='sign_up'),
 ]

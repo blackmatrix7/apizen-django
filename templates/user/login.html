@@ -95,7 +95,8 @@ License: You must have a valid license purchased only from themeforest(the above
 									Enter your details to create your account:
 								</div>
 							</div>
-							<form class="m-login__form m-form" action="">
+							<form class="m-login__form m-form" method="POST" action="http://127.0.0.1:8000/user/signup/">
+								{% csrf_token %}
 								<div class="form-group m-form__group">
 									<input class="form-control m-input" type="text" placeholder="Fullname" name="fullname">
 								</div>
@@ -124,11 +125,11 @@ License: You must have a valid license purchased only from themeforest(the above
 								</div>
 								<div class="m-login__form-action">
 									<button id="m_login_signup_submit" class="btn m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">
-										Sign Up
+										注册
 									</button>
 									&nbsp;&nbsp;
 									<button id="m_login_signup_cancel" class="btn m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn">
-										Cancel
+										取消
 									</button>
 								</div>
 							</form>
