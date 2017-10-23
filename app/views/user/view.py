@@ -7,12 +7,17 @@
 # @File : login.py
 # @Software: PyCharm
 from django.shortcuts import render
+from django.contrib.auth.hashers import make_password, check_password
 
 __author__ = 'blackmatrix'
 
 
-def login(request):
-    return render(request, 'user/login.html')
+def sign_in(request):
+    if request.method == 'GET':
+        return render(request, 'user/login.html')
+    elif request.method == "POST":
+        pass
+
 
 if __name__ == '__main__':
     pass
