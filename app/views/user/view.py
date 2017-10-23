@@ -14,7 +14,7 @@ __author__ = 'blackmatrix'
 
 def sign_in(request):
     if request.method == 'GET':
-        return render(request, 'user/login.html')
+        return render(request, 'user/signin.html')
     elif request.method == "POST":
         pass
 
