@@ -6,8 +6,19 @@
 # @Blog : http://www.cnblogs.com/blackmatrix/
 # @File : errors.py
 # @Software: PyCharm
+import types
+from json import JSONDecodeError
+from apizen.exceptions import SysException, ApiSysExceptions
 
 __author__ = 'blackmatrix'
+
+_no_value = object()
+
+
+class Exceptions(ApiSysExceptions):
+    # 非法的时间戳参数
+    err_user_or_password = SysException(err_code=2001, http_code=404, err_msg='不存在的用户名或密码')
+
 
 if __name__ == '__main__':
     pass
