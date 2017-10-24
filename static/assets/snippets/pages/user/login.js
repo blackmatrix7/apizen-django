@@ -76,7 +76,7 @@ var SnippetLogin = function () {
                 n.valid() && (r.addClass("m-loader m-loader--right m-loader--light").attr("disabled", !0),
                     n.ajaxSubmit({
                         type: "post",
-                        url: "/user/signup/",
+                        url: "/blog/sign_up/",
                         success: function (a, l, s, o) {
                         setTimeout(function () {
                             r.removeClass("m-loader m-loader--right m-loader--light").attr("disabled", !1), n.clearForm(),
