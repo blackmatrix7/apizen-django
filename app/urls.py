@@ -15,6 +15,7 @@ Including another URLconf
 """
 
 from app.views import user
+from app.views import webapi
 from django.conf.urls import url
 from django.contrib import admin
 
@@ -22,4 +23,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^user/signin/', user.view.sign_in, name='sign_in'),
     url(r'^user/signup/', user.view.sign_up, name='sign_up'),
+    url(r'^api/router/rest', webapi.view.routing, name='web_api'),
 ]

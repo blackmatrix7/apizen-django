@@ -6,7 +6,7 @@
 # @Blog : http://www.cnblogs.com/blackmatrix/
 # @File : __init__.py.py
 # @Software: PyCharm
-
+from .view import routing
 __author__ = 'blackmatrix'
 
 if __name__ == '__main__':
