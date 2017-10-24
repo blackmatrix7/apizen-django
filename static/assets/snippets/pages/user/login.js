@@ -83,7 +83,7 @@ var SnippetLogin = function () {
                                 n.validate().resetForm(), t();
                             var a = e.find(".m-login__signin form");
                             a.clearForm(), a.validate().resetForm(), i(a, "success",
-                                "Thank you. To complete your registration please check your email.")
+                                "注册成功。")
                         }, 2e3)
                     }
                 }))
