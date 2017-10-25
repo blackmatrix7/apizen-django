@@ -38,3 +38,8 @@ def sign_up(request):
     user.save()
     resp = {'code': 1000, 'response': 'sign up success'}
     return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
+def admin(request):
+    return render(request, 'blog/index.html', {'title': '后台管理'})
+
