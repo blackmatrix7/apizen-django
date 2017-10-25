@@ -30,6 +30,7 @@
 		<link rel="shortcut icon" href="../../static/assets/demo/default/media/img/logo/favicon.ico" />
 	</head>
     <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default"  >
+		<input type='hidden' id='csrfmiddlewaretoken' value='{% csrf_token %}' />"
 		<!-- begin:: Page -->
 		<div class="m-grid m-grid--hor m-grid--root m-page">
 			<!-- BEGIN: Header -->
@@ -46,8 +47,7 @@
 								</div>
 								<div class="m-stack__item m-stack__item--middle m-brand__tools">
 									<!-- BEGIN: Left Aside Minimize Toggle -->
-									<a href="javascript:;" id="m_aside_left_minimize_toggle" class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block
-					 ">
+									<a href="javascript:;" id="m_aside_left_minimize_toggle" class="m-brand__icon m-brand__toggler m-brand__toggler--left m--visible-desktop-inline-block">
 										<span></span>
 									</a>
 									<!-- END -->
@@ -1773,6 +1773,12 @@
 		<script src="https://unpkg.com/vue/dist/vue.js"></script>
 		<!-- 引入组件库 -->
 		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+		<!--axios-->
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script>
+			let csrf = $("#csrfmiddlewaretoken").val();
+			axios.defaults.headers.post['Content-Type'] = 'application/json';
+		</script>
 		{% block js %}{% endblock %}
 		<!--end::Page Snippets -->
 	</body>

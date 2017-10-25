@@ -76,7 +76,16 @@
         },
         methods: {
             onSubmit() {
-                console.log('submit!');
+                axios.post("{% url 'new_article' %}",
+                    {
+                        csrfmiddlewaretoken: csrf,
+                        lastName: 'Flintstone'
+                    })
+                    .then(function (response) {
+                        console.log(response);})
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
     })

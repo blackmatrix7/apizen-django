@@ -45,5 +45,8 @@ def admin(request):
 
 
 def new_article(request):
-    return render(request, 'blog/new_article.html', {'title': '新增文章'})
+    if request.method == 'GET':
+        return render(request, 'blog/new_article.html', {'title': '新增文章'})
+    elif request.method == 'POST':
+        pass
 
