@@ -43,3 +43,7 @@ def sign_up(request):
 def admin(request):
     return render(request, 'blog/index.html', {'title': '后台管理'})
 
+
+def new_article(request):
+    return render(request, 'blog/new_article.html', {'title': '新增文章'})
+
