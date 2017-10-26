@@ -18,7 +18,7 @@
         <el-form-item label="置顶">
             <el-switch on-text="" off-text="" v-model="form.set_top"></el-switch>
         </el-form-item>
-        <el-form-item label="活动形式">
+        <el-form-item label="文章内容">
             <el-input
                 type="textarea"
                 :rows="20"
@@ -75,10 +75,27 @@
             }
         },
         methods: {
+            successMsg() {
+                this.$message(
+                    {
+                        showClose: true,
+                        message: '文章保存成功',
+                        type: 'success'
+                    });
+            },
+            errorMsg() {
+                this.$message(
+                    {
+                        showClose: true,
+                        message: '文章保存失败',
+                        type: 'success'
+                    });
+            },
             onSubmit() {
                 axios.post("{% url 'new_article' %}", vm.form)
                     .then(function (response) {
-                        console.log(response);})
+                        vm.successMsg();
+                    })
                     .catch(function (error) {
                         console.log(error);
                     });

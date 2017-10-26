@@ -51,5 +51,7 @@ def new_article(request):
         data = json.loads(request.body.decode('utf-8'))
         article = Articles(**data)
         article.save()
+        resp = {'code': 1000, 'response': 'save success'}
+        return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
