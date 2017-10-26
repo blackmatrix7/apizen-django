@@ -74,7 +74,7 @@
                 </div>
 					<!-- END: Subheader -->
 					<div class="m-content">
-						<input type="hidden" id="csrf_token" name="csrf_token" value="{% csrf_token %}"/>
+						{% csrf_token %}
                         {% block content %}{% endblock %}
 					</div>
 				</div>
@@ -137,11 +137,6 @@
 		<script src="../../static/assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
 		<!--end::Base Scripts -->
 		<!--begin::Page Vendors -->
-		<script language="javascript">
-			csrf = $("#csrf_token").val();
-			alert(csrf);
-			axios.defaults.headers.post['Content-Type'] = 'application/json';
-		</script>
 		<!--end::Page Vendors -->
 		<!--begin::Page Snippets -->
 		<!-- 先引入 Vue -->
@@ -150,6 +145,9 @@
 		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 		<!--axios-->
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script language="javascript">
+			axios.defaults.headers.post['X-CSRFToken'] = '{{ csrf_token }}';
+		</script>
 		{% block js %}{% endblock %}
 		<!--end::Page Snippets -->
 	</body>

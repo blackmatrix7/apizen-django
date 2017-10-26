@@ -78,7 +78,7 @@
             onSubmit() {
                 axios.post("{% url 'new_article' %}",
                     {
-                        csrfmiddlewaretoken: csrf,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
                         lastName: 'Flintstone'
                     })
                     .then(function (response) {
