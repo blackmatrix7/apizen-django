@@ -147,6 +147,7 @@
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script language="javascript">
 			axios.defaults.headers.post['X-CSRFToken'] = '{{ csrf_token }}';
+			axios.defaults.headers.post['Content_Type'] = 'application/json';
 		</script>
 		{% block js %}{% endblock %}
 		<!--end::Page Snippets -->

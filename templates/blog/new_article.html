@@ -4,7 +4,7 @@
 <div id="app">
     <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="文章标题">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.title"></el-input>
         </el-form-item>
         <el-form-item label="发布时间">
             <el-date-picker
@@ -36,7 +36,7 @@
 
 {% block js %}
 <script>
-    new Vue({
+    var vm = new Vue({
         el: '#app',
         data() {
             return {
@@ -67,7 +67,7 @@
                 ]
             },
                 form: {
-                    name: '',
+                    title: '',
                     pub_date: '',
                     set_top: false,
                     content: ''
@@ -76,11 +76,7 @@
         },
         methods: {
             onSubmit() {
-                axios.post("{% url 'new_article' %}",
-                    {
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        lastName: 'Flintstone'
-                    })
+                axios.post("{% url 'new_article' %}", vm.form)
                     .then(function (response) {
                         console.log(response);})
                     .catch(function (error) {

@@ -1,5 +1,5 @@
 import json
-from .models import Users
+from .models import Users, Articles
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -48,5 +48,8 @@ def new_article(request):
     if request.method == 'GET':
         return render(request, 'blog/new_article.html', {'title': '新增文章'})
     elif request.method == 'POST':
-        pass
+        data = json.loads(request.body.decode('utf-8'))
+        article = Articles(**data)
+        article.save()
+
 
