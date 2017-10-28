@@ -1,7 +1,7 @@
 import json
 from .models import Users, Articles
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
 
 # Create your views here.
 
@@ -19,7 +19,9 @@ def sign_in(request):
         password = request.POST['password']
         user = Users.objects.get(email=email)
         result = user.check_password(password)
-        print(result)
+        if result is True:
+            resp = {'code': 1000, 'response': 'sign up success'}
+            return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
 def sign_up(request):

@@ -38,12 +38,16 @@ var SnippetLogin = function () {
                             required: !0
                         }
                     }
-                }), t.valid() && (a.addClass("m-loader m-loader--right m-loader--light").attr("disabled", !0), t.ajaxSubmit({
+                }), t.valid() && (a.addClass("m-loader m-loader--right m-loader--light").attr("disabled", !0),
+                    t.ajaxSubmit({
                     url: "",
-                    success: function (e, r, n, l) {
+                    success: function (resp) {
+                        if (resp['code'] === 1000){
+                            console.log(resp['code']);
+                            window.location.href ="/blog/admin";}
                         setTimeout(function () {
-                            a.removeClass("m-loader m-loader--right m-loader--light").attr("disabled", !1), i(t,
-                                "danger", "Incorrect username or password. Please try again.")
+                            a.removeClass("m-loader m-loader--right m-loader--light").attr("disabled", !1),
+                            i(t, "danger", "Incorrect username or password. Please try again.")
                         }, 2e3)
                     }
                 }))
@@ -106,11 +110,14 @@ var SnippetLogin = function () {
                         url: "",
                         success: function (a, l, s, o) {
                             setTimeout(function () {
-                                r.removeClass("m-loader m-loader--right m-loader--light").attr("disabled", !1), n.clearForm(),
-                                    n.validate().resetForm(), t();
+                                r.removeClass("m-loader m-loader--right m-loader--light").attr("disabled", !1),
+                                n.clearForm(),
+                                n.validate().resetForm(),
+                                t();
                                 var a = e.find(".m-login__signin form");
-                                a.clearForm(), a.validate().resetForm(), i(a, "success",
-                                    "Cool! Password recovery instruction has been sent to your email.")
+                                a.clearForm(),
+                                a.validate().resetForm(),
+                                i(a, "success", "Cool! Password recovery instruction has been sent to your email.")
                             }, 2e3)
                     }
                 }))
