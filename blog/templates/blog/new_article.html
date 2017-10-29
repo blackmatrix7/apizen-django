@@ -3,17 +3,9 @@
 {% block content %}
 <div id="app">
     <el-form ref="form" :model="form" label-width="80px">
+        <input type="hidden"  v-model="form.pk" id="pk">
         <el-form-item label="文章标题">
             <el-input v-model="form.title"></el-input>
-        </el-form-item>
-        <el-form-item label="发布时间">
-            <el-date-picker
-                v-model="form.pub_date"
-                type="datetime"
-                placeholder="选择日期时间"
-                align="right"
-                :picker-options="pickerOptions">
-            </el-date-picker>
         </el-form-item>
         <el-form-item label="置顶">
             <el-switch on-text="" off-text="" v-model="form.set_top"></el-switch>
@@ -38,17 +30,6 @@
 <script>
     var vm = new Vue({
         el: '#app',
-        beforeCreate: function () {
-            axios.get("{% url 'article_data' %}")
-                .then(function (resp) {
-                    console.log(resp);
-                    vm.tableData = resp['data']['response'];;
-                    })
-                .catch(function (error) {
-                    console.log(error);
-                    vm.errorMsg('数据加载失败');
-                });
-        },
         data() {
             return {
                 pickerOptions: {
@@ -78,10 +59,11 @@
                 ]
             },
                 form: {
-                    title: '',
-                    pub_date: '',
-                    set_top: false,
-                    content: ''
+                    pk: '{{ pk }}',
+                    title: '{{ article.title }}',
+                    pub_date: '{{ article.pub_date }}',
+                    set_top: '{{ article.set_top }}',
+                    content: '{{ article.content }}'
                 }
             }
         },
@@ -99,7 +81,7 @@
                     {
                         showClose: true,
                         message: msg,
-                        type: 'success'
+                        type: 'error'
                     });
             },
             onSubmit() {

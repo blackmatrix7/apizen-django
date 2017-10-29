@@ -34,7 +34,7 @@
       <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          @click="handleEdit(scope.row)">编辑</el-button>
         <el-button
           size="mini"
           type="danger"
@@ -82,21 +82,8 @@
                         type: 'error'
                     });
             },
-            handleEdit(index, row) {
-                axios.post("/blog/article/edit/" + row.pk)
-                    .then(function (resp) {
-                        console.log(resp);
-                        if (resp['data']['code'] === 1000) {
-                            vm.successMsg('删除文章成功');
-                            vm.tableData.splice(index, 1);
-                        }
-                        else {
-                            vm.errorMsg('删除文章失败');
-                        }
-                    })
-                    .catch(function (error) {
-                        vm.errorMsg('删除文章失败' + error);
-                    });
+            handleEdit(row) {
+                window.location.href = "/blog/article/edit/" + row.pk;
             },
             handleDelete(index, row) {
                 axios.post("/blog/article/del/" + row.pk)

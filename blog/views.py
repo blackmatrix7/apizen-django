@@ -46,15 +46,13 @@ def admin(request):
     return render(request, 'blog/index.html', {'title': '后台管理'})
 
 
-def new_article(request, pk=None):
+def new_article(request):
     if request.method == 'GET':
-        if pk is None:
-            return render(request, 'blog/new_article.html', {'title': '新增文章'})
-        else:
-            article = Articles.objects.filter(pk=pk)
-            return render(request, 'blog/new_article.html', {'title': '编辑文章'}, article)
+        return render(request, 'blog/new_article.html', {'title': '新增文章'})
     elif request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
+        if not data['pk']:
+            data.pop('pk')
         article = Articles(**data)
         article.save()
         resp = {'code': 1000, 'response': 'save success'}
@@ -65,6 +63,13 @@ def article_data(request, pk):
     data = Articles.objects.filter(pk=pk)
     resp = {'code': 1000, 'response': json.loads(serializers.serialize('json', data))}
     return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
+def edit_article(request, pk):
+    data = Articles.objects.filter(pk=pk).first()
+    return render(request, 'blog/new_article.html', {'title': '编辑文章',
+                                                     'article': data,
+                                                     'pk': pk})
 
 
 def article_list(request):
