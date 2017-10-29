@@ -52,7 +52,7 @@ def new_article(request, pk=None):
             return render(request, 'blog/new_article.html', {'title': '新增文章'})
         else:
             article = Articles.objects.filter(pk=pk)
-            return render(request, 'blog/new_article.html', {'title': '新增文章'}, article)
+            return render(request, 'blog/new_article.html', {'title': '编辑文章'}, article)
     elif request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         article = Articles(**data)
