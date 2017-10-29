@@ -38,6 +38,17 @@
 <script>
     var vm = new Vue({
         el: '#app',
+        beforeCreate: function () {
+            axios.get("{% url 'article_data' %}")
+                .then(function (resp) {
+                    console.log(resp);
+                    vm.tableData = resp['data']['response'];;
+                    })
+                .catch(function (error) {
+                    console.log(error);
+                    vm.errorMsg('数据加载失败');
+                });
+        },
         data() {
             return {
                 pickerOptions: {

@@ -61,6 +61,12 @@ def new_article(request, pk=None):
         return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
+def article_data(request, pk):
+    data = Articles.objects.filter(pk=pk)
+    resp = {'code': 1000, 'response': json.loads(serializers.serialize('json', data))}
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
 def article_list(request):
     return render(request, 'blog/article_list.html', {'title': '文章列表'})
 

@@ -83,7 +83,7 @@
                     });
             },
             handleEdit(index, row) {
-                axios.post("/blog/article/del/" + row.pk)
+                axios.post("/blog/article/edit/" + row.pk)
                     .then(function (resp) {
                         console.log(resp);
                         if (resp['data']['code'] === 1000) {
