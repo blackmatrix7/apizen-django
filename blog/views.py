@@ -46,9 +46,13 @@ def admin(request):
     return render(request, 'blog/index.html', {'title': '后台管理'})
 
 
-def new_article(request):
+def new_article(request, pk=None):
     if request.method == 'GET':
-        return render(request, 'blog/new_article.html', {'title': '新增文章'})
+        if pk is None:
+            return render(request, 'blog/new_article.html', {'title': '新增文章'})
+        else:
+            article = Articles.objects.filter(pk=pk)
+            return render(request, 'blog/new_article.html', {'title': '新增文章'}, article)
     elif request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         article = Articles(**data)

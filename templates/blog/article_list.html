@@ -82,6 +82,22 @@
                         type: 'error'
                     });
             },
+            handleEdit(index, row) {
+                axios.post("/blog/article/del/" + row.pk)
+                    .then(function (resp) {
+                        console.log(resp);
+                        if (resp['data']['code'] === 1000) {
+                            vm.successMsg('删除文章成功');
+                            vm.tableData.splice(index, 1);
+                        }
+                        else {
+                            vm.errorMsg('删除文章失败');
+                        }
+                    })
+                    .catch(function (error) {
+                        vm.errorMsg('删除文章失败' + error);
+                    });
+            },
             handleDelete(index, row) {
                 axios.post("/blog/article/del/" + row.pk)
                     .then(function (resp) {
