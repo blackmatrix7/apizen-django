@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^article/new$', views.new_article, name='new_article'),
     url(r'^article/list$', views.article_list, name='article_list'),
     url(r'^article/list_data$', views.article_list_data, name='article_list_data'),
+    url(r'^article/del/(?P<pk>[0-9]+)$', views.del_article, name='del_article'),
 ]
 
 

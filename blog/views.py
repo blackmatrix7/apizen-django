@@ -66,3 +66,14 @@ def article_list_data(request):
     resp = {'code': 1000, 'response': json.loads(serializers.serialize('json', data))}
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
+
+def del_article(request, pk):
+    resp = {'code': 1000, 'response': '删除文章成功'}
+    try:
+        Articles.objects.filter(pk=pk).delete()
+    except Exception as ex:
+        resp = {'code': 1001, 'response': '删除文章失败'.format(ex)}
+    finally:
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
