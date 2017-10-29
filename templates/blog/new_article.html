@@ -75,29 +75,35 @@
             }
         },
         methods: {
-            successMsg() {
+            successMsg(msg) {
                 this.$message(
                     {
                         showClose: true,
-                        message: '文章保存成功',
+                        message: msg,
                         type: 'success'
                     });
             },
-            errorMsg() {
+            errorMsg(msg) {
                 this.$message(
                     {
                         showClose: true,
-                        message: '文章保存失败',
+                        message: msg,
                         type: 'success'
                     });
             },
             onSubmit() {
                 axios.post("{% url 'new_article' %}", vm.form)
-                    .then(function (response) {
-                        vm.successMsg();
+                    .then(function (resp) {
+                        console.log(resp);
+                        if (resp['data']['code'] === 1000) {
+                            vm.successMsg('文章保存成功');}
+                        else {
+                            vm.errorMsg('文章保存失败');
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);
+                        vm.successMsg('文章保存失败');
                     });
             }
         }

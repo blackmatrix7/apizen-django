@@ -12,10 +12,12 @@ __author__ = 'blackmatrix'
 
 
 urlpatterns = [
-    url(r'sign_in/', views.sign_in, name='sign_in'),
-    url(r'sign_up/', views.sign_up, name='sign_up'),
-    url(r'admin/', views.admin, name='admin'),
-    url(r'article/new', views.new_article, name='new_article'),
+    url(r'^sign_in/$', views.sign_in, name='sign_in'),
+    url(r'^sign_up/$', views.sign_up, name='sign_up'),
+    url(r'^admin/$', views.admin, name='admin'),
+    url(r'^article/new$', views.new_article, name='new_article'),
+    url(r'^article/list$', views.article_list, name='article_list'),
+    url(r'^article/list_data$', views.article_list_data, name='article_list_data'),
 ]
 
 

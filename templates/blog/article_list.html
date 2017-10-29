@@ -1,0 +1,95 @@
+{% extends "../layouts/master.html" %}
+
+{% block content %}
+<div id="app">
+  <el-table
+    :data="tableData"
+    border
+    style="width: 100%">
+    <el-table-column
+      fixed
+      prop="fields.title"
+      label="标题"
+      width="200">
+    </el-table-column>
+    <el-table-column
+      prop="fields.pub_date"
+      label="时间"
+      width="200">
+    </el-table-column>
+    <el-table-column
+      prop="fields.content"
+      label="内容"
+      width="auto">
+    </el-table-column>
+    <el-table-column
+      label="操作"
+      width="100">
+      <template slot-scope="scope">
+        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+        <el-button type="text" size="small">编辑</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    var vm = new Vue({
+        el: '#app',
+        beforeCreate: function () {
+            axios.get("{% url 'article_list_data' %}")
+                .then(function (resp) {
+                    console.log(resp);
+                    a = resp['data']['response'];
+                    vm.tableData = a;
+                    })
+                .catch(function (error) {
+                    console.log(error);
+                    vm.errorMsg('数据加载失败');
+                });
+        },
+        data() {
+            return {
+                tableData: []
+            }
+        },
+        methods: {
+            successMsg(msg) {
+                this.$message(
+                    {
+                        showClose: true,
+                        message: msg,
+                        type: 'success'
+                    });
+            },
+            errorMsg(msg) {
+                this.$message(
+                    {
+                        showClose: true,
+                        message: msg,
+                        type: 'success'
+                    });
+            },
+            onSubmit() {
+                axios.post("{% url 'new_article' %}", vm.form)
+                    .then(function (resp) {
+                        console.log(resp);
+                        if (resp['data']['code'] === 1000) {
+                            vm.successMsg('文章保存成功');}
+                        else {
+                            vm.errorMsg('文章保存失败');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        vm.successMsg('文章保存失败');
+                    });
+            }
+        }
+    })
+//  var Ctor = Vue.extend(Main)
+//  new Ctor().$mount('#app')
+</script>
+{% endblock %}

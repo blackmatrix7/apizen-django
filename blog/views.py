@@ -1,8 +1,8 @@
 import json
 from .models import Users, Articles
+from django.core import serializers
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-
 # Create your views here.
 
 
@@ -56,4 +56,13 @@ def new_article(request):
         resp = {'code': 1000, 'response': 'save success'}
         return HttpResponse(json.dumps(resp), content_type="application/json")
 
+
+def article_list(request):
+    return render(request, 'blog/article_list.html', {'title': '文章列表'})
+
+
+def article_list_data(request):
+    data = Articles.objects.all()
+    resp = {'code': 1000, 'response': json.loads(serializers.serialize('json', data))}
+    return HttpResponse(json.dumps(resp), content_type="application/json")
 
