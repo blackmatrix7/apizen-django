@@ -45,9 +45,14 @@ var SnippetLogin = function () {
                         if (resp['code'] === 1000){
                             console.log(resp['code']);
                             window.location.href ="/blog/admin";}
-                        setTimeout(function () {
+                        else
+                        {
                             a.removeClass("m-loader m-loader--right m-loader--light").attr("disabled", !1),
-                            i(t, "danger", "Incorrect username or password. Please try again.")
+                            i(t, "danger", "无效的用户名或密码")
+                        }
+                    setTimeout(function () {
+                            a.removeClass("m-loader m-loader--right m-loader--light").attr("disabled", !1),
+                            i(t, "danger", "无效的用户名或密码")
                         }, 2e3)
                     }
                 }))

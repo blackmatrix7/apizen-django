@@ -20,8 +20,12 @@ def sign_in(request):
         user = Users.objects.get(email=email)
         result = user.check_password(password)
         if result is True:
-            resp = {'code': 1000, 'response': 'sign up success'}
+            resp = {'code': 1000, 'response': 'sign in success'}
             return HttpResponse(json.dumps(resp), content_type="application/json")
+        else:
+            resp = {'code': 1011, 'response': 'sign in failed'}
+            return HttpResponse(json.dumps(resp), content_type="application/json")
+
 
 
 def sign_up(request):
