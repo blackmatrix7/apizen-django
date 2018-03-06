@@ -30,8 +30,12 @@ class Article(BaseModel):
 
 
 class Tag(BaseModel):
+
+    class Meta:
+        verbose_name = '标签'
+        verbose_name_plural = '标签'
     contact = models.ForeignKey(Article, on_delete=False)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name='名称')
 
     def __unicode__(self):
         return self.name
