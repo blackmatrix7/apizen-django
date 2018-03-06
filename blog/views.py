@@ -1,5 +1,5 @@
 import json
-from .models import Users, Articles
+from .models import User, Article
 from django.core import serializers
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
@@ -17,7 +17,7 @@ def sign_in(request):
     elif request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
-        user = Users.objects.get(email=email)
+        user = User.objects.get(email=email)
         result = user.check_password(password)
         if result is True:
             resp = {'code': 1000, 'response': 'sign in success'}
@@ -37,7 +37,7 @@ def sign_up(request):
     name = request.POST['fullname']
     email = request.POST['email']
     password = request.POST['password']
-    user = Users()
+    user = User()
     user.name = name
     user.email = email
     user.password = user.make_password(password)
@@ -57,20 +57,20 @@ def new_article(request):
         data = json.loads(request.body.decode('utf-8'))
         if not data['pk']:
             data.pop('pk')
-        article = Articles(**data)
+        article = Article(**data)
         article.save()
         resp = {'code': 1000, 'response': 'save success'}
         return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
 def article_data(request, pk):
-    data = Articles.objects.filter(pk=pk)
+    data = Article.objects.filter(pk=pk)
     resp = {'code': 1000, 'response': json.loads(serializers.serialize('json', data))}
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
 def edit_article(request, pk):
-    data = Articles.objects.filter(pk=pk).first()
+    data = Article.objects.filter(pk=pk).first()
     return render(request, 'blog/new_article.html', {'title': '编辑文章',
                                                      'article': data,
                                                      'pk': pk})
@@ -81,7 +81,7 @@ def article_list(request):
 
 
 def article_list_data(request):
-    data = Articles.objects.all()
+    data = Article.objects.all()
     resp = {'code': 1000, 'response': json.loads(serializers.serialize('json', data))}
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
@@ -89,7 +89,7 @@ def article_list_data(request):
 def del_article(request, pk):
     resp = {'code': 1000, 'response': '删除文章成功'}
     try:
-        Articles.objects.filter(pk=pk).delete()
+        Article.objects.filter(pk=pk).delete()
     except Exception as ex:
         resp = {'code': 1001, 'response': '删除文章失败'.format(ex)}
     finally:

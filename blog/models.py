@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import make_password, check_password
 
 
 # Create your models here.
-class Users(BaseModel):
+class User(BaseModel):
     name = models.CharField(max_length=30)
     email = models.CharField(max_length=30)
     password = models.CharField(max_length=256)
@@ -17,7 +17,7 @@ class Users(BaseModel):
         return check_password(password, encoded=self.password)
 
 
-class Articles(BaseModel):
+class Article(BaseModel):
     title = models.CharField(max_length=256)
     content = models.TextField()
     set_top = models.BooleanField(default=False)
