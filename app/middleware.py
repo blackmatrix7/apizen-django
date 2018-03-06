@@ -4,8 +4,8 @@
 # @Author : Matrix
 # @Github : https://github.com/blackmatrix7/
 # @Blog : http://www.cnblogs.com/blackmatrix/
-# @File : middleware.py
 # @Software: PyCharm
+
 from django.utils.deprecation import MiddlewareMixin
 
 __author__ = 'blackmatrix'
