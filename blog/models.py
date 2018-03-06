@@ -18,7 +18,20 @@ class User(BaseModel):
 
 
 class Article(BaseModel):
-    title = models.CharField(max_length=256)
-    content = models.TextField()
-    set_top = models.BooleanField(default=False)
-    pub_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = '文章'
+        verbose_name_plural = '文章'
+
+    title = models.CharField(max_length=256, verbose_name='标题')
+    content = models.TextField(verbose_name='内容')
+    set_top = models.BooleanField(default=False, verbose_name='置顶')
+    pub_date = models.DateTimeField(auto_now=True, verbose_name='发布日期')
+
+
+class Tag(BaseModel):
+    contact = models.ForeignKey(Article, on_delete=False)
+    name = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.name
