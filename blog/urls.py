@@ -6,12 +6,13 @@
 # @File: urls
 # @Software: PyCharm
 from . import views
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 __author__ = 'blackmatrix'
 
 
 urlpatterns = [
+    url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^sign_in/$', views.sign_in, name='sign_in'),
     url(r'^sign_up/$', views.sign_up, name='sign_up'),
     url(r'^admin/$', views.admin, name='admin'),
