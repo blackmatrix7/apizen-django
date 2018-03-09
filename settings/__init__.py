@@ -6,14 +6,24 @@
 # @Blog : http://www.cnblogs.com/blackmatrix/
 # @File : __init__.py
 # @Software: PyCharm
+import logging
+import importlib
+from importlib import import_module
+from functools import partial
 from toolkit.cmdline import cmdline
 
 __author__ = 'blackmatrix'
-
-if cmdline.config == 'debug':
-    from settings.debug import *
-else:
-    from settings.default import *
-
-if __name__ == '__main__':
-    pass
+#
+#
+# def import_settings():
+#     config = cmdline.config
+#     try:
+#         # import_module('local_settings.{}'.format(config))
+#         exec('from local_settings.{} import *'.format(config))
+#     except ImportError:
+#         # import_module('settings.{}'.format(config))
+#         exec('from settings.{} import *'.format(config))
+#     logging.info('config name: {}'.format(config))
+#
+#
+# import_settings()

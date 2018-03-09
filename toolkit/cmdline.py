@@ -48,5 +48,14 @@ class CmdLine:
             else:
                 self._command = sys.argv[1] if len(sys.argv) >= 2 else 'runserver'
 
+    @property
+    def settings(self):
+        settings_folder = 'local_settings'
+        try:
+            import local_settings
+        except ImportError:
+            settings_folder = 'settings'
+        return '{}.{}'.format(settings_folder, self.config)
+
 
 cmdline = CmdLine()
