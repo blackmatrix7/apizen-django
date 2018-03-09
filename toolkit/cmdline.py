@@ -15,6 +15,7 @@ class CmdLine:
 
     def __init__(self):
         self._main = sys.argv[0]
+        self._config = None
         self._command = sys.argv[2] if len(sys.argv) >= 3 else 'runserver'
         self._django_cmds = None
 
@@ -24,25 +25,28 @@ class CmdLine:
 
     @property
     def config(self):
-        for argv in sys.argv:
-            if 'env' in argv or 'e' in argv:
-                return sys.argv[1][sys.argv[1].find('=') + 1:]
+        if self._config is not None:
+            return self._config
         else:
-            return 'default'
+            for argv in sys.argv:
+                if 'env=' in argv or 'e=' in argv:
+                    config = sys.argv[1][sys.argv[1].find('=') + 1:]
+                    sys.argv.remove(argv)
+                    return config
+            else:
+                return 'debug'
 
     @property
     def command(self):
-        return self._command
+        assert self.config
+        try:
+            import django
+            return sys.argv
+        except ImportError:
+            if sys.platform == 'win32':
+                self._command = sys.argv[2] if len(sys.argv) >= 3 else 'runserver'
+            else:
+                self._command = sys.argv[1] if len(sys.argv) >= 2 else 'runserver'
 
-    @property
-    def django_cmds(self):
-        if self._django_cmds:
-            return self._django_cmds
-        else:
-            from copy import copy
-            argv = copy(sys.argv)
-            del argv[1]
-            self._django_cmds = argv
-            return self._django_cmds
 
 cmdline = CmdLine()
