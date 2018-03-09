@@ -1,0 +1,6 @@
+Django==2.0.3
+django-guardian==1.4.9
+django-jet==1.0.7
+gunicorn==19.7.1
+pytz==2018.3
+six==1.11.0
