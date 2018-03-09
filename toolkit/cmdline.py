@@ -15,7 +15,6 @@ class CmdLine:
 
     def __init__(self):
         self._main = sys.argv[0]
-        self._config = sys.argv[1] if len(sys.argv) >= 2 else 'default'
         self._command = sys.argv[2] if len(sys.argv) >= 3 else 'runserver'
         self._django_cmds = None
 
@@ -25,7 +24,11 @@ class CmdLine:
 
     @property
     def config(self):
-        return self._config
+        for argv in sys.argv:
+            if 'env' in argv or 'e' in argv:
+                return sys.argv[1][sys.argv[1].find('=') + 1:]
+        else:
+            return 'default'
 
     @property
     def command(self):
