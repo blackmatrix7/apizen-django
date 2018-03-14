@@ -8,7 +8,7 @@
 # @Software: PyCharm
 import types
 from json import JSONDecodeError
-from apizen.exceptions import SysException, ApiSysExceptions
+from toolkit.exceptions import SysException
 
 __author__ = 'blackmatrix'
 
