@@ -7,11 +7,11 @@
 # @Software: PyCharm
 from . import views
 from . import settings
-from django.conf.urls import url
+from django.urls import path
 
 __author__ = 'blackmatrix'
 
 urlpatterns = [
-    url('^{}/$'.format(settings.APIZEN_ROUTE), views.api_routing, name='api_routing'),
+    path('{}/'.format(settings.APIZEN_ROUTE), views.api_routing, name='api_routing'),
 ]
 

@@ -132,10 +132,7 @@ AUTHENTICATION_BACKENDS = (
 
 ANONYMOUS_USER_ID = -1
 
-# USE_L10N = False
-
-DATETIME_FORMAT = 'Y-m-d H:i:s'
-
-DATE_FORMAT = 'Y-m-d'
-
+# Django时区设置，不设置datetime.now()返回的时间不是当前时间
+USE_TZ = False
+TIME_ZONE = 'Asia/Shanghai'
 
