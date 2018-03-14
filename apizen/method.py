@@ -9,7 +9,7 @@ from functools import wraps
 from .schema import convert
 from .version import allversion
 from inspect import signature, Parameter
-from .exceptions import ApiSysExceptions
+from apizen.exceptions import ApiSysExceptions
 
 __author__ = 'blackmatrix'
 

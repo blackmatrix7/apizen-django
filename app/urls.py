@@ -24,6 +24,7 @@ urlpatterns = [
     # 注释掉此行
     # url(r'^admin/', admin.site.urls),
     url(r'^blog/', include('blog.urls')),
+    url(r'^api/', include('apizen.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

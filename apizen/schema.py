@@ -12,7 +12,7 @@ from decimal import Decimal
 from json import JSONDecodeError
 from .config import apizen_config
 from datetime import datetime, date
-from .exceptions import ApiSysExceptions
+from apizen.exceptions import ApiSysExceptions
 
 __author__ = 'blackmatrix'
 
