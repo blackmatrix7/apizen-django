@@ -16,12 +16,18 @@ ApiZen默认参数配置
 
 __author__ = 'blackmatrix'
 
-# 默认接口地址
-APIZEN_ROUTE = getattr(settings, 'APIZEN_ROUTE', 'router/rest')
 
-# 默认Date格式
-APIZEN_DATE_FMT = getattr(settings, 'APIZEN_DATE_FMT', '%Y-%m-%d')
+class Config:
 
-# 默认DateTime格式
-APIZEN_DATETIME_FMT = getattr(settings, 'APIZEN_DATETIME_FMT', '%Y-%m-%d %H:%M:%S')
+    # 默认接口地址
+    APIZEN_ROUTE = getattr(settings, 'APIZEN_ROUTE', 'router/rest')
+
+    # 默认Date格式
+    APIZEN_DATE_FMT = getattr(settings, 'APIZEN_DATE_FMT', '%Y-%m-%d')
+
+    # 默认DateTime格式
+    APIZEN_DATETIME_FMT = getattr(settings, 'APIZEN_DATETIME_FMT', '%Y-%m-%d %H:%M:%S')
+
+
+current_config = Config
 

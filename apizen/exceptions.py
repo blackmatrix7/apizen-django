@@ -5,7 +5,8 @@
 # @Site: https://github.com/blackmatrix7
 # @File: exceptions.py
 # @Software: PyCharm
-
+import types
+from json import JSONDecodeError
 """
 -------------------------------
 ApiZen 接口异常类型的管理模块

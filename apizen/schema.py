@@ -10,7 +10,7 @@ import json
 import copy
 from decimal import Decimal
 from json import JSONDecodeError
-from .config import apizen_config
+from .config import current_config
 from datetime import datetime, date
 from apizen.exceptions import ApiSysExceptions
 
@@ -122,7 +122,7 @@ class TypeDate(date, TypeBase):
         return _value
 
     def __init__(self, format_=None):
-        self.format_ = format_ or apizen_config['APIZEN_DATE_FMT']
+        self.format_ = format_ or current_config.APIZEN_DATE_FMT
         super().__init__()
 
 
@@ -135,7 +135,7 @@ class TypeDatetime(datetime, TypeBase):
         return _value
 
     def __init__(self, format_=None):
-        self.format_ = format_ or apizen_config.get('APIZEN_DATETIME_FMT')
+        self.format_ = format_ or current_config.APIZEN_DATETIME_FMT
         super().__init__()
 
 
