@@ -29,7 +29,7 @@ class CmdLine:
             return self._config
         else:
             for argv in sys.argv:
-                if 'env=' in argv or 'e=' in argv:
+                if 'cfg=' in argv or 'cfg=' in argv:
                     config = sys.argv[1][sys.argv[1].find('=') + 1:]
                     sys.argv.remove(argv)
                     return config
