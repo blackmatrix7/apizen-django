@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+from django.conf import settings
 from toolkit.cmdline import cmdline
 
 if __name__ == "__main__":
@@ -19,4 +20,9 @@ if __name__ == "__main__":
                 "forget to activate a virtual environment?"
             )
         raise
+    from django.core.management.commands.runserver import Command
+    # 修改默认地址
+    Command.default_addr = settings.HOST
+    # 修改默认端口号
+    Command.default_port = settings.PORT
     execute_from_command_line(cmdline.command)
