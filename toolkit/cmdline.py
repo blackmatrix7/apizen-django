@@ -16,7 +16,7 @@ class CmdLine:
     def __init__(self):
         self._main = sys.argv[0]
         self._config = None
-        self._command = sys.argv[2] if len(sys.argv) >= 3 else 'runserver'
+        self._command = None
         self._django_cmds = None
 
     @property
