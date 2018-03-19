@@ -63,6 +63,10 @@ def api_routing(request, version, method):
     # 接口返回异常
     api_ex = None
     try:
+        # GET请求处理
+        if request.method == 'GET':
+            query_string = request.GET.dict()
+            request_args.update(query_string)
         # POST请求处理
         if request.method == 'POST':
             # 获取请求参数，参数优先级 json/form > querystring
@@ -71,7 +75,7 @@ def api_routing(request, version, method):
                 json_data = json.loads(body)
                 request_args.update(json_data)
             elif 'application/x-www-form-urlencoded' in request.content_type:
-                form_data = dict(request.POST)
+                form_data = request.POST.dict()
                 request_args.update(form_data)
             else:
                 raise ApiSysExceptions.unacceptable_content_type
