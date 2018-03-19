@@ -21,6 +21,9 @@ ApiZen 接口处理方法的异常判断与执行
 """
 
 
+__all__ = ['apiconfig', 'get_method', 'run_method']
+
+
 def apiconfig(raw_resp=False, allow_anonymous=False):
     """
     Api配置装饰器
@@ -36,6 +39,40 @@ def apiconfig(raw_resp=False, allow_anonymous=False):
         wrapper.__allow_anonymous__ = allow_anonymous
         return wrapper
     return _apiconfig
+
+
+def convert_methods(methods):
+    """
+    统计继承关系，并转换对应的方法
+    :return:
+    """
+    # 转换后的接口版本与方法
+    new_methods = {}
+
+    def get_version_methods(version):
+        nonlocal methods
+        # 获取版本对应的方法列表，优先从已转换好的方法列表里获取
+        try:
+            version_data = new_methods[version]
+        except KeyError:
+            version_data = methods[version]
+        # 检查继承关系
+        inheritance = version_data.get('inheritance')
+        version_methods = version_data.get('methods', {})
+        # 没有继承关系直接返回当前的所有接口方法
+        if inheritance is None:
+            return version_methods
+        # 存在继承关系需要获取父版本的方法
+        else:
+            inheritance_methods = get_version_methods(inheritance)
+            inheritance_methods.update(version_methods)
+            return inheritance_methods
+
+    # 遍历所有版本
+    for v, _ in methods.items():
+        new_methods.update({v: get_version_methods(v)})
+
+    return new_methods
 
 
 # 获取api处理函数及相关异常判断

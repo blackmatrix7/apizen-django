@@ -7,7 +7,7 @@
 # @Software: PyCharm
 from .errors import *
 from functools import wraps
-from apizen.method import apiconfig
+from apizen.methods import apiconfig
 from apizen.schema import Integer, String, Float, Dict, DateTime, Email, List, Bool, Date, Money
 
 __author__ = 'blackmatrix'

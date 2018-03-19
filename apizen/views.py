@@ -5,7 +5,7 @@ import datetime
 from json import JSONDecodeError
 from django.conf import settings
 from django.http import HttpResponse
-from .method import get_method, run_method
+from .methods import get_method, run_method
 from django.utils.timezone import is_aware
 from django.utils.functional import Promise
 from django.views.decorators.csrf import csrf_exempt
