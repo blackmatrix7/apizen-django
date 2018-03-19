@@ -27,7 +27,6 @@ def sign_in(request):
             return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
-
 def sign_up(request):
     """
     账户注册

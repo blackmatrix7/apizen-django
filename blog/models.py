@@ -1,5 +1,5 @@
 from django.db import models
-from app.models import BaseModel
+from project.models import BaseModel
 from django.contrib.auth.hashers import make_password, check_password
 
 
