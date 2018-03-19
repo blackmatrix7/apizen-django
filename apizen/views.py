@@ -2,11 +2,13 @@ import json
 import uuid
 import decimal
 import datetime
+from json import JSONDecodeError
 from django.conf import settings
 from django.http import HttpResponse
 from .method import get_method, run_method
 from django.utils.timezone import is_aware
 from django.utils.functional import Promise
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.duration import duration_iso_string
 from .exceptions import ApiSysExceptions, SysException
 from django.core.serializers.json import DjangoJSONEncoder
@@ -42,9 +44,12 @@ class CustomJSONEncoder(DjangoJSONEncoder):
             return super().default(o)
 
 
+@csrf_exempt
 def api_routing(request, version, method):
     # 生成request_id，用于排查问题
     request_id = str(uuid.uuid1())
+    # 请求参数
+    request_args = {}
     # 函数执行结果
     result = None
     # 接口执行结果说明
@@ -55,35 +60,46 @@ def api_routing(request, version, method):
     status_code = 200
     # 接口是否执行成功，多返回sucess是便于调用者理解
     success = True
+    # 接口返回异常
+    api_ex = None
     try:
-        # 检查 content-type
+        # POST请求处理
         if request.method == 'POST':
-            if request.content_type is None:
-                raise ApiSysExceptions.missing_content_type
-            if 'application/json' not in request.content_type \
-                    and 'application/x-www-form-urlencoded' not in request.content_type:
+            # 获取请求参数，参数优先级 json/form > querystring
+            if 'application/json' in request.content_type:
+                body = request.body.decode()
+                json_data = json.loads(body)
+                request_args.update(json_data)
+            elif 'application/x-www-form-urlencoded' in request.content_type:
+                form_data = dict(request.POST)
+                request_args.update(form_data)
+            else:
                 raise ApiSysExceptions.unacceptable_content_type
-        # 获取请求参数，参数优先级 json > form > querystring
-        request_args = None
         # 获取接口名称对应的处理函数
         api_func = get_method(version=version, api_method=method, http_method=request.method)
         result = run_method(api_func, request_params=request_args)
-    except SysException as ex:
-        code = ex.err_code
-        message = ex.err_msg
-        status_code = ex.http_code
+    except JSONDecodeError as ex:
+        api_ex = ApiSysExceptions.invalid_json
+        code = api_ex.err_code
+        message = '{}:{}'.format(api_ex.err_msg, str(ex))
+        status_code = api_ex.http_code
         success = False
-        if settings.DEBUG is True:
-            raise ex
+    except SysException as ex:
+        api_ex = ex
+        code = api_ex.err_code
+        message = api_ex.err_msg
+        status_code = api_ex.http_code
+        success = False
     except BaseException as ex:
         code = ApiSysExceptions.system_error.err_code
         message = '{}:{}'.format(ApiSysExceptions.system_error.err_msg, str(ex))
         status_code = ApiSysExceptions.system_error.http_code
         success = False
-        if settings.DEBUG is True:
-            raise ex
+        api_ex = ex
     finally:
-        if settings.DEBUG is False:
+        if settings.DEBUG is True:
+            raise api_ex
+        else:
             data = {
                 'meta': {
                     'code': code,
