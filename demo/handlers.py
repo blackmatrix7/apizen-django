@@ -29,6 +29,11 @@ def first_api():
     return '这是第一个Api例子'
 
 
+def send_template_mail(recipient_list):
+    from toolkit.email import send_template_mail
+    send_template_mail('测试邮件发送', 'email/test_email.html', recipient_list=recipient_list)
+
+
 def register_user(name, age, email=None):
     """
     测试装饰器对获取函数参数的影响，及接口参数判断说明
