@@ -2,6 +2,7 @@ import json
 import uuid
 import decimal
 import datetime
+from django.conf import settings
 from django.http import HttpResponse
 from .method import get_method, run_method
 from django.utils.timezone import is_aware
@@ -72,20 +73,25 @@ def api_routing(request, version, method):
         message = ex.err_msg
         status_code = ex.http_code
         success = False
+        if settings.DEBUG is True:
+            raise ex
     except BaseException as ex:
         code = ApiSysExceptions.system_error.err_code
         message = '{}:{}'.format(ApiSysExceptions.system_error.err_msg, str(ex))
         status_code = ApiSysExceptions.system_error.http_code
         success = False
+        if settings.DEBUG is True:
+            raise ex
     finally:
-        data = {
-            'meta': {
-                'code': code,
-                'message': message,
-                'success': success,
-                'request_id': request_id,
-            },
-            'response': result
-        }
-        resp = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
-        return HttpResponse(resp, content_type='application/json', status=status_code)
+        if settings.DEBUG is False:
+            data = {
+                'meta': {
+                    'code': code,
+                    'message': message,
+                    'success': success,
+                    'request_id': request_id,
+                },
+                'response': result
+            }
+            resp = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
+            return HttpResponse(resp, content_type='application/json', status=status_code)
