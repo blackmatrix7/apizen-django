@@ -42,9 +42,9 @@ methods = {
                     # 保留原始返回格式
                     'matrix.api.raw_response': {'func': handlers.raw_data},
                     # 只允许GET请求
-                    'matrix.api.only-get': {'func': handlers.first_api, 'methods': ['get']},
+                    'matrix.api.only-get': {'func': handlers.first_api, 'http': ['get']},
                     # 只允许POST请求
-                    'matrix.api.only-post': {'func': handlers.first_api, 'methods': ['post']},
+                    'matrix.api.only-post': {'func': handlers.first_api, 'http': ['post']},
                     # 允许post和get
                     'matrix.api.get-post': {'func': handlers.first_api},
                     # 停用API

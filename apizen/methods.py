@@ -104,7 +104,7 @@ def get_method(version, api_method, http_method):
     elif not METHODS[version][api_method].get('enable', True):
         raise ApiSysExceptions.api_stop
     # 检查方法是否允许以某种请求方式调用
-    elif http_method.lower() not in METHODS[version][api_method].get('methods', ['get', 'post']):
+    elif http_method.upper() not in METHODS[version][api_method].get('http', ['GET', 'POST']):
         raise ApiSysExceptions.not_allowed_request
     # 检查函数是否可调用
     elif not callable(METHODS[version][api_method].get('func')):
