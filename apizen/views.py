@@ -101,7 +101,7 @@ def api_routing(request, version, method):
         success = False
         api_ex = ex
     finally:
-        if settings.DEBUG is True:
+        if settings.DEBUG is True and isinstance(api_ex, BaseException):
             raise api_ex
         else:
             data = {
