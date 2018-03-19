@@ -14,4 +14,3 @@ __author__ = 'blackmatrix'
 urlpatterns = [
     path('{}/<version>/<method>'.format(current_config.APIZEN_ROUTE), views.api_routing, name='api_routing'),
 ]
-

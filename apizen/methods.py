@@ -16,7 +16,7 @@ __author__ = 'blackmatrix'
 -------------------------------
 ApiZen 接口处理方法的异常判断与执行
 -------------------------------
-适用版本：Flask、Tornado
+适用版本：Flask、Tornado、Django
 """
 
 
