@@ -6,7 +6,7 @@
 # @File: methods.py
 # @Software: PyCharm
 from . import handlers
-from apizen.methods import convert_methods
+from apizen.methods import register_methods
 
 __author__ = 'blackmatrix'
 
@@ -88,4 +88,4 @@ methods = {
     }
 
 
-convert_methods(methods)
+register_methods(methods)

@@ -20,7 +20,7 @@ ApiZen 接口处理方法的异常判断与执行
 """
 
 
-__all__ = ['apiconfig', 'get_method', 'run_method', 'convert_methods']
+__all__ = ['apiconfig', 'get_method', 'run_method', 'register_methods']
 
 
 METHODS = {}
@@ -43,7 +43,7 @@ def apiconfig(raw_resp=False, allow_anonymous=False):
     return _apiconfig
 
 
-def convert_methods(methods):
+def register_methods(methods):
     """
     统计继承关系，并转换对应的方法
     :return:
