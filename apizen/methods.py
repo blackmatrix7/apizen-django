@@ -60,15 +60,19 @@ def convert_methods(methods):
             version_data = methods[version]
         # 检查继承关系
         inheritance = version_data.get('inheritance')
-        version_methods = version_data.get('methods', {})
-        # 没有继承关系直接返回当前的所有接口方法
-        if inheritance is None:
-            new_methods.update({v: version_methods})
-        # 存在继承关系需要获取父版本的方法
+        # 检查版本是否停用
+        enable = version_data.get('enable', True)
+        if enable is False:
+            version_methods = {}
         else:
-            inheritance_methods = get_version_methods(inheritance)
-            version_methods.update(inheritance_methods)
-        return new_methods
+            # 获取当前版本的接口方法列表
+            version_methods = version_data.get('methods', {})
+            # 存在继承关系需要获取父版本的方法
+            if inheritance is not None:
+                inheritance_methods = get_version_methods(inheritance)
+                version_methods.update(inheritance_methods)
+        new_methods.update({v: version_methods})
+        return version_methods
 
     # 遍历所有版本
     for v, _ in methods.items():

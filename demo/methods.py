@@ -68,6 +68,18 @@ methods = {
     '1.1':
         {
             'inheritance': '1.0',
+            # 版本状态：
+            # True 启用（默认状态）
+            # False 停用（继承自此版本的方法同步停用）
+            'enable': False,
+            'methods':
+                {
+
+                }
+        },
+    '1.2':
+        {
+            'inheritance': '1.1',
             'methods':
                 {
 
