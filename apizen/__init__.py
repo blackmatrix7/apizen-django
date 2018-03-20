@@ -1,10 +1,13 @@
-#
+from importlib import import_module
+
+
 def autodiscover():
-    pass
-    # from django.apps import apps
-    # for app_config in apps.get_app_configs():
-    #     assert app_config
-    # autodiscover_modules('admin', register_to=site)
+    from django.apps import apps
+    for app_config in apps.get_app_configs():
+        try:
+            import_module('{}.methods'.format(app_config.name))
+        except ImportError:
+            pass
 
 
-autodiscover()
+# autodiscover()

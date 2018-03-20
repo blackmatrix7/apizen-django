@@ -49,13 +49,12 @@ def convert_methods(methods):
     :return:
     """
     # 转换后的接口版本与方法
-    new_methods = {}
 
     def get_version_methods(version):
-        nonlocal methods, new_methods
+        nonlocal methods
         # 获取版本对应的方法列表，优先从已转换好的方法列表里获取
         try:
-            version_data = new_methods[version]
+            version_data = METHODS[version]
         except KeyError:
             version_data = methods[version]
         # 检查继承关系
@@ -63,25 +62,27 @@ def convert_methods(methods):
         # 检查版本是否停用
         enable = version_data.get('enable', True)
         if enable is False:
-            version_methods = {}
+            version_data['methods'] = {}
         else:
             # 获取当前版本的接口方法列表
-            version_methods = version_data.get('methods', {})
             # 存在继承关系需要获取父版本的方法
             if inheritance is not None:
                 inheritance_methods = get_version_methods(inheritance)
-                version_methods.update(inheritance_methods)
-        new_methods.update({v: version_methods})
-        return version_methods
+                version_data['methods'].update(inheritance_methods['methods'])
+            METHODS.setdefault(version, {'methods': version_data['methods']})
+        # new_methods.update({version: version_data['methods']})
+        return version_data
 
     # 遍历所有版本
-    for v, _ in methods.items():
-        get_version_methods(v)
+    # for v, _ in methods.items():
+    #     get_version_methods(v)
+    get_version_methods('1.0')
+    get_version_methods('1.1')
 
     # 将转换后的版本更新到全局变量METHODS
-    for v, m in new_methods.items():
-        METHODS.setdefault(v, {}).update(m)
-    return new_methods
+    # for v, m in new_methods.items():
+    #     METHODS.setdefault(v, {}).update(m)
+    # return new_methods
 
 
 # 获取api处理函数及相关异常判断
@@ -102,19 +103,19 @@ def get_method(version, api_method, http_method):
         raise ApiSysExceptions.version_stop
 
     # 检查方法名是否存在
-    if api_method not in METHODS[version]:
+    if api_method not in METHODS[version]['methods']:
         raise ApiSysExceptions.invalid_method
     # 检查方法是否停用
-    elif not METHODS[version][api_method].get('enable', True):
+    elif not METHODS[version]['methods'][api_method].get('enable', True):
         raise ApiSysExceptions.api_stop
     # 检查方法是否允许以某种请求方式调用
-    elif http_method.upper() not in METHODS[version][api_method].get('http', ['GET', 'POST']):
+    elif http_method.upper() not in METHODS[version]['methods'][api_method].get('http', ['GET', 'POST']):
         raise ApiSysExceptions.not_allowed_request
     # 检查函数是否可调用
-    elif not callable(METHODS[version][api_method].get('func')):
+    elif not callable(METHODS[version]['methods'][api_method].get('func')):
         raise ApiSysExceptions.error_api_config
 
-    _func = METHODS[version][api_method].get('func')
+    _func = METHODS[version]['methods'][api_method].get('func')
 
     if not hasattr(_func, '__rawresp__'):
         _func.__rawresp__ = False
