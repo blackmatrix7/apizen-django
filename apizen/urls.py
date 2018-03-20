@@ -11,6 +11,10 @@ from .config import current_config
 
 __author__ = 'blackmatrix'
 
+from . import autodiscover
+
 urlpatterns = [
     path('{}/<version>/<method>'.format(current_config.APIZEN_ROUTE), views.api_routing, name='api_routing'),
 ]
+
+autodiscover()
