@@ -64,7 +64,6 @@ def convert_methods(methods):
         enable = version_data.get('enable', True)
         if enable is False:
             version_data['methods'] = {}
-            METHODS.setdefault(version, version_data)
         else:
             # 获取当前版本的接口方法列表
             # 存在继承关系需要获取父版本的方法
@@ -72,7 +71,7 @@ def convert_methods(methods):
                 inheritance_methods = get_version_methods(inheritance)
                 version_data['methods'].update(inheritance_methods['methods'])
             new_methods.setdefault(version, {'methods': version_data['methods']})
-            METHODS.setdefault(version, {'methods': {}})['methods'].update(new_methods[version]['methods'])
+        METHODS.setdefault(version, {'methods': {}})['methods'].update(version_data['methods'])
         return version_data
 
     # 遍历所有版本
