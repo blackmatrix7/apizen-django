@@ -6,8 +6,5 @@ def autodiscover():
     for app_config in apps.get_app_configs():
         try:
             import_module('{}.methods'.format(app_config.name))
-        except ImportError:
-            pass
-
-
-# autodiscover()
+        except ImportError as ex:
+            print(ex)

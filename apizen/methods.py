@@ -113,7 +113,7 @@ def get_method(version, api_method, http_method):
     _func = method_cfg.get('func')
 
     if not hasattr(_func, '__rawresp__'):
-        _func.__rawresp__ = False
+        setattr(_func, '__rawresp__', False)
 
     return _func
 
