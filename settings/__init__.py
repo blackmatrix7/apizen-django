@@ -8,9 +8,8 @@
 # @Software: PyCharm
 import logging
 import importlib
-from importlib import import_module
 from functools import partial
-from toolkit.cmdline import cmdline
+from importlib import import_module
 
 __author__ = 'blackmatrix'
 #

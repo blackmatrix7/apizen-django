@@ -2,7 +2,7 @@ from django.db import models
 
 
 # Create your models here.
-class Request(models):
+class Request(models.Model):
     request_id = models.CharField('request id', max_length=32)
     method = models.CharField('method', max_length=4)
     api_name = models.CharField('api name', max_length=128)
