@@ -124,7 +124,7 @@ TIME_ZONE = 'Asia/Shanghai'
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'blog/static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'blog/static')
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # django默认的backend
