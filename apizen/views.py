@@ -2,6 +2,7 @@ import json
 import uuid
 import decimal
 import datetime
+from .models import ApiRequest
 from json import JSONDecodeError
 from django.conf import settings
 from django.http import HttpResponse
@@ -62,6 +63,8 @@ def api_routing(request, version, method):
     success = True
     # 接口返回异常
     api_ex = None
+    # api request log
+    api_request = {}
     try:
         # GET请求处理
         if request.method == 'GET':
@@ -79,6 +82,14 @@ def api_routing(request, version, method):
                 request_args.update(form_data)
             else:
                 raise ApiSysExceptions.unacceptable_content_type
+        # 记录日志
+        api_request['request_id'] = request_id
+        api_request['method'] = request.method
+        api_request['environ'] = json.dumps({k: v for k, v in request.environ.items() if isinstance(v, str)},
+                                            cls=CustomJSONEncoder, ensure_ascii=False)
+        api_request['path'] = request.path
+        api_request['payload'] = json.dumps(request_args)
+        api_request['name'] = method
         # 获取接口名称对应的处理函数
         api_func = get_method(version=version, api_method=method, http_method=request.method)
         result = run_method(api_func, request_params=request_args)
@@ -114,4 +125,22 @@ def api_routing(request, version, method):
                 'response': result
             }
             resp = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
+            api_request['status'] = status_code
+            api_request['code'] = code
+            api_request['message'] = message
+            api_request['success'] = success
+            api_request['response'] = resp
+            model2 = ApiRequest(**api_request)
+            model2.save()
             return HttpResponse(resp, content_type='application/json', status=status_code)
+
+
+def add_api_request_log(request_id, method, environ, api_name):
+
+    api_request = ApiRequest()
+    api_request.request_id = request_id
+    api_request.method = method
+    api_request.api_name = api_name
+    api_request.environ = json.dumps({k: v for k, v in environ.items() if isinstance(v, str)},
+                                     cls=CustomJSONEncoder, ensure_ascii=False)
+    api_request.save()
