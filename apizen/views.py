@@ -119,6 +119,7 @@ def api_routing(request, version, method):
         api_request['message'] = message
         api_request['success'] = success
         if settings.DEBUG is True and isinstance(api_ex, BaseException):
+            # 生产环境中，建议将存储数据库的动作异步执行，以免影响接口响应速
             model2 = ApiRequest(**api_request)
             model2.save()
             raise api_ex
