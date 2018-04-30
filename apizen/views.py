@@ -72,9 +72,9 @@ def api_routing(request, version, method):
     api_ex = None
     # 日志对象参数
     request_info = {'response': None, 'request_id': request_id, 'method': request.method,
-                   'headers': json.dumps(get_http_headers(request.environ)),
-                   'path': request.path, 'payload': json.dumps(request_args),
-                   'name': method}
+                    'headers': json.dumps(get_http_headers(request.environ)),
+                    'path': request.path, 'payload': json.dumps(request_args),
+                    'name': method}
     try:
         # GET请求处理
         if request.method == 'GET':
