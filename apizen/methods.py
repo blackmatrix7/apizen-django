@@ -20,7 +20,7 @@ ApiZen 接口处理方法的异常判断与执行
 """
 
 
-__all__ = ['apiconfig', 'get_method', 'run_method', 'register_methods']
+__all__ = ['apiconfig', 'get_api_func', 'run_api_func', 'register_methods']
 
 
 METHODS = {}
@@ -80,11 +80,11 @@ def register_methods(methods):
 
 
 # 获取api处理函数及相关异常判断
-def get_method(version, api_method, http_method):
+def get_api_func(version, api_name, http_method):
     """
     获取api处理函数及相关异常判断
     :param version:  接口版本
-    :param api_method:  方法名
+    :param api_name:  方法名
     :param http_method:  http请求方式
     :return:
     """
@@ -97,7 +97,7 @@ def get_method(version, api_method, http_method):
         raise ApiSysExceptions.version_stop
     # 检查接口方法名是否存在
     try:
-        method_cfg = METHODS[version]['methods'][api_method]
+        method_cfg = METHODS[version]['methods'][api_name]
     except KeyError:
         raise ApiSysExceptions.invalid_method
     # 检查方法是否停用
@@ -107,7 +107,7 @@ def get_method(version, api_method, http_method):
     elif http_method.upper() not in method_cfg.get('http', ['GET', 'POST']):
         raise ApiSysExceptions.not_allowed_request
     # 检查函数是否可调用
-    elif not callable(METHODS[version]['methods'][api_method].get('func')):
+    elif not callable(METHODS[version]['methods'][api_name].get('func')):
         raise ApiSysExceptions.error_api_config
 
     _func = method_cfg.get('func')
@@ -119,7 +119,7 @@ def get_method(version, api_method, http_method):
 
 
 # 运行接口处理方法，及异常处理
-def run_method(api_method, request_params):
+def run_api_func(api_method, request_params):
 
     # 最终传递给接口处理方法的全部参数
     func_args = {}

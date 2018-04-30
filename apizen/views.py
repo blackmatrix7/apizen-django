@@ -9,7 +9,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.utils.timezone import is_aware
 from django.utils.functional import Promise
-from .methods import get_method, run_method
+from .methods import get_api_func, run_api_func
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.duration import duration_iso_string
 from .exceptions import ApiSysExceptions, SysException
@@ -93,8 +93,8 @@ def api_routing(request, version, method):
             else:
                 raise ApiSysExceptions.unacceptable_content_type
         # 获取接口名称对应的处理函数
-        api_func = get_method(version=version, api_method=method, http_method=request.method)
-        result = run_method(api_func, request_params=request_args)
+        api_func = get_api_func(version=version, api_name=method, http_method=request.method)
+        result = run_api_func(api_func, request_params=request_args)
     except JSONDecodeError as ex:
         api_ex = ApiSysExceptions.invalid_json
         code = api_ex.err_code
