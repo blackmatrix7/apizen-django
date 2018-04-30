@@ -11,7 +11,7 @@ class ApiRequest(models.Model):
 
     request_id = models.CharField('request id', max_length=32)
     method = models.CharField('method', max_length=4)
-    environ = models.TextField('environ')
+    headers = models.TextField('headers')
     name = models.CharField('api name', max_length=128)
     path = models.CharField('url', max_length=512)
     payload = models.TextField('arguments', null=True, blank=True)
