@@ -137,14 +137,3 @@ def api_routing(request, version, method):
             model2 = ApiRequest(**api_request)
             model2.save()
             return HttpResponse(resp, content_type='application/json', status=status_code)
-
-
-# def add_api_request_log(request_id, method, environ, api_name):
-#
-#     api_request = ApiRequest()
-#     api_request.request_id = request_id
-#     api_request.method = method
-#     api_request.api_name = api_name
-#     api_request.environ = json.dumps({k: v for k, v in environ.items() if isinstance(v, str)},
-#                                      cls=CustomJSONEncoder, ensure_ascii=False)
-#     api_request.save()
