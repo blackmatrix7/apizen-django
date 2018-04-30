@@ -71,7 +71,7 @@ def api_routing(request, version, method):
     # 接口返回异常
     api_ex = None
     # 日志对象参数
-    api_request = {'response': None, 'request_id': request_id, 'method': request.method,
+    request_info = {'response': None, 'request_id': request_id, 'method': request.method,
                    'headers': json.dumps(get_http_headers(request.environ)),
                    'path': request.path, 'payload': json.dumps(request_args),
                    'name': method}
@@ -114,14 +114,14 @@ def api_routing(request, version, method):
         success = False
         api_ex = ex
     finally:
-        api_request['status'] = status_code
-        api_request['code'] = code
-        api_request['message'] = message
-        api_request['success'] = success
+        request_info['status'] = status_code
+        request_info['code'] = code
+        request_info['message'] = message
+        request_info['success'] = success
         if settings.DEBUG is True and isinstance(api_ex, BaseException):
             # 生产环境中，建议将存储数据库的动作异步执行，以免影响接口响应速
-            model2 = ApiRequest(**api_request)
-            model2.save()
+            api_request = ApiRequest(**request_info)
+            api_request.save()
             raise api_ex
         else:
             data = {
@@ -134,7 +134,7 @@ def api_routing(request, version, method):
                 'response': result
             }
             resp = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
-            api_request['response'] = resp
-            model2 = ApiRequest(**api_request)
-            model2.save()
+            request_info['response'] = resp
+            api_request = ApiRequest(**request_info)
+            api_request.save()
             return HttpResponse(resp, content_type='application/json', status=status_code)
