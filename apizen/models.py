@@ -7,7 +7,7 @@ class ApiRequest(models.Model):
     class Meta:
         verbose_name = '接口日志'
         verbose_name_plural = verbose_name
-        db_table = 'webapi_logs'
+        db_table = 'api_request'
 
     request_id = models.CharField('request id', max_length=32)
     method = models.CharField('method', max_length=4)
