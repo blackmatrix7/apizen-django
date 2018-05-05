@@ -98,7 +98,10 @@ def api_routing(request, version, method):
     except JSONDecodeError as ex:
         api_ex = ApiSysExceptions.invalid_json
         code = api_ex.err_code
-        message = '{}:{}'.format(api_ex.err_msg, str(ex))
+        if settings.DEBUG is False:
+            message = api_ex.err_msg
+        else:
+            message = '{}:{}'.format(api_ex.err_msg, str(ex))
         status_code = api_ex.http_code
         success = False
     except SysException as ex:
@@ -109,7 +112,10 @@ def api_routing(request, version, method):
         success = False
     except BaseException as ex:
         code = ApiSysExceptions.system_error.err_code
-        message = '{}:{}'.format(ApiSysExceptions.system_error.err_msg, str(ex))
+        if settings.DEBUG is False:
+            message = ApiSysExceptions.system_error.err_msg
+        else:
+            message = '{}:{}'.format(ApiSysExceptions.system_error.err_msg, str(ex))
         status_code = ApiSysExceptions.system_error.http_code
         success = False
         api_ex = ex
