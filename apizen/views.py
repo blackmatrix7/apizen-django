@@ -6,7 +6,7 @@ import datetime
 from .models import ApiRequest
 from json import JSONDecodeError
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.utils.timezone import is_aware
 from django.utils.functional import Promise
 from .methods import get_api_func, run_api_func
@@ -133,8 +133,8 @@ def api_routing(request, version, method):
                 },
                 'response': result
             }
-            resp = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
-            request_info['response'] = resp
+            json_data = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
+            request_info['response'] = json_data
             api_request = ApiRequest(**request_info)
             api_request.save()
-            return HttpResponse(resp, content_type='application/json', status=status_code)
+            return JsonResponse(data, encoder=CustomJSONEncoder, status=status_code)
