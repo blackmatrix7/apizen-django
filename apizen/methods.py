@@ -92,9 +92,9 @@ def get_api_func(version, api_name, http_method):
     # 检查版本号
     if version not in METHODS:
         raise ApiSysExceptions.unsupported_version
-    # 检查版本是否停用
-    elif not METHODS[version].get('enable', True):
-        raise ApiSysExceptions.version_stop
+    # 检查版本是否停用 暂时不支持版本已停用的异常
+    # elif not METHODS[version].get('enable', True):
+    #     raise ApiSysExceptions.version_stop
     # 检查接口方法名是否存在
     try:
         method_cfg = METHODS[version]['methods'][api_name]
