@@ -70,6 +70,8 @@ def api_routing(request, version, method):
     success = True
     # 接口返回异常
     api_ex = None
+    # 使用原始数据返回
+    raw_resp = False
     # 日志对象参数
     request_info = {'response': None, 'request_id': request_id, 'method': request.method,
                     'headers': json.dumps(get_http_headers(request.environ)),
@@ -94,6 +96,8 @@ def api_routing(request, version, method):
                 raise ApiSysExceptions.unacceptable_content_type
         # 获取接口名称对应的处理函数
         api_func = get_api_func(version=version, api_name=method, http_method=request.method)
+        # 判断接口是否要求使用原始数据返回
+        raw_resp = api_func.__rawresp__
         result = run_api_func(api_func, request_params=request_args)
     except JSONDecodeError as ex:
         api_ex = ApiSysExceptions.invalid_json
@@ -130,15 +134,18 @@ def api_routing(request, version, method):
             api_request.save()
             raise api_ex
         else:
-            data = {
-                'meta': {
-                    'code': code,
-                    'message': message,
-                    'success': success,
-                    'request_id': request_id,
-                },
-                'response': result
-            }
+            if raw_resp is False:
+                data = {
+                    'meta': {
+                        'code': code,
+                        'message': message,
+                        'success': success,
+                        'request_id': request_id,
+                    },
+                    'response': result
+                }
+            else:
+                data = result
             json_data = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
             request_info['response'] = json_data
             api_request = ApiRequest(**request_info)
