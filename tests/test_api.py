@@ -252,12 +252,12 @@ class ApiZenTestCase(unittest.TestCase):
         assert data['meta']['message'] == '不存在的方法名'
 
     # 测试接口版本禁用
-    def test_version_stop(self):
-        self.version = 'demo'
-        resp = requests.get(self.get_request_url('matrix.api.first-api', '1.1'))
-        data = resp.json()
-        assert resp.status_code == 400
-        assert data['meta']['message'] == '接口版本已停用'
+    # def test_version_stop(self):
+    #     self.version = 'demo'
+    #     resp = requests.get(self.get_request_url('matrix.api.first-api', '1.1'))
+    #     data = resp.json()
+    #     assert resp.status_code == 400
+    #     assert data['meta']['message'] == '接口版本已停用'
 
     # 测试布尔值类型
     def test_is_bool(self):
