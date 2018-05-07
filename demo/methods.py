@@ -5,7 +5,7 @@
 # @Site: https://github.com/blackmatrix7
 # @File: methods.py
 # @Software: PyCharm
-from . import handlers
+from . import views
 from apizen.methods import register_methods
 
 __author__ = 'blackmatrix'
@@ -18,51 +18,51 @@ methods = {
             'methods':
                 {
                     # 第一个API
-                    'matrix.api.first-api': {'func': handlers.first_api},
+                    'matrix.api.first-api': {'func': views.first_api},
                     # 接口参数自动判断
-                    'matrix.api.register_user': {'func': handlers.register_user},
+                    'matrix.api.register_user': {'func': views.register_user},
                     # 接口参数类型自动判断
-                    'matrix.api.register_user_plus': {'func': handlers.register_user_plus},
+                    'matrix.api.register_user_plus': {'func': views.register_user_plus},
                     # 自定义类型判断方式
-                    'matrix.api.validate_email': {'func': handlers.validate_email},
+                    'matrix.api.validate_email': {'func': views.validate_email},
                     # 自定义日期格式
-                    'matrix.api.custom_date_fmt': {'func': handlers.custom_date_fmt},
+                    'matrix.api.custom_date_fmt': {'func': views.custom_date_fmt},
                     # 自定义Money类型
-                    'matrix.api.money_to_decimal': {'func': handlers.money_to_decimal},
+                    'matrix.api.money_to_decimal': {'func': views.money_to_decimal},
                     # JSON 转 Dict
-                    'matrix.api.json-to-dict': {'func': handlers.json_to_dict},
+                    'matrix.api.json-to-dict': {'func': views.json_to_dict},
                     # JSON 转 List
-                    'matrix.api.json-to-list': {'func': handlers.json_to_list},
+                    'matrix.api.json-to-list': {'func': views.json_to_list},
                     # 抛出一个异常
-                    'matrix.api.return-err': {'func': handlers.raise_error},
+                    'matrix.api.return-err': {'func': views.raise_error},
                     # 自定义一个异常信息
-                    'matrix.api.custom-error': {'func': handlers.custom_error},
+                    'matrix.api.custom-error': {'func': views.custom_error},
                     # 自定义一个异常信息
-                    'matrix.api.after-custom-error': {'func': handlers.after_custom_error},
+                    'matrix.api.after-custom-error': {'func': views.after_custom_error},
                     # 保留原始返回格式
-                    'matrix.api.raw_response': {'func': handlers.raw_data},
+                    'matrix.api.raw_response': {'func': views.raw_data},
                     # 只允许GET请求
-                    'matrix.api.only-get': {'func': handlers.first_api, 'http': ['GET']},
+                    'matrix.api.only-get': {'func': views.first_api, 'http': ['GET']},
                     # 只允许POST请求
-                    'matrix.api.only-post': {'func': handlers.first_api, 'http': ['POST']},
+                    'matrix.api.only-post': {'func': views.first_api, 'http': ['POST']},
                     # 允许post和get
-                    'matrix.api.get-post': {'func': handlers.first_api},
+                    'matrix.api.get-post': {'func': views.first_api},
                     # 停用API
-                    'matrix.api.api-stop': {'func': handlers.first_api, 'enable': False},
+                    'matrix.api.api-stop': {'func': views.first_api, 'enable': False},
                     # 布尔值类型
-                    'matrix.api.is-bool': {'func': handlers.is_bool},
+                    'matrix.api.is-bool': {'func': views.is_bool},
                     # 错误的函数编写
-                    'matrix.api.err-func': {'func': handlers.demo.err_func},
+                    'matrix.api.err-func': {'func': views.demo.err_func},
                     # 实例方法调用
-                    'matrix.api.instance-func': {'func': handlers.demo.instance_func},
+                    'matrix.api.instance-func': {'func': views.demo.instance_func},
                     # 类方法调用
-                    'matrix.api.class-func': {'func': handlers.demo.class_method},
+                    'matrix.api.class-func': {'func': views.demo.class_method},
                     # 传递任意参数
-                    'matrix.api.send-kwargs': {'func': handlers.demo.send_kwargs},
+                    'matrix.api.send-kwargs': {'func': views.demo.send_kwargs},
                     # API版本继承
-                    'matrix.api.raise-error': {'func': handlers.raise_error},
+                    'matrix.api.raise-error': {'func': views.raise_error},
                     # 模拟接口阻塞
-                    'matrix.api.sleep': {'func': handlers.sleep_seconds}
+                    'matrix.api.sleep': {'func': views.sleep_seconds}
                 }
         },
     '1.1':
