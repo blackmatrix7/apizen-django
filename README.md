@@ -248,6 +248,8 @@ def register_user_plus(name, age: Integer, birthday: DateTime('%Y/%m/%d'), email
 
 除ApiZen提供的类型外，也支持使用以下的系统内建类型进行判断：int、float、str、list、dict、datetime。
 
+另外还支持自定义类型，详细的配置方式见后。
+
 ### 函数的限制
 
 ApiZen在设计之初，希望尽少减少对接口处理函数的限制，让实现业务的函数能更加自由，但是仍有一些规定需要在编写函数时遵守：
@@ -276,17 +278,36 @@ def test_decorator(func):
 
 ## 接口管理
 
-### 接口版本
+### 接口注册
 
-接口版本以类的形式存在，每个接口版本为独立的一个类，必须继承自超类ApiMethodBase。
-
-所有接口版本类，都必须调用进行注册。
+使用字典配置接口
 
 ```python
-from app.apizen.version import register
-from app.webapi.methods import ApiMethodsV10, ApiMethodsV11
-# Web Api 版本注册
-register(ApiMethodsV10, ApiMethodsV11)
+methods = {
+    '1.0':
+        {
+            'inheritance': None,
+            'methods':
+                {
+                    # 第一个API
+                    'matrix.api.first-api': {'func': views.first_api}
+                }
+        },
+    '1.1':
+        {
+            'inheritance': '1.0',
+            # 版本状态：
+            # True 启用（默认状态）
+            # False 停用（继承自此版本的方法同步停用）
+            'enable': False,
+            'methods': { }
+        },
+    '1.2':
+        {
+            'inheritance': '1.1',
+            'methods': {}
+        }
+    }
 ```
 
 ### 接口注册
@@ -470,7 +491,7 @@ def custom_error(msg):
 
 ### 两种Content-Type
 
-对于POST的请求方式，在不改动业务代码的前提下，可以同时支持application/json和application/x-www-form-urlencoded两种Content-Type。
+对于POST的请求方式，可以同时支持application/json和application/x-www-form-urlencoded两种Content-Type。
 
 #### application/x-www-form-urlencoded
 
