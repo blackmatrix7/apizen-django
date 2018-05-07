@@ -60,6 +60,16 @@ INSTALLED_APPS = [
 APIZEN_METHODS = ['demo.methods']
 ```
 
+### 修改urls
+
+```python
+urlpatterns = [
+    url('', admin.site.urls),
+    # 加入apizen的url
+    url(r'^api/', include('apizen.urls')),
+]
+```
+
 ### 编写接口处理函数
 
 先从编写一个最简单的Python函数开始：在 demo/views.py 中编写一个简单的函数。
@@ -102,17 +112,19 @@ register_methods(methods)
 
 ### 访问接口
 
-在浏览器中访问 http://127.0.0.1:8000/api/router/1.0/matrix.api.first-api 
+在浏览器中访问 http://127.0.0.1:8000/api/router/1.0/matrix.api.first-api
 
 可以得到接口返回结果，至此一个最简单的接口完成。
 
 ```Json
 {
+    "response": "这是第一个Api例子",
     "meta": {
-        "code": 1000,
-        "message": "执行成功"
-    },
-    "respone": "这是第一个Api例子"
+        "success": true,
+        "request_id": "2a205842-51d5-11e8-a106-4a00015832d0",
+        "message": "执行成功",
+        "code": 1000
+    }
 }
 ```
 
@@ -186,17 +198,19 @@ def register_user_plus(name, age: Integer, birthday: DateTime('%Y/%m/%d'), email
 
 请求接口，注意age传入的值是19.1
 
- http://127.0.0.1:8080/api/router/rest?v=1.0&method=matrix.api.register_user_plus&name=tom&age=19.1&birthday=2007/12/31
+ http://127.0.0.1:8000/api/router/1.0/matrix.api.register_user_plus?name=tom&age=19.1&birthday=2007/12/31
 
 因为age传入的值为19.1，不符合Integer的要求，所以返回异常
 
 ```json
 {
+    "response": null,
     "meta": {
-        "code": 1022,
-        "message": "参数类型错误：age <Integer>"
-    },
-    "respone": null
+        "success": false,
+        "request_id": "5786dc3e-51d5-11e8-80e3-4a00015832d0",
+        "message": "参数类型错误：age <Integer>",
+        "code": 1022
+    }
 }
 ```
 
@@ -234,9 +248,7 @@ def register_user_plus(name, age: Integer, birthday: DateTime('%Y/%m/%d'), email
 
 除ApiZen提供的类型外，也支持使用以下的系统内建类型进行判断：int、float、str、list、dict、datetime。
 
-### 参数的限制
-
-除ApiZen提供的类型外，也支持使用以下的系统内建类型进行判断：int、float、str、list、dict。
+### 函数的限制
 
 ApiZen在设计之初，希望尽少减少对接口处理函数的限制，让实现业务的函数能更加自由，但是仍有一些规定需要在编写函数时遵守：
 
