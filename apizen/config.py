@@ -20,7 +20,7 @@ __author__ = 'blackmatrix'
 class Config:
 
     # 默认接口地址
-    APIZEN_ROUTE = getattr(settings, 'APIZEN_ROUTE', 'router/rest')
+    APIZEN_ROUTE = getattr(settings, 'APIZEN_ROUTE', 'router')
 
     # 默认Date格式
     APIZEN_DATE_FMT = getattr(settings, 'APIZEN_DATE_FMT', '%Y-%m-%d')

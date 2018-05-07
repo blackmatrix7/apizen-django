@@ -20,7 +20,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     url('', admin.site.urls),
-    # url(r'^admin/', admin.site.urls),
     url(r'^api/', include('apizen.urls')),
 ]
 
