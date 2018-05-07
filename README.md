@@ -248,7 +248,7 @@ def register_user_plus(name, age: Integer, birthday: DateTime('%Y/%m/%d'), email
 
 除ApiZen提供的类型外，也支持使用以下的系统内建类型进行判断：int、float、str、list、dict、datetime。
 
-另外还支持自定义类型，详细的配置方式见后。
+<u>另外还支持自定义类型，详细的配置方式见后。</u>
 
 ### 函数的限制
 
