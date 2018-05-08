@@ -2,14 +2,14 @@ from django.db import models
 
 
 # Create your models here.
-class ApiRequest(models.Model):
+class ApiZenRequest(models.Model):
 
     class Meta:
         verbose_name = '接口日志'
         verbose_name_plural = verbose_name
-        db_table = 'api_request'
+        db_table = 'apizen_request'
 
-    request_id = models.CharField('request id', max_length=32)
+    request_id = models.CharField('request id', max_length=50)
     method = models.CharField('method', max_length=4)
     headers = models.TextField('headers')
     name = models.CharField('api name', max_length=128)

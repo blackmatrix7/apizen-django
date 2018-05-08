@@ -3,9 +3,9 @@ import json
 import uuid
 import decimal
 import datetime
-from .models import ApiRequest
 from json import JSONDecodeError
 from django.conf import settings
+from .models import ApiZenRequest
 from django.http import JsonResponse
 from django.utils.timezone import is_aware
 from django.utils.functional import Promise
@@ -129,8 +129,8 @@ def api_routing(request, version, method):
         request_info['message'] = message
         request_info['success'] = success
         if settings.DEBUG is True and isinstance(api_ex, BaseException):
-            # 生产环境中，建议将存储数据库的动作异步执行，以免影响接口响应速
-            api_request = ApiRequest(**request_info)
+            # 生产环境中，建议将存储数据库的动作异步执行，以免影响接口响应速度
+            api_request = ApiZenRequest(**request_info)
             api_request.save()
             raise api_ex
         else:
@@ -148,6 +148,6 @@ def api_routing(request, version, method):
                 data = result
             json_data = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
             request_info['response'] = json_data
-            api_request = ApiRequest(**request_info)
+            api_request = ApiZenRequest(**request_info)
             api_request.save()
             return JsonResponse(data, encoder=CustomJSONEncoder, status=status_code)
