@@ -75,15 +75,16 @@ def api_routing(request, version, method):
     # 日志对象参数
     request_info = {'response': None, 'request_id': request_id, 'method': request.method,
                     'headers': json.dumps(get_http_headers(request.environ)),
-                    'path': request.path, 'payload': json.dumps(request_args),
-                    'name': method}
+                    'path': request.path, 'name': method}
     try:
         # GET请求处理
         if request.method == 'GET':
             query_string = request.GET.dict()
             request_args.update(query_string)
+            # 日志对象更新传入参数
+            request_info['querystring'] = json.dumps(request_args)
         # POST请求处理
-        if request.method == 'POST':
+        elif request.method == 'POST':
             # 获取请求参数，参数优先级 json/form > querystring
             if 'application/json' in request.content_type:
                 body = request.body.decode()
@@ -94,6 +95,8 @@ def api_routing(request, version, method):
                 request_args.update(form_data)
             else:
                 raise ApiSysExceptions.unacceptable_content_type
+            # 日志对象更新传入参数
+            request_info['payload'] = json.dumps(request_args)
         # 获取接口名称对应的处理函数
         api_func = get_api_func(version=version, api_name=method, http_method=request.method)
         # 判断接口是否要求使用原始数据返回

@@ -14,6 +14,7 @@ class ApiZenRequest(models.Model):
     headers = models.TextField('headers')
     name = models.CharField('api name', max_length=128)
     path = models.CharField('url', max_length=512)
+    querystring = models.TextField('arguments', null=True, blank=True)
     payload = models.TextField('arguments', null=True, blank=True)
     access_time = models.DateTimeField('access time', auto_now_add=True)
     status = models.IntegerField('http status', null=True, blank=True)
