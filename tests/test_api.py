@@ -14,7 +14,7 @@ __author__ = 'blackmatrix'
 class ApiZenTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.host = 'http://127.0.0.1:8000/api/router/rest'
+        self.host = 'http://127.0.0.1:8000/api/router'
         self.version = '1.0'
         self.method = 'matrix.api.first-api'
 
