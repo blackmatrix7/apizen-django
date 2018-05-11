@@ -164,7 +164,7 @@ def register_user(name, age, email=None):
 
 当传入所有必填参数时，才能正常处理接口请求并返回结果。
 
-http://127.0.0.1:8000/api/router/rest/1.0/matrix.api.register_user?name=tom&age=19
+http://127.0.0.1:8000/api/router/1.0/matrix.api.register_user?name=tom&age=19
 
 调用示例中，没有传入email，email取默认值None
 
@@ -192,6 +192,7 @@ ApiZen不仅可以对请求接口时提交的参数是否完整进行判断，�
 
 ```python
 from app.apizen.schema import Integer, String, Float, Dict, DateTime
+
 def register_user_plus(name, age: Integer, birthday: DateTime('%Y/%m/%d'), email=None):
     return {'name': name, 'age': age, 'birthday': birthday, 'email': email}
 ```
