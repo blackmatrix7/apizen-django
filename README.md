@@ -301,7 +301,7 @@ methods = {
             # True 启用（默认状态）
             # False 停用（继承自此版本的方法同步停用）
             'enable': False,
-            'methods': { }
+            'methods': {}
         },
     '1.2':
         {
