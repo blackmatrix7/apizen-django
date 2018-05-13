@@ -101,7 +101,7 @@ def api_routing(request, version, method):
         api_func = get_api_func(version=version, api_name=method, http_method=request.method)
         # 判断接口是否要求使用原始数据返回
         raw_resp = api_func.__rawresp__
-        result = run_api_func(api_func, request_params=request_args)
+        result = run_api_func(api_func, request_params=request_args, request=request)
     except JSONDecodeError as ex:
         api_ex = ApiSysExceptions.invalid_json
         code = api_ex.err_code

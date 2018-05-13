@@ -6,7 +6,7 @@
 # @File    : controller.py
 # @Software: PyCharm
 from functools import wraps
-from .schema import convert
+from .types import convert, TypeRequest
 from inspect import signature, Parameter
 from apizen.exceptions import ApiSysExceptions
 
@@ -16,7 +16,7 @@ __author__ = 'blackmatrix'
 -------------------------------
 ApiZen 接口处理方法的异常判断与执行
 -------------------------------
-适用版本：Flask、Tornado、Django
+适用版本： Django
 """
 
 
@@ -119,7 +119,7 @@ def get_api_func(version, api_name, http_method):
 
 
 # 运行接口处理方法，及异常处理
-def run_api_func(api_method, request_params):
+def run_api_func(api_method, request_params, request):
 
     # 最终传递给接口处理方法的全部参数
     func_args = {}
@@ -135,7 +135,11 @@ def run_api_func(api_method, request_params):
                     missing_arguments = ApiSysExceptions.missing_arguments
                     missing_arguments.err_msg = '{0}：{1}'.format(missing_arguments.err_msg, k)
                     raise missing_arguments
-                func_args[k] = convert(k, v.default, v.default, v.annotation)
+                if isinstance(v.default, TypeRequest):
+                    default = request
+                else:
+                    default = v.default
+                func_args[k] = convert(k, default, v.default, v.annotation)
             else:
                 func_args[k] = convert(k, request_params.get(k), v.default, v.annotation)
         elif str(v.kind) == 'VAR_KEYWORD':
