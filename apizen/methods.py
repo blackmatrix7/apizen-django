@@ -130,18 +130,19 @@ def run_api_func(api_method, request_params, request):
         if str(v.kind) == 'VAR_POSITIONAL':
             raise ApiSysExceptions.error_api_config
         elif str(v.kind) in ('POSITIONAL_OR_KEYWORD', 'KEYWORD_ONLY'):
-            if k not in request_params:
+            # 如果参数默认值是Request类型，则将传入的值改为Django的request对象
+            if isinstance(v.default, TypeRequest):
+                value = request
+            elif k not in request_params:
                 if v.default is Parameter.empty:
                     missing_arguments = ApiSysExceptions.missing_arguments
                     missing_arguments.err_msg = '{0}：{1}'.format(missing_arguments.err_msg, k)
                     raise missing_arguments
-                if isinstance(v.default, TypeRequest):
-                    default = request
-                else:
-                    default = v.default
-                func_args[k] = convert(k, default, v.default, v.annotation)
+                value = v.default
             else:
-                func_args[k] = convert(k, request_params.get(k), v.default, v.annotation)
+                value = request_params.get(k)
+            func_args[k] = convert(k, value, v.default, v.annotation)
+
         elif str(v.kind) == 'VAR_KEYWORD':
             func_args.update({k: v for k, v in request_params.items()
                               if k not in api_method_params.keys()})
