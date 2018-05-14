@@ -158,7 +158,7 @@ class TypeBool(bool, TypeBase):
             raise ValueError
 
 
-class TypeRequest(date, TypeBase):
+class TypeApiRequest(date, TypeBase):
 
     typename = 'Date'
 
@@ -235,7 +235,7 @@ String = TypeString()
 Dict = TypeDict()
 Date = TypeDate
 DateTime = TypeDatetime
-Request = TypeRequest()
+ApiRequest = TypeApiRequest()
 Email = TypeEmail
 Model = TypeModel
 Conditions = TypeModelConditions
