@@ -277,6 +277,37 @@ def test_decorator(func):
     return wrapper
 ```
 
+### 获取 WSGIRequest
+
+如果需要完整地获取Django WSGIRequest对象，只需在函数的任一参数中为其指定默认值ApiRequest，这样ApiZen就会将WSGIRequest对象传递给接口处理函数。
+
+```python
+def get_request(request=ApiRequest):
+    return request.GET.dict()
+```
+
+如果调用者传入同名的参数，也会被WSGIRequest对象强制覆盖。
+
+例如调用上面的函数，即使传入request=123。
+
+http://127.0.0.1:8000/api/router/1.0/matrix.api.get-request?request=123
+
+在接口函数接受到的request值，依旧是WSGIRequest对象，所以上面的函数执行不会报错，而是返回结果：
+
+```json
+{
+    "meta": {
+        "message": "执行成功",
+        "success": true,
+        "request_id": "5e42e848-5749-11e8-b08b-4a00015832d0",
+        "code": 1000
+    },
+    "response": {
+    	"request": "123"
+    }
+}
+```
+
 ## 接口管理
 
 ### 接口注册
