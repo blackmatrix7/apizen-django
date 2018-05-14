@@ -9,7 +9,7 @@ from .models import ApiZenRequest
 from django.http import JsonResponse
 from django.utils.timezone import is_aware
 from django.utils.functional import Promise
-from .methods import get_api_func, run_api_func
+from .func import get_api_func, run_api_func
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.duration import duration_iso_string
 from .exceptions import ApiSysExceptions, SysException

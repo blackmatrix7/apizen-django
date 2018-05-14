@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 # @Time: 2018/3/16 下午5:01
 # @Author: BlackMatrix
-# @Site: https://github.com/blackmatrix7
+# @Site: methodss://github.com/blackmatrix7
 # @File: methods.py
 # @Software: PyCharm
 from . import views
-from apizen.methods import register_methods
+from apizen.func import register_methods
 
 __author__ = 'blackmatrix'
 
@@ -42,9 +42,9 @@ methods = {
                     # 保留原始返回格式
                     'matrix.api.raw_response': {'func': views.raw_data},
                     # 只允许GET请求
-                    'matrix.api.only-get': {'func': views.first_api, 'http': ['GET']},
+                    'matrix.api.only-get': {'func': views.first_api, 'methods': ['GET']},
                     # 只允许POST请求
-                    'matrix.api.only-post': {'func': views.first_api, 'http': ['POST']},
+                    'matrix.api.only-post': {'func': views.first_api, 'methods': ['POST']},
                     # 允许post和get
                     'matrix.api.get-post': {'func': views.first_api},
                     # 停用API
