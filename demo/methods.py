@@ -61,8 +61,8 @@ methods = {
                     'matrix.api.send-kwargs': {'func': views.demo.send_kwargs},
                     # API版本继承
                     'matrix.api.raise-error': {'func': views.raise_error},
-                    # 模拟接口阻塞
-                    'matrix.api.sleep': {'func': views.sleep_seconds}
+                    # 获取request信息
+                    'matrix.api.get-request': {'func': views.get_request}
                 }
         },
     '1.1':

@@ -11,7 +11,7 @@ from django.shortcuts import render
 from .errors import *
 from functools import wraps
 from apizen.methods import apiconfig
-from apizen.schema import Integer, String, Float, Dict, DateTime, Email, List, Bool, Date, Money
+from apizen.types import Integer, String, Float, Dict, DateTime, Email, List, Bool, Date, Money, Request
 
 __author__ = 'blackmatrix'
 
@@ -148,9 +148,8 @@ def is_bool(value: Bool):
     return value
 
 
-def sleep_seconds(seconds=10):
-    import time
-    time.sleep(seconds)
+def get_request(request=Request):
+    return request.GET.dict()
 
 
 class ApiDemo:
