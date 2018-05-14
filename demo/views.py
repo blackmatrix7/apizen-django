@@ -11,7 +11,7 @@ from django.shortcuts import render
 from .errors import *
 from functools import wraps
 from apizen.methods import apiconfig
-from apizen.types import Integer, String, Float, Dict, DateTime, Email, List, Bool, Date, Money, Request
+from apizen.types import Integer, String, Float, Dict, DateTime, Email, List, Bool, Date, Money, ApiRequest
 
 __author__ = 'blackmatrix'
 
@@ -148,7 +148,7 @@ def is_bool(value: Bool):
     return value
 
 
-def get_request(request=Request):
+def get_request(request=ApiRequest):
     return request.GET.dict()
 
 
