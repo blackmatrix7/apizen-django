@@ -312,34 +312,30 @@ http://127.0.0.1:8000/api/router/1.0/matrix.api.get-request?request=123
 
 ### 接口注册
 
-使用字典配置接口
+使用字典配置接口，格式如下：
 
 ```python
 methods = {
+    # 接口版本号
     '1.0':
         {
-            'inheritance': None,
+            # 版本下对应的方法
             'methods':
                 {
                     # 第一个API
                     'matrix.api.first-api': {'func': views.first_api}
                 }
         },
-    '1.1':
-        {
-            'inheritance': '1.0',
-            # 版本状态：
-            # True 启用（默认状态）
-            # False 停用（继承自此版本的方法同步停用）
-            'enable': False,
-            'methods': {}
-        },
-    '1.2':
-        {
-            'inheritance': '1.1',
-            'methods': {}
-        }
     }
+```
+
+在每个接口中，除定制func接口处理函数外，还支持两个非必须的参数：method与enable。enable可以启用或禁用接口，如果enable为False，在调用时会收到接口已停用的提示。method可以支持http请求方式，目前支持GET和POST，默认二者都支持，可以在method中设置只支持GET或POST。
+
+```python
+# 这个接口只支持GET方法，POST请求时会引发405异常
+'matrix.api.first-api': {'func': views.first_api, 'method': ['GET']}
+# 接口已停用，调用时会获取接口停用的异常
+'matrix.api.first-api2': {'func': views.first_api, 'enable': False}
 ```
 
 ### 接口注册
