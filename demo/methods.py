@@ -42,9 +42,9 @@ methods = {
                     # 保留原始返回格式
                     'matrix.api.raw_response': {'func': views.raw_data},
                     # 只允许GET请求
-                    'matrix.api.only-get': {'func': views.first_api, 'methods': ['GET']},
+                    'matrix.api.only-get': {'func': views.first_api, 'http': ['GET']},
                     # 只允许POST请求
-                    'matrix.api.only-post': {'func': views.first_api, 'methods': ['POST']},
+                    'matrix.api.only-post': {'func': views.first_api, 'http': ['POST']},
                     # 允许post和get
                     'matrix.api.get-post': {'func': views.first_api},
                     # 停用API
@@ -67,6 +67,7 @@ methods = {
         },
     '1.1':
         {
+            # 继承 1.0
             'inheritance': '1.0',
             # 版本状态：
             # True 启用（默认状态）
