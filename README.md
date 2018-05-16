@@ -92,9 +92,6 @@ methods = {
     # 接口版本号
     '1.0':
         {
-            # 继承自哪个版本，没有继承关系则为None
-            'inheritance': None,
-            # 接口方法名
             'methods':
                 {
                     # key为方法名，value为接口配置
@@ -308,9 +305,9 @@ http://127.0.0.1:8000/api/router/1.0/matrix.api.get-request?request=123
 }
 ```
 
-## 接口管理
+## 接口配置
 
-### 接口配置
+### 基本配置
 
 使用字典配置接口，格式如下：
 
@@ -329,102 +326,68 @@ methods = {
     }
 ```
 
-在每个接口中，除定制func接口处理函数外，还支持两个非必须的参数：method与enable。
+在每个接口中，除定制func接口处理函数外，还支持两个非必须的参数：http与enable。
 
 enable可以启用或禁用接口，默认为True。如果enable为False，在调用时会收到接口已停用的提示。
 
-method可以支持http请求方式，目前支持GET和POST，默认二者都支持，可以在method中设置只支持GET或POST。
+http可以控制支持的http请求方式，目前支持GET和POST，默认二者都支持，可以在http中设置只支持GET或POST。
 
 ```python
 # 这个接口只支持GET方法，POST请求时会引发405异常
-'matrix.api.first-api': {'func': views.first_api, 'method': ['GET']}
+'matrix.api.first-api': {'func': views.first_api, 'http': ['GET']}
 # 接口已停用，调用时会获取接口停用的异常
 'matrix.api.first-api2': {'func': views.first_api, 'enable': False}
 ```
 
+### 版本停用
+
+接口版本也可以通过enable参数控制停用或启用，接口版本一旦停用，调用此版本下的任意接口方法，都会提示方法不存在。
+
+```python
+methods = {
+    '1.0':
+        {	
+            # 停用接口
+            'enable': False,
+            'methods':
+                {...}
+        }
+}
+```
+
 ### 接口继承
 
+接口可以通过不同的版本进行单继承。接口版本的配置参数中，inheritance指向需要继承的父版本号，不需要继承则为None。
 
+```python
+methods = {
+    '1.0':
+        {
+            'inheritance': None,
+            'methods':
+                { ... }
+        },
+    '1.1':
+        {
+            # 继承 1.0
+            'inheritance': '1.0',
+            'methods':
+                { .... }
+        },
+}
+```
 
 ### 接口注册
 
-每个接口版本都必须存在类型属性api_methods，每个接口注册时，向api_methods增加相应的item即可。
+接口配置完成后，需要将配置信息注册到ApiZen，这样ApiZen才能识别这些接口。
 
-```python
-@version('1.0')
-class ApiMethodV10(ApiMethodBase):
-    api_methods = {
-        'matrix.api.err-func': {'func': err_func},
-        'matrix.api.instance-func': {'func': instance_func},
-        'matrix.api.send-kwargs': {'func':send_kwargs},
-        'matrix.api.raise-error': {'func': raise_error},
-        'matrix.api.only-post': {'func': raise_error, 'method': ['post']},
-        'matrix.api.api-stop': {'func':raise_error, 'enable': False}
-    }
+```
+from apizen.func import register_methods
+
+register_methods(methods)
 ```
 
-1. 'matrix.api.instance-func'为接口的方法名，同一个函数可以对应多个方法名
-2. 'func'为调用接口后需要执行的python函数
-3. ’method‘为接口支持的请求方式，不写method的情况下，默认为同时支持get和post方法。以不支持的请求方式调用接口，会返回1019，不支持的http请求方式的异常
-4. ’enable’为接口方法的启用与禁用，不写enable的情况下，默认为True，即接口启用。调用禁用的接口时，会返回1016，api已停用的异常
 
-### 接口版本继承
-
-接口支持版本管理与继承，通过装饰器@version('1.0')注册这个类对应的版本号。
-
-类继承关系即接口继承关系
-
-```python
-@version('1.0')
-class ApiMethodV10(ApiMethodBase):
-    api_methods = {
-        'matrix.api.err-func': {'func': api_demo.err_func},
-        'matrix.api.instance-func': {'func': api_demo.instance_func},
-        'matrix.api.send-kwargs': {'func': api_demo.send_kwargs},
-        'matrix.api.raise-error': {'func': api_demo.raise_error},
-        'matrix.api.only-post': {'func': api_demo.raise_error, 'method': ['post']},
-        'matrix.api.api-stop': {'func': api_demo.raise_error, 'enable': False}
-    }
-```
-
-上述例子中，声明类ApiMethodV10，继承自超类ApiMethodBase，这样ApiMethodV10支持的类方法，除了自身support_methods的方法外，还会继承来自ApiMethodBase中support_methods的方法。
-
-等价于
-
-```python
-@version('1.0')
-class ApiMethodV10(ApiMethodBase):
-    api_methods = {
-        'matrix.api.get-user': {'func': api_demo.get_user},
-        'matrix.api.return-err': {'func': api_demo.raise_error}
-        'matrix.api.err-func': {'func': api_demo.err_func},
-        'matrix.api.instance-func': {'func': api_demo.instance_func},
-        'matrix.api.send-kwargs': {'func': api_demo.send_kwargs},
-        'matrix.api.raise-error': {'func': api_demo.raise_error},
-        'matrix.api.only-post': {'func': api_demo.raise_error, 'method': ['post']},
-        'matrix.api.api-stop': {'func': api_demo.raise_error, 'enable': False}
-    }
-```
-
-这样，每次新增接口版本时，只需要在接口版本对应的类中，编辑类属性support_methods，填写新版本的接口改动情况，会自动继承超类接口版本的接口方法。
-
-### 接口版本禁用
-
-需要禁用某个版本时，在@version装饰器中，新增一个参数enable=False，如
-
-```python
-@version('1.0', enable=False)
-class ApiMethodV10(ApiMethodBase):
-    support_methods = {
-        'matrix.api.err-func': {'func': api_demo.err_func},
-        'matrix.api.instance-func': {'func': api_demo.instance_func},
-        'matrix.api.send-kwargs': {'func': api_demo.send_kwargs},
-        'matrix.api.raise-error': {'func': api_demo.raise_error},
-        'matrix.api.api-stop': {'func': api_demo.raise_error, 'enable': False}
-    }
-```
-
-此时，再调用这个接口版本时，会返回接口版本已停用的异常信息。
 
 ## 异常配置
 
