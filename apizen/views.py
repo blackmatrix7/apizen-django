@@ -3,6 +3,7 @@ import json
 import uuid
 import decimal
 import datetime
+from .config import Config
 from json import JSONDecodeError
 from django.conf import settings
 from .models import ApiZenRequest
@@ -26,11 +27,13 @@ def get_http_headers(environ):
 
 class CustomJSONEncoder(DjangoJSONEncoder):
 
-    datetime_format = '%Y-%m-%d %H:%M:%S'
-    date_format = '%Y-%m-%d'
+    datetime_format = Config.APIZEN_DATETIME_FMT
+    date_format = Config.APIZEN_DATE_FMT
 
     def default(self, o):
         # See "Date Time String Format" in the ECMA-262 specification.
+        # 不强制要求遵守ECMA-262关于日期格式的定义，可以在Settings中配置日期格式相关
+        # 默认的日期格式配置在apizen/config.py
         if isinstance(o, datetime.datetime):
             r = o.strftime(CustomJSONEncoder.datetime_format)
             return r
