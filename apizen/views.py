@@ -80,6 +80,10 @@ def api_routing(request, version, method):
                     'headers': json.dumps(get_http_headers(request.environ)),
                     'path': request.path, 'name': method}
     try:
+        # 获取接口名称对应的处理函数
+        api_func = get_api_func(version=version, api_name=method, http_method=request.method)
+        # 判断接口是否要求使用原始数据返回
+        raw_resp = api_func.__rawresp__
         # GET请求处理
         if request.method == 'GET':
             query_string = request.GET.dict()
@@ -100,10 +104,6 @@ def api_routing(request, version, method):
                 raise ApiSysExceptions.unacceptable_content_type
             # 日志对象更新传入参数
             request_info['payload'] = json.dumps(request_args)
-        # 获取接口名称对应的处理函数
-        api_func = get_api_func(version=version, api_name=method, http_method=request.method)
-        # 判断接口是否要求使用原始数据返回
-        raw_resp = api_func.__rawresp__
         result = run_api_func(api_func, request_params=request_args, request=request)
     except JSONDecodeError as ex:
         api_ex = ApiSysExceptions.invalid_json

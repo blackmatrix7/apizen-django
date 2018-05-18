@@ -104,7 +104,7 @@ def get_api_func(version, api_name, http_method):
     if not method_cfg.get('enable', True):
         raise ApiSysExceptions.api_stop
     # 检查方法是否允许以某种请求方式调用
-    elif http_method.upper() not in method_cfg.get('methods', ['GET', 'POST']):
+    elif http_method.upper() not in method_cfg.get('http', ['GET', 'POST']):
         raise ApiSysExceptions.not_allowed_request
     # 检查函数是否可调用
     elif not callable(METHODS[version]['methods'][api_name].get('func')):
