@@ -383,11 +383,8 @@ methods = {
 
 ```
 from apizen.func import register_methods
-
 register_methods(methods)
 ```
-
-
 
 ## 异常配置
 
@@ -408,7 +405,7 @@ ApiException接受4个参数，分别为
 
 公共异常为框架调用层面的异常，由ApiZen统一提供和管理。
 
-当前版本，公共异常信息在app/apizen/exceptions.py下。
+当前版本，公共异常信息在apizen/exceptions.py下。
 
 ```python
 # API 系统层面异常信息
@@ -446,9 +443,9 @@ class ApiSubExceptions:
 在实际业务实现中，可以如下方式直接抛出异常
 
 ```python
-from app.webapi.exceptions import ApiSubExceptions
+from apizen.exceptions import ApiSysExceptions
 def raise_error():
-	raise ApiSubExceptions.unknown_error
+	raise ApiSysExceptions.forbidden_request
 ```
 
 ### 自定义异常内容
@@ -458,9 +455,9 @@ def raise_error():
 对于临时需要改变异常内容的情况，在抛出异常时，可以在异常中传入需要自定义的异常信息。
 
 ```python
-from app.webapi.exceptions import ApiSubExceptions
+from apizen.exceptions import ApiSysExceptions
 def custom_error(msg):
-	raise ApiSubExceptions.unknown_error('自定义异常文字')
+	raise ApiSysExceptions.forbidden_request('自定义异常文字')
 ```
 
 ## 接口请求
@@ -504,11 +501,11 @@ def custom_error(msg):
 
 在此中请求方式下，传入的json格式会被转换成dict，dict第一层的每个key与接口函数参数的名称匹配。
 
-http://127.0.0.1:8080/api/router/rest?v=1.0&method=matrix.api.set-user
+http://127.0.0.1:8000/api/router/1.0/matrix.api.register_user
 
 接口处理函数，同上
 
-POST数据
+报文
 
 ```json
 {
@@ -523,16 +520,16 @@ POST数据
 ```json
 {
     "meta": {
+        "success": true,
+        "request_id": "76bc7c92-5c04-11e8-acb7-a45e60d0ed69",
         "code": 1000,
         "message": "执行成功"
     },
-    "respone": [
-        {
-            "age": 27,
-            "name": "李飞飞",
-            "user_id": 75
-        }
-    ]
+    "response": {
+        "age": 27,
+        "name": "李飞飞",
+        "email": null
+    }
 }
 ```
 
@@ -541,24 +538,28 @@ POST数据
 ```json
 {
     "meta": {
-        "message": "执行成功",
-        "code": 1000
+        "success": true,
+        "request_id": "76bc7c92-5c04-11e8-acb7-a45e60d0ed69",
+        "code": 1000,
+        "message": "执行成功"
     },
-    "respone": {
-        "user_id": "testcode",
-        "name": "刘峰",
-        "age": 20
+    "response": {
+        "age": 27,
+        "name": "李飞飞",
+        "email": null
     }
 }
 ```
 
 接口返回信息说明
 
-| 参数       | 说明                                 |
-| -------- | ---------------------------------- |
-| code     | 执行结果编号，调用者可以根据code得知是否执行成功，或进行异常处理 |
-| message  | 执行结果异常说明                           |
-| response | 接口函数返回值                            |
+| 参数       | 说明                                                         |
+| ---------- | ------------------------------------------------------------ |
+| code       | 执行结果编号，调用者可以根据code得知是否执行成功，或进行异常处理 |
+| success    | True成功，False失败                                          |
+| request_id | 每次请求生成的唯一Id，可用于查询日志                         |
+| message    | 执行结果说明                                                 |
+| response   | 接口函数返回值                                               |
 
 ### 接口异常信息
 
