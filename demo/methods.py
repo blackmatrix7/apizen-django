@@ -6,7 +6,7 @@
 # @File: methods.py
 # @Software: PyCharm
 from . import views
-from apizen.func import register_methods
+from apizen.func import register_webapi
 
 __author__ = 'blackmatrix'
 
@@ -89,4 +89,4 @@ methods = {
     }
 
 
-register_methods(methods)
+register_webapi(methods)

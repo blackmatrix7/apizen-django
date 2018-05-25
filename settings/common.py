@@ -133,6 +133,6 @@ AUTHENTICATION_BACKENDS = (
 
 ANONYMOUS_USER_ID = -1
 
-APIZEN_METHODS = ['demo.methods']
+APIZEN_WEBAPI = ['demo.methods']
 
 

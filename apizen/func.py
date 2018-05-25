@@ -20,7 +20,7 @@ ApiZen 接口处理方法的异常判断与执行
 """
 
 
-__all__ = ['apiconfig', 'get_api_func', 'run_api_func', 'register_methods']
+__all__ = ['apiconfig', 'get_api_func', 'run_api_func', 'register_webapi']
 
 
 METHODS = {}
@@ -43,7 +43,7 @@ def apiconfig(raw_resp=False, allow_anonymous=False):
     return _apiconfig
 
 
-def register_methods(methods):
+def register_webapi(webapi):
     """
     统计继承关系，并转换对应的方法
     :return:
@@ -52,12 +52,12 @@ def register_methods(methods):
     new_methods = {}
 
     def get_version_methods(version):
-        nonlocal methods
+        nonlocal webapi
         # 获取版本对应的方法列表，优先从已转换好的方法列表里获取
         try:
             version_data = new_methods[version]
         except KeyError:
-            version_data = methods[version]
+            version_data = webapi[version]
         # 检查继承关系
         inheritance = version_data.get('inheritance')
         # 检查版本是否停用
@@ -75,7 +75,7 @@ def register_methods(methods):
         return version_data
 
     # 遍历所有版本
-    for v, _ in methods.items():
+    for v, _ in webapi.items():
         get_version_methods(v)
 
 

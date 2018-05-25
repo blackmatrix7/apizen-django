@@ -11,10 +11,10 @@ from .config import current_config
 
 __author__ = 'blackmatrix'
 
-from . import auto_register_methods
+from . import auto_register_webapi
 
 urlpatterns = [
     path('{}/<version>/<method>'.format(current_config.APIZEN_ROUTE), views.api_routing, name='api_routing'),
 ]
 
-auto_register_methods()
+auto_register_webapi()
