@@ -87,7 +87,7 @@ def first_api():
 
 ```python
 from . import views
-from apizen.methods import register_methods
+from apizen.methods import register_webapi
 methods = {
     # 接口版本号
     '1.0':
@@ -100,7 +100,7 @@ methods = {
                 }
         }
 }
-register_methods(methods)
+register_webapi(methods)
 ```
 
 ### 启动项目
@@ -382,8 +382,8 @@ methods = {
 接口配置完成后，需要将配置信息注册到ApiZen，这样ApiZen才能识别这些接口。
 
 ```
-from apizen.func import register_methods
-register_methods(methods)
+from apizen.func import register_webapi
+register_webapi(methods)
 ```
 
 ## 异常配置
