@@ -23,3 +23,6 @@ class ApiZenRequest(models.Model):
     message = models.CharField('api message', max_length=128)
     response = models.TextField('api response', null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
