@@ -1,6 +1,6 @@
 # ApiZen
 
-Apizen是一套接口管理框架。
+Apizen是一套JSON-RPC管理框架
 
 [TOC]
 
@@ -134,7 +134,7 @@ ApiZen可以将函数的参数自动转换为web api的参数，并对请求时�
 判断遵守以下规则：
 
 1. 对于没有默认值的参数，为必填参数
-2. 存在默认值的参数为可选参数，当调用者未传入可选参数时，可选参数取默认值
+2. 存在默认值的参数为可选参数，当调用者未传入可选参数时，取可选参数取默认值
 
 编写一个模拟用户注册的函数，并注册为接口名称 matrix.api.register_user
 
@@ -190,13 +190,13 @@ ApiZen不仅可以对请求接口时提交的参数是否完整进行判断，�
 ```python
 from app.apizen.schema import Integer, String, Float, Dict, DateTime
 
-def register_user_plus(name, age: Integer, birthday: DateTime('%Y/%m/%d'), email=None):
+def register_user(name, age: Integer, birthday: DateTime('%Y/%m/%d'), email=None):
     return {'name': name, 'age': age, 'birthday': birthday, 'email': email}
 ```
 
 请求接口，注意age传入的值是19.1
 
- http://127.0.0.1:8000/api/router/1.0/matrix.api.register_user_plus?name=tom&age=19.1&birthday=2007/12/31
+ http://127.0.0.1:8000/api/router/1.0/matrix.api.register_user?name=tom&age=19.1&birthday=2007/12/31
 
 因为age传入的值为19.1，不符合Integer的要求，所以返回异常
 
@@ -214,7 +214,7 @@ def register_user_plus(name, age: Integer, birthday: DateTime('%Y/%m/%d'), email
 
 这个例子中，比较特殊的类型是DateTime，在默认情况下，DateTime会采用默认的日期格式'%Y-%m-%d %H:%M:%S'。
 
-不过在设定参数类型提示时，仍可以自定义DateTime格式的类型，如上述例子的DateTime('%Y/%m/%d')，此时会依据自定义的日期格式判断调用者传入的参数是否合法。
+不过在设定参数类型提示时，仍可以自定义DateTime格式的类型，如上述例子的DateTime('%Y/%m/%d')，此时会依据自定义的日期格式判断调用者传入的参数是否合法。传入的是2007/12/31，参数合法；传入2007-12-31，则会返回“参数类型错误”。
 
 **目前支持判断的参数类型**：
 
@@ -283,13 +283,13 @@ def get_request(request=ApiRequest):
     return request.GET.dict()
 ```
 
-如果调用者传入同名的参数，也会被WSGIRequest对象强制覆盖。
+如果调用者传入同名的参数，也会忽略并使用WSGIRequest对象强制覆盖。
 
 例如调用上面的函数，即使传入request=123。
 
 http://127.0.0.1:8000/api/router/1.0/matrix.api.get-request?request=123
 
-在接口函数接受到的request值，依旧是WSGIRequest对象，所以上面的函数执行不会报错，而是返回结果：
+在接口函数接受到的request值，依旧是WSGIRequest对象，所以上面的函数执行不会出现异常，而是返回结果：
 
 ```json
 {
@@ -326,7 +326,7 @@ methods = {
     }
 ```
 
-在每个接口中，除定制func接口处理函数外，还支持两个非必须的参数：http与enable。
+在每个接口中，除指定func接口处理函数外，还支持两个非必须的参数：http与enable。
 
 enable可以启用或禁用接口，默认为True。如果enable为False，在调用时会收到接口已停用的提示。
 
@@ -357,7 +357,7 @@ methods = {
 
 ### 接口继承
 
-接口可以通过不同的版本进行单继承。接口版本的配置参数中，inheritance指向需要继承的父版本号，不需要继承则为None。
+接口可以通过不同的版本进行单继承。接口版本的配置参数中，inheritance指向需要继承的父版本号，不需要继承则为None。继承自父版本的子版本，会拥有父版本的全部非禁用的方法。
 
 ```python
 methods = {
@@ -425,7 +425,7 @@ class ApiSysExceptions:
 
 ### 业务异常
 
-业务异常的存储位置可由具体的业务场景定制。业务异常的代码以2001开始，配置过程与公共异常相同。
+业务异常的存储位置可由具体的业务场景定制。业务异常的代码建议以2001开始，配置过程与公共异常相同。
 
 ```python
 # API 子系统（业务）层级执行结果，以2000开始
@@ -470,14 +470,15 @@ def custom_error(msg):
 
 公共参数是ApiZen用于判断请求接口、版本号、权限验证等所需的参数。
 
-所有的公共参数以query string传递，目前支持以下参数：
+| 参数名   | 必填 | 默认值 | 说明       |
+| -------- | ---- | ------ | ---------- |
+| version  | 是   | 无     | 接口版本号 |
+| name     | 是   | 无     | 接口方法名 |
+| 其他参数 | 否   | 无     | 待完       |
 
-| 参数名    | 必填   | 默认值  | 说明               |
-| ------ | ---- | ---- | ---------------- |
-| v      | 是    | 无    | 接口版本号，当前为1.0     |
-| method | 是    | 无    | 接口方法名            |
-| format | 否    | json | 返回的请求格式，目前支持json |
-| 其他参数   | 否    | 无    | 待完成              |
+版本号和接口名通过URL传递：[http://localhost/api/router/<version>/<name>](http://localhost/api/router/<version>/<name)
+
+如调用1.0版本下的matrix.api.register_user接口，则URL为 [http://localhost/api/router/1.0/matrix.api.register_user](http://localhost/api/router/1.0/matrix.api.register_user)
 
 #### 业务参数
 
@@ -594,28 +595,3 @@ http://127.0.0.1:8000/api/router/1.0/matrix.api.register_user
 ### 业务异常信息
 
 以实际业务开发为准
-
-## TODO
-
-### 已完成
-
-1. 调整出现异常时，返回的http code
-2. 支持xml格式返回数据
-3. 接口版本支持多重继承
-4. 接口参数类型判断
-5. API版本继承性能优化
-6. 支持自定义异常的类型
-
-### 近期
-
-1. 加入单元测试
-
-### 中期
-
-1. 完整的oauth 2.0 鉴权方案实现
-2. 接口访问日志记录
-
-### 遥远
-
-1. 性能优化
-2. 自动生成接口说明文档
