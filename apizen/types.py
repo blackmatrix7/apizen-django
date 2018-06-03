@@ -52,12 +52,14 @@ class TypeMeta(type):
 
 
 class TypeBase(metaclass=TypeMeta):
+
     @staticmethod
     def convert(*, value):
         raise NotImplementedError
 
 
 class TypeInteger(int, TypeBase):
+
     typename = 'Integer'
 
     @staticmethod
@@ -71,6 +73,7 @@ class TypeInteger(int, TypeBase):
 
 
 class TypeString(str, TypeBase):
+
     typename = 'String'
 
     @staticmethod
@@ -79,6 +82,7 @@ class TypeString(str, TypeBase):
 
 
 class TypeFloat(float, TypeBase):
+
     typename = 'Float'
 
     @staticmethod
@@ -88,6 +92,7 @@ class TypeFloat(float, TypeBase):
 
 
 class TypeDict(dict, TypeBase):
+
     typename = 'Dict'
 
     @staticmethod
@@ -101,19 +106,31 @@ class TypeDict(dict, TypeBase):
 
 
 class TypeList(list, TypeBase):
+
     typename = 'List'
 
-    @staticmethod
-    def convert(*, value):
-        _value = copy.copy(value)
-        _value = json.loads(_value) if isinstance(_value, str) else _value
-        if isinstance(_value, list):
-            return _value
-        else:
+    def convert(self, *, value):
+        assert value
+        obj_list = json.loads(value) if isinstance(value, str) else value
+        try:
+            iter(obj_list)
+            if self.obj and isinstance(self.obj, TypeBase):
+                new_obj_list = []
+                for obj in obj_list:
+                    new_obj_list.append(self.obj.convert(value=obj))
+                return new_obj_list
+            else:
+                return obj_list
+        except TypeError:
             raise ValueError
+
+    def __init__(self, obj=None):
+        self.obj = obj
+        super().__init__()
 
 
 class TypeDate(date, TypeBase):
+
     typename = 'Date'
 
     def convert(self, *, value=None):
@@ -127,6 +144,7 @@ class TypeDate(date, TypeBase):
 
 
 class TypeDatetime(datetime, TypeBase):
+
     typename = 'DateTime'
 
     def convert(self, *, value=None):
@@ -171,6 +189,7 @@ class TypeApiRequest(date, TypeBase):
 
 
 class TypeEmail(TypeString):
+
     typename = 'Email'
 
     @staticmethod
@@ -227,7 +246,7 @@ class TypeModelConditions(TypeBase):
 
 
 Integer = TypeInteger()
-List = TypeList()
+List = TypeList
 Money = TypeMoney()
 Bool = TypeBool()
 Float = TypeFloat()

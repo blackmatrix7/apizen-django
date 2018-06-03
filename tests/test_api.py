@@ -72,52 +72,52 @@ class ApiZenTestCase(unittest.TestCase):
 
     # 测试参数默认值
     def test_default_arg_value(self):
-        playload = {'name': 'tom', 'age': 19.1}
-        resp = requests.get(self.get_request_url('matrix.api.register_user'), params=playload)
+        payload = {'name': 'tom', 'age': 19.1}
+        resp = requests.get(self.get_request_url('matrix.api.register_user'), params=payload)
         assert resp.status_code == 200
         data = resp.json()
         assert data['response']['email'] is None
 
     # 测试错误的参数类型
     def test_error_arg_type(self):
-        playload = {'name': 'tom', 'age': 19.1, 'birthday': '2007/12/31'}
-        resp = requests.get(self.get_request_url('matrix.api.register_user_plus'), params=playload)
+        payload = {'name': 'tom', 'age': 19.1, 'birthday': '2007/12/31'}
+        resp = requests.get(self.get_request_url('matrix.api.register_user_plus'), params=payload)
         assert resp.status_code == 400
         data = resp.json()
         assert data['meta']['message'] == '参数类型错误：age <Integer>'
 
     # 测试自定义日期格式，符合格式要求
     def test_custom_date(self):
-        playload = {'name': 'tom', 'age': 19, 'birthday': '2007年12月31日', 'email': '123456@qq.com'}
-        resp = requests.get(self.get_request_url('matrix.api.custom_date_fmt'), params=playload)
+        payload = {'name': 'tom', 'age': 19, 'birthday': '2007年12月31日', 'email': '123456@qq.com'}
+        resp = requests.get(self.get_request_url('matrix.api.custom_date_fmt'), params=payload)
         assert resp.status_code == 200
         data = resp.json()
         assert data['meta']['message'] == '执行成功'
-        playload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = requests.get(self.get_request_url('matrix.api.custom_date_fmt'), params=playload)
+        payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
+        resp = requests.get(self.get_request_url('matrix.api.custom_date_fmt'), params=payload)
         assert resp.status_code == 400
         data = resp.json()
         assert data['meta']['message'] == '参数类型错误：birthday <Date>'
 
     # 测试自定义Money
     def test_money_to_decimal(self):
-        playload = {'money': 19.2}
-        resp = requests.get(self.get_request_url('matrix.api.money_to_decimal'), params=playload)
+        payload = {'money': 19.2}
+        resp = requests.get(self.get_request_url('matrix.api.money_to_decimal'), params=payload)
         assert resp.status_code == 200
         data = resp.json()
         assert data['meta']['message'] == '执行成功'
-        playload = {'money': 19}
-        resp = requests.get(self.get_request_url('matrix.api.money_to_decimal'), params=playload)
+        payload = {'money': 19}
+        resp = requests.get(self.get_request_url('matrix.api.money_to_decimal'), params=payload)
         assert resp.status_code == 200
         data = resp.json()
         assert data['meta']['message'] == '执行成功'
-        playload = {'money': -19.2}
-        resp = requests.get(self.get_request_url('matrix.api.money_to_decimal'), params=playload)
+        payload = {'money': -19.2}
+        resp = requests.get(self.get_request_url('matrix.api.money_to_decimal'), params=payload)
         assert resp.status_code == 400
         data = resp.json()
         assert data['meta']['message'] == '参数类型错误：money <Money>'
-        playload = {'money': 19.221}
-        resp = requests.get(self.get_request_url('matrix.api.money_to_decimal'), params=playload)
+        payload = {'money': 19.221}
+        resp = requests.get(self.get_request_url('matrix.api.money_to_decimal'), params=payload)
         assert resp.status_code == 400
         data = resp.json()
         assert data['meta']['message'] == '参数类型错误：money <Money>'
@@ -125,8 +125,8 @@ class ApiZenTestCase(unittest.TestCase):
     # 测试自定义类型判断
     def test_custom_arg_type(self):
         self.method = 'matrix.api.validate_email'
-        playload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456'}
-        resp = requests.get(self.get_request_url('matrix.api.validate_email'), params=playload)
+        payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456'}
+        resp = requests.get(self.get_request_url('matrix.api.validate_email'), params=payload)
         data = resp.json()
         assert resp.status_code == 400
         assert data['meta']['message'] == '参数类型错误：email <Email>'
@@ -134,8 +134,8 @@ class ApiZenTestCase(unittest.TestCase):
     # 测试application/x-www-form-urlencoded请求方式
     def test_form_data(self):
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        playload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = requests.post(self.get_request_url('matrix.api.validate_email'), data=playload, headers=headers)
+        payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
+        resp = requests.post(self.get_request_url('matrix.api.validate_email'), data=payload, headers=headers)
         data = resp.json()
         assert resp.status_code == 200
         assert data['meta']['message'] == '执行成功'
@@ -143,8 +143,8 @@ class ApiZenTestCase(unittest.TestCase):
     # 测试application/json
     def test_app_json(self):
         headers = {'Content-Type': 'application/json'}
-        playload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = requests.post(self.get_request_url('matrix.api.validate_email'), json=playload, headers=headers)
+        payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
+        resp = requests.post(self.get_request_url('matrix.api.validate_email'), json=payload, headers=headers)
         assert resp.status_code == 200
         data = resp.json()
         assert data['meta']['message'] == '执行成功'
@@ -152,9 +152,9 @@ class ApiZenTestCase(unittest.TestCase):
     # 测试json转换成dict
     def test_json_to_dict(self):
         headers = {'Content-Type': 'application/json'}
-        playload = json.dumps({'user': {'id': 1, 'name': 'jack'}})
+        payload = json.dumps({'user': {'id': 1, 'name': 'jack'}})
         # json 字符串需要用data进行传输，如果是dict，可以直接用json进行传输
-        resp = requests.post(self.get_request_url('matrix.api.json-to-dict'), data=playload, headers=headers)
+        resp = requests.post(self.get_request_url('matrix.api.json-to-dict'), data=payload, headers=headers)
         assert resp.status_code == 200
         data = resp.json()
         assert data['response']['name'] == 'jack'
@@ -162,9 +162,9 @@ class ApiZenTestCase(unittest.TestCase):
     # 测试json转换成list
     def test_json_to_list(self):
         headers = {'Content-Type': 'application/json'}
-        playload = json.dumps({'user': [{'id': 1, 'name': 'jack'}, {'id': 2, 'name': 'jim'}]})
+        payload = json.dumps({'user': [{'id': 1, 'name': 'jack'}, {'id': 2, 'name': 'jim'}]})
         # json 字符串需要用data进行传输，如果是dict，可以直接用json进行传输
-        resp = requests.post(self.get_request_url('matrix.api.json-to-list'), data=playload, headers=headers)
+        resp = requests.post(self.get_request_url('matrix.api.json-to-list'), data=payload, headers=headers)
         assert resp.status_code == 200
         data = resp.json()
         assert isinstance(data['response'], list)
@@ -221,8 +221,8 @@ class ApiZenTestCase(unittest.TestCase):
     def test_error_json(self):
         headers = {'Content-Type': 'application/json'}
         # 修改json字符串，使其错误
-        playload = json.dumps({'user': {'id': 1, 'name': 'jack'}}).replace(',', '.')
-        resp = requests.post(self.get_request_url('matrix.api.json-to-dict'), data=playload, headers=headers)
+        payload = json.dumps({'user': {'id': 1, 'name': 'jack'}}).replace(',', '.')
+        resp = requests.post(self.get_request_url('matrix.api.json-to-dict'), data=payload, headers=headers)
         data = resp.json()
         assert resp.status_code == 400
         assert data['meta']['message'] == '错误或不合法的json格式'
@@ -261,18 +261,18 @@ class ApiZenTestCase(unittest.TestCase):
 
     # 测试布尔值类型
     def test_is_bool(self):
-        playload = {'value': 'True'}
-        resp = requests.get(self.get_request_url('matrix.api.is-bool'), params=playload)
+        payload = {'value': 'True'}
+        resp = requests.get(self.get_request_url('matrix.api.is-bool'), params=payload)
         assert resp.status_code == 200
         data = resp.json()
         assert data['response'] is True
-        playload = {'value': True}
-        resp = requests.post(self.get_request_url('matrix.api.is-bool'), json=playload)
+        payload = {'value': True}
+        resp = requests.post(self.get_request_url('matrix.api.is-bool'), json=payload)
         assert resp.status_code == 200
         data = resp.json()
         assert data['response'] is True
-        playload = {'value': '123'}
-        resp = requests.post(self.get_request_url('matrix.api.is-bool'), json=playload)
+        payload = {'value': '123'}
+        resp = requests.post(self.get_request_url('matrix.api.is-bool'), json=payload)
         assert resp.status_code == 400
         data = resp.json()
         assert data['meta']['message'] == '参数类型错误：value <Bool>'
