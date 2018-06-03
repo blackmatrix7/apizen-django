@@ -176,9 +176,9 @@ class TypeBool(bool, TypeBase):
             raise ValueError
 
 
-class TypeApiRequest(date, TypeBase):
+class TypeApiRequest(TypeBase):
 
-    typename = 'Date'
+    typename = 'Request'
 
     def convert(self, *, value=None):
         return self.request
