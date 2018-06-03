@@ -114,7 +114,7 @@ class TypeList(list, TypeBase):
         obj_list = json.loads(value) if isinstance(value, str) else value
         try:
             iter(obj_list)
-            if self.obj and isinstance(self.obj, TypeBase):
+            if self.obj:
                 new_obj_list = []
                 for obj in obj_list:
                     new_obj_list.append(self.obj.convert(value=obj))
@@ -125,7 +125,7 @@ class TypeList(list, TypeBase):
             raise ValueError
 
     def __init__(self, obj=None):
-        self.obj = obj
+        self.obj = obj if isinstance(obj, Typed) else obj() if issubclass(obj, Typed) else None
         super().__init__()
 
 

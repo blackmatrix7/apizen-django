@@ -169,6 +169,15 @@ class ApiZenTestCase(unittest.TestCase):
         data = resp.json()
         assert isinstance(data['response'], list)
 
+    # 测试List内元素的判断
+    def test_email_list(self):
+        headers = {'Content-Type': 'application/json'}
+        payload = json.dumps({'emails': ['123@qq.com', '456@qq.com']})
+        resp = requests.post(self.get_request_url('matrix.api.email-list'), data=payload, headers=headers)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert isinstance(data['response'], list)
+
     # 测试抛出异常
     def test_raise_error(self):
         resp = requests.get(self.get_request_url('matrix.api.raise-error'))

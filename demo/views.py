@@ -102,6 +102,10 @@ def json_to_list(user: List):
     return user
 
 
+def email_list(emails: List(Email)):
+    return emails
+
+
 # 演示抛出异常
 def raise_error():
     """
