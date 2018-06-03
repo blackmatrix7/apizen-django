@@ -102,8 +102,12 @@ def json_to_list(user: List):
     return user
 
 
-def email_list(emails: List(Email)):
-    return emails
+def email_list(email: List(Email)):
+    return email
+
+
+def date_list(date: List(Date)):
+    return date
 
 
 # 演示抛出异常

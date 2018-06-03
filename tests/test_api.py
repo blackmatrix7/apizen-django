@@ -172,8 +172,17 @@ class ApiZenTestCase(unittest.TestCase):
     # 测试List内元素的判断
     def test_email_list(self):
         headers = {'Content-Type': 'application/json'}
-        payload = json.dumps({'emails': ['123@qq.com', '456@qq.com']})
+        payload = json.dumps({'email': ['123@qq.com', '456@qq.com']})
         resp = requests.post(self.get_request_url('matrix.api.email-list'), data=payload, headers=headers)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert isinstance(data['response'], list)
+
+    # 测试List内元素的判断
+    def test_date_list(self):
+        headers = {'Content-Type': 'application/json'}
+        payload = json.dumps({'date': ['2018-05-01', '2018-10-01']})
+        resp = requests.post(self.get_request_url('matrix.api.date-list'), data=payload, headers=headers)
         assert resp.status_code == 200
         data = resp.json()
         assert isinstance(data['response'], list)

@@ -35,6 +35,7 @@ methods = {
                     'matrix.api.json-to-list': {'func': views.json_to_list},
                     # List 内元素的判断
                     'matrix.api.email-list': {'func': views.email_list},
+                    'matrix.api.date-list': {'func': views.date_list},
                     # 抛出一个异常
                     'matrix.api.return-err': {'func': views.raise_error},
                     # 自定义一个异常信息
