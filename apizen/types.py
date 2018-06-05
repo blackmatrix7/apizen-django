@@ -125,7 +125,15 @@ class TypeList(list, TypeBase):
             raise ValueError
 
     def __init__(self, obj=None):
-        self.obj = obj if isinstance(obj, Typed) else obj() if issubclass(obj, Typed) else None
+        try:
+            if obj is None or issubclass(obj, Typed):
+                self.obj = obj
+            elif issubclass(obj, Typed):
+                self.obj = obj()
+            else:
+                self.obj = None
+        except TypeError:
+            self.obj = None
         super().__init__()
 
 
