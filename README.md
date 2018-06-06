@@ -236,6 +236,17 @@ def register_user(name, age: Integer, birthday: DateTime, email=None):
 
 对于json格式的字符串，尝试转换成list并返回，如无法转换引发JSONDecodeError异常。
 
+List类型，还可以对每个元素的参数合法性进行判断（要求每个元素是同一种类型）。
+
+如：
+
+```python
+def date_list(date: List(Date)):
+    return date
+```
+
+上面的例子中，除了会对date能否转换成list进行判断外，还会对list中的每个元素（如果能转换成list的话）进行判断，并转换称Date类型。如果有任意一个元素不符合要求，则会返回异常。
+
 **DateTime**
 
 对于字符串类型，根据设置的日期格式，转换成datetime类型并返回，如无法转换则引发ValueError异常。
