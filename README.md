@@ -16,6 +16,53 @@ Apizen是一套JSON-RPC管理框架，拥有以下特性：
 4. 统一的web api返回格式，提供接口异常代码及详细的异常信息
 5. 绝大多数python函数可以直接转成为web api，减少接口开发的样板代码，专注功能实现
 
+### 比较
+
+我们比较一下直接编写django视图实现接口，与使用Apizen编写接口处理函数的便捷程度差别。
+
+假设我们需要实现一个注册用户的接口，接受GET请求传入的username、age、birthday三个信息：
+
+**使用django视图直接实现**
+
+必须从request对象中获取请求的参数，并且需要逐一对参数的合法性做判断
+
+```python
+def register_user_view(request):
+    from datetime import datetime
+    from django.http import JsonResponse
+    # 从request对象中获取参数
+    username = request.GET['username']
+    age = request.GET['age']
+    birthday = request.GET['birthday']
+    # 检查参数合法性
+    if username is None or len(username) == 0:
+        raise ValueError('用户名不能为空')
+    try:
+        age = int(age)
+    except ValueError:
+        raise ValueError('年龄不正确')
+    try:
+        birthday = datetime.strptime(birthday, '%Y-%m-%d').date()
+    except ValueError:
+        raise ValueError('生日不正确')
+    # 注册方式略去
+    return JsonResponse({'name': username, 'age': age, 'birthday': birthday})
+```
+
+**使用Apizen实现**
+
+代码量不到原来的十分之一。
+
+所有的参数合法性检查，都通过Type Hints实现，并可以自动转换类型，例如函数接收到的age，实际上已经转换成int类型，birthday已经自动转成为Date类型。并且所有的类型检查都可以复用，比如其他接口函数，需要再转换成Date类型，一样在需要转换的参数后面增加一个Date的参数注解就可以。
+
+```python
+def register_user_apizen(username: String, age: Integer, birthday: Date):
+    # 注册方式略去
+    return {'name': username, 'age': age, 'birthday': birthday}
+```
+
+除了参数合法性检查外，异常的统一处理、接口版本的继承，也可以大幅减少样板代码的编写，提高开发效率。
+
 ### 安装
 
 建立虚拟环境
