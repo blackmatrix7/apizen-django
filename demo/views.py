@@ -1,7 +1,5 @@
-from django.shortcuts import render
-
 # Create your views here.
-#!/usr/bin/env python
+# !/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Time: 2018/3/16 下午5:06
 # @Author: BlackMatrix
@@ -14,6 +12,33 @@ from apizen.func import apiconfig
 from apizen.types import Integer, String, Float, Dict, DateTime, Email, List, Bool, Date, Money, ApiRequest
 
 __author__ = 'blackmatrix'
+
+
+def register_user_view(request):
+    from datetime import datetime
+    from django.http import JsonResponse
+    # 从request对象中获取参数
+    username = request.GET['username']
+    age = request.GET['age']
+    birthday = request.GET['birthday']
+    # 检查参数合法性
+    if username is None or len(username) == 0:
+        raise ValueError('用户名不能为空')
+    try:
+        age = int(age)
+    except ValueError:
+        raise ValueError('年龄不正确')
+    try:
+        birthday = datetime.strptime(birthday, '%Y-%m-%d').date()
+    except ValueError:
+        raise ValueError('生日不正确')
+    # 注册方式略去
+    return JsonResponse({'name': username, 'age': age, 'birthday': birthday})
+
+
+def register_user_apizen(username: String, age: Integer, birthday: Date):
+    # 注册方式略去
+    return {'name': username, 'age': age, 'birthday': birthday}
 
 
 def test_decorator(func):
