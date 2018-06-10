@@ -128,10 +128,20 @@ def json_to_list(user: List):
 
 
 def email_list(email: List(Email)):
+    """
+    list内元素合法性检查，除检查email参数的值能否转换成list外，还会检查list里每个元素是否符合Email的要求
+    :param email:
+    :return:
+    """
     return email
 
 
 def date_list(date: List(Date)):
+    """
+    list内元素合法性检查，除检查date参数的值能否转换成list外，还会检查list里每个元素是否符合Date的要求
+    :param date:
+    :return:
+    """
     return date
 
 
