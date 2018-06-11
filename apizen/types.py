@@ -80,6 +80,10 @@ class TypeString(str, TypeBase):
     def convert(*, value):
         return str(value)
 
+    def __init__(self, err_msg=None):
+        self.typename = err_msg
+        super().__init__()
+
 
 class TypeFloat(float, TypeBase):
 
@@ -110,7 +114,6 @@ class TypeList(list, TypeBase):
     typename = 'List'
 
     def convert(self, *, value):
-        assert value
         obj_list = json.loads(value) if isinstance(value, str) else value
         try:
             iter(obj_list)
@@ -126,7 +129,7 @@ class TypeList(list, TypeBase):
 
     def __init__(self, obj=None):
         try:
-            if obj is None or issubclass(obj, Typed):
+            if obj is None or isinstance(obj, Typed):
                 self.obj = obj
             elif issubclass(obj, Typed):
                 self.obj = obj()
@@ -143,7 +146,7 @@ class TypeDate(date, TypeBase):
 
     def convert(self, *, value=None):
         _value = copy.copy(value)
-        _value = datetime.strptime(_value, self.format_) if isinstance(_value, str) else _value
+        _value = datetime.strptime(_value, self.format_).date() if isinstance(_value, str) else _value
         return _value
 
     def __init__(self, format_=None):
