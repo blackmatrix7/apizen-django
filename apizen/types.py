@@ -80,10 +80,6 @@ class TypeString(str, TypeBase):
     def convert(*, value):
         return str(value)
 
-    def __init__(self, err_msg=None):
-        self.typename = err_msg
-        super().__init__()
-
 
 class TypeFloat(float, TypeBase):
 
@@ -209,6 +205,11 @@ class TypeEmail(TypeString):
             return value
         else:
             raise ValueError
+
+    def __init__(self, err_msg=None):
+        if err_msg:
+            self.typename = err_msg
+        super().__init__()
 
 
 class TypeMoney(TypeBase):

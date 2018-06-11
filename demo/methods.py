@@ -36,6 +36,7 @@ methods = {
                     # List 内元素的判断
                     'matrix.api.email-list': {'func': views.email_list},
                     'matrix.api.date-list': {'func': views.date_list},
+                    'matrix.api.custom-arg-error': {'func': views.customer_args_err},
                     # 抛出一个异常
                     'matrix.api.return-err': {'func': views.raise_error},
                     # 自定义一个异常信息

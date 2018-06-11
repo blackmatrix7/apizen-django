@@ -145,6 +145,15 @@ def date_list(date: List(Date)):
     return date
 
 
+def customer_args_err(email: Email(err_msg='Email格式不正确')):
+    """
+    单参数不合法时，可以自定义不合法的异常信息
+    :param email:
+    :return:
+    """
+    return email
+
+
 # 演示抛出异常
 def raise_error():
     """

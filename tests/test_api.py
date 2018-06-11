@@ -187,6 +187,14 @@ class ApiZenTestCase(unittest.TestCase):
         data = resp.json()
         assert isinstance(data['response'], list)
 
+    # 测试自定义参数类型异常问题
+    def test_custom_arg_error(self):
+        resp = requests.get(self.get_request_url('matrix.api.custom-arg_error'))
+        data = resp.json()
+        assert resp.status_code == 500
+        assert data['meta']['message'] == '未知异常，这是一个自定义异常信息'
+
+
     # 测试抛出异常
     def test_raise_error(self):
         resp = requests.get(self.get_request_url('matrix.api.raise-error'))
