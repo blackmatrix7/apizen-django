@@ -221,38 +221,6 @@ class TypeMoney(TypeBase):
             raise ValueError
 
 
-class TypeModel(TypeBase):
-
-    typename = 'Sqlalchemy Model Dict'
-
-    def __init__(self, model, columns=None):
-        self.model = model
-        self.columns = columns
-
-    def convert(self, *, value=None):
-        data = json.loads(value) if isinstance(value, str) else value
-        result = self.model(**{key: value for key, value in data.items() if key in self.columns or self.model.__table__.columns})
-        result.raw_data = data
-        return result
-
-
-class TypeModelConditions(TypeBase):
-
-    typename = 'Conditions'
-
-    def __init__(self, model, ignore_columns=None, ignore_values=(None,)):
-        self.model = model
-        self.ignore_columns = ignore_columns or []
-        self.ignore_values = ignore_values
-
-    def convert(self, *, value=None):
-        data = json.loads(value) if isinstance(value, str) else value
-        columns = [column.name for column in self.model.__table__.columns if column.name not in self.ignore_columns]
-        result = {key: value for key, value in data.items()
-                  if key in columns if value not in self.ignore_values}
-        return result
-
-
 Integer = TypeInteger()
 List = TypeList
 Money = TypeMoney()
@@ -264,25 +232,10 @@ Date = TypeDate
 DateTime = TypeDatetime
 ApiRequest = TypeApiRequest()
 Email = TypeEmail
-Model = TypeModel
-Conditions = TypeModelConditions
-
-
-def dict2model(data, model):
-    """
-    实验性功能，将dict转换成sqlalchemy model，不能处理 relationship
-    :param data:
-    :param model:
-    :return:
-    """
-    data = json.loads(data) if isinstance(data, str) else data
-    result = model(**{key: value for key, value in data.items() if key in model.__table__.columns})
-    result.raw_data = data
-    return result
 
 
 def convert(key, value, default_value, type_hints):
-    # 系统级别 type hints 兼容 （兼顾历史接口代码）
+    # 内建 type hints 兼容 （兼顾历史接口代码）
     _type_hints = {
         int: Integer,
         float: Float,

@@ -8,7 +8,7 @@
 # @Software: PyCharm
 from .errors import *
 from functools import wraps
-from apizen.func import apiconfig
+from apizen.func import api
 from apizen.types import Integer, String, Float, Dict, DateTime, Email, List, Bool, Date, Money, ApiRequest
 
 __author__ = 'blackmatrix'
@@ -177,7 +177,7 @@ def after_custom_error():
 
 
 # 保留原始返回格式
-@apiconfig(raw_resp=True)
+@api(raw_resp=True)
 def raw_data():
     return {'id': 1, 'message': '保留原始返回格式'}
 

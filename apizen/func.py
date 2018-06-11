@@ -20,17 +20,17 @@ ApiZen 接口处理方法的异常判断与执行
 """
 
 
-__all__ = ['apiconfig', 'get_api_func', 'run_api_func', 'register_webapi']
+__all__ = ['api', 'get_api_func', 'run_api_func', 'register_webapi']
 
 
 METHODS = {}
 
 
-def apiconfig(raw_resp=False, allow_anonymous=False):
+def api(raw_resp=False, allowed_anonym=False):
     """
     Api配置装饰器
     :param raw_resp: 是否保留原始返回格式，默认不保留。
-    :param allow_anonymous: 是否允许匿名访问，默认不允许。
+    :param allowed_anonym: 是否允许匿名访问，默认不允许。
     :return:
     """
     def _apiconfig(func):
@@ -38,7 +38,7 @@ def apiconfig(raw_resp=False, allow_anonymous=False):
         def wrapper(*args, **kwargs):
             return func(*args, **kwargs)
         wrapper.__rawresp__ = raw_resp
-        wrapper.__allow_anonymous__ = allow_anonymous
+        wrapper.__allow_anonymous__ = allowed_anonym
         return wrapper
     return _apiconfig
 
