@@ -24,7 +24,7 @@ Apizen是一套JSON-RPC管理框架，拥有以下特性：
 
 **使用django视图直接实现**
 
-必须从request对象中获取请求的参数，并且需要逐一对参数的合法性做判断
+必须从request对象中获取请求的参数，并且需要逐一对参数的合法性做判断。定义Form进行表单验证可能会快些，但仍然需要消耗大量时间去定义Form，并且Form很难复用。
 
 ```python
 def register_user_view(request):
