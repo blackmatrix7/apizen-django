@@ -239,7 +239,7 @@ Email = TypeEmail
 
 
 def convert(key, value, default_value, type_hints):
-    # 内建 type hints 兼容 （兼顾历史接口代码）
+    # 内建类型的 type hints 兼容 （兼顾历史接口代码）
     _type_hints = {
         int: Integer,
         float: Float,
