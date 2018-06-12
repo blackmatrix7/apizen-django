@@ -8,7 +8,7 @@
 from functools import wraps
 from .types import convert, TypeApiRequest
 from inspect import signature, Parameter
-from apizen.exceptions import ApiSysExceptions
+from apizen.errors import ApiSysExceptions
 
 __author__ = 'blackmatrix'
 

@@ -5,7 +5,7 @@
 # @Site: https://github.com/blackmatrix7
 # @File: errors.py
 # @Software: PyCharm
-from apizen.exceptions import SysException
+from apizen.errors import SysException
 
 
 # API 子系统（业务）层级执行结果，以2000开始

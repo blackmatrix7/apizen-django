@@ -13,7 +13,7 @@ from django.utils.functional import Promise
 from .func import get_api_func, run_api_func
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.duration import duration_iso_string
-from .exceptions import ApiSysExceptions, SysException
+from .errors import ApiSysExceptions, SysException
 from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
