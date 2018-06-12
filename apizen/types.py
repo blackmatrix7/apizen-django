@@ -225,9 +225,12 @@ class TypeEmail(TypeString):
 
     @staticmethod
     def convert(*, value):
-        if re.match('^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$', str(value), flags=0):
-            return value
-        else:
+        try:
+            if re.match('^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$', str(value), flags=0):
+                return value
+            else:
+                raise ValueError
+        except TypeError:
             raise ValueError
 
     def __init__(self, *, err_msg=None):
