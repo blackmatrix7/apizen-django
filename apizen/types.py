@@ -71,6 +71,11 @@ class TypeInteger(int, TypeBase):
         else:
             raise ValueError
 
+    def __init__(self, *, err_msg=None):
+        if err_msg:
+            self.typename = err_msg
+        super().__init__()
+
 
 class TypeString(str, TypeBase):
 
@@ -79,6 +84,11 @@ class TypeString(str, TypeBase):
     @staticmethod
     def convert(*, value):
         return str(value)
+
+    def __init__(self, *, err_msg=None):
+        if err_msg:
+            self.typename = err_msg
+        super().__init__()
 
 
 class TypeFloat(float, TypeBase):
@@ -89,6 +99,11 @@ class TypeFloat(float, TypeBase):
     def convert(*, value):
         _value = copy.copy(value)
         return float(_value)
+
+    def __init__(self, *, err_msg=None):
+        if err_msg:
+            self.typename = err_msg
+        super().__init__()
 
 
 class TypeDict(dict, TypeBase):
@@ -103,6 +118,11 @@ class TypeDict(dict, TypeBase):
             return _value
         else:
             raise ValueError
+
+    def __init__(self, *, err_msg=None):
+        if err_msg:
+            self.typename = err_msg
+        super().__init__()
 
 
 class TypeList(list, TypeBase):
@@ -145,7 +165,9 @@ class TypeDate(date, TypeBase):
         _value = datetime.strptime(_value, self.format_).date() if isinstance(_value, str) else _value
         return _value
 
-    def __init__(self, format_=None):
+    def __init__(self, format_=None,  *, err_msg=None):
+        if err_msg:
+            self.typename = err_msg
         self.format_ = format_ or current_config.APIZEN_DATE_FMT
         super().__init__()
 
@@ -159,7 +181,9 @@ class TypeDatetime(datetime, TypeBase):
         _value = datetime.strptime(_value, self.format_) if isinstance(_value, str) else _value
         return _value
 
-    def __init__(self, format_=None):
+    def __init__(self, format_=None, *, err_msg=None):
+        if err_msg:
+            self.typename = err_msg
         self.format_ = format_ or current_config.APIZEN_DATETIME_FMT
         super().__init__()
 
@@ -201,12 +225,12 @@ class TypeEmail(TypeString):
 
     @staticmethod
     def convert(*, value):
-        if re.match('^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$', value, flags=0):
+        if re.match('^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$', str(value), flags=0):
             return value
         else:
             raise ValueError
 
-    def __init__(self, err_msg=None):
+    def __init__(self, *, err_msg=None):
         if err_msg:
             self.typename = err_msg
         super().__init__()
@@ -224,17 +248,22 @@ class TypeMoney(TypeBase):
         else:
             raise ValueError
 
+    def __init__(self, *, err_msg=None):
+        if err_msg:
+            self.typename = err_msg
+        super().__init__()
 
-Integer = TypeInteger()
+
+Integer = TypeInteger
 List = TypeList
-Money = TypeMoney()
-Bool = TypeBool()
-Float = TypeFloat()
-String = TypeString()
-Dict = TypeDict()
+Money = TypeMoney
+Bool = TypeBool
+Float = TypeFloat
+String = TypeString
+Dict = TypeDict
 Date = TypeDate
 DateTime = TypeDatetime
-ApiRequest = TypeApiRequest()
+ApiRequest = TypeApiRequest
 Email = TypeEmail
 
 
