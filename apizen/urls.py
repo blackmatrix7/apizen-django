@@ -14,7 +14,7 @@ __author__ = 'blackmatrix'
 from . import auto_register_webapi
 
 urlpatterns = [
-    path('/<version>/<method>', views.api_routing, name='api_routing'),
+    path('<version>/<method>', views.api_routing, name='api_routing'),
 ]
 
 auto_register_webapi()
