@@ -113,7 +113,7 @@ APIZEN_METHODS = ['demo.methods']
 urlpatterns = [
     url('', admin.site.urls),
     # 加入apizen的url
-    url(r'^api/', include('apizen.urls')),
+    url(r'^api/router/', include('apizen.urls')),
 ]
 ```
 
