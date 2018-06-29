@@ -239,7 +239,7 @@ class TypeEmail(TypeString):
         super().__init__()
 
 
-class TypeMoney(TypeBase):
+class TypeMoney(Decimal, TypeBase):
 
     typename = 'Money'
 
