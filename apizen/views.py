@@ -75,6 +75,8 @@ def api_routing(request, version, method):
     api_ex = None
     # 使用原始数据返回
     raw_resp = False
+    # 记录接口请求日志
+    record = True
     # 日志对象参数
     request_info = {'response': None, 'request_id': request_id, 'method': request.method,
                     'headers': json.dumps(get_http_headers(request.environ)),
@@ -84,6 +86,7 @@ def api_routing(request, version, method):
         api_func = get_api_func(version=version, api_name=method, http_method=request.method)
         # 判断接口是否要求使用原始数据返回
         raw_resp = api_func.__rawresp__
+        record = api_func.__record__
         # GET请求处理
         if request.method == 'GET':
             query_string = request.GET.dict()
@@ -152,8 +155,9 @@ def api_routing(request, version, method):
                 }
             else:
                 data = result
-            json_data = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
-            request_info['response'] = json_data
-            api_request = ApiZenRequest(**request_info)
-            api_request.save()
+            if record:
+                json_data = json.dumps(data, cls=CustomJSONEncoder, ensure_ascii=False)
+                request_info['response'] = json_data
+                api_request = ApiZenRequest(**request_info)
+                api_request.save()
             return JsonResponse(data, encoder=CustomJSONEncoder, status=status_code)
