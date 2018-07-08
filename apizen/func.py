@@ -26,11 +26,12 @@ __all__ = ['api', 'get_api_func', 'run_api_func', 'register_webapi']
 METHODS = {}
 
 
-def api(raw_resp=False, allowed_anonym=False):
+def api(raw_resp=False, allowed_anonym=False, record=True):
     """
     Api配置装饰器
     :param raw_resp: 是否保留原始返回格式，默认不保留。
     :param allowed_anonym: 是否允许匿名访问，默认不允许。
+    :param record: 是否记录访问日志，默认记录。
     :return:
     """
     def _apiconfig(func):
@@ -39,6 +40,7 @@ def api(raw_resp=False, allowed_anonym=False):
             return func(*args, **kwargs)
         wrapper.__rawresp__ = raw_resp
         wrapper.__allow_anonymous__ = allowed_anonym
+        wrapper.__record__ = record
         return wrapper
     return _apiconfig
 
@@ -112,8 +114,11 @@ def get_api_func(version, api_name, http_method):
 
     _func = method_cfg.get('func')
 
+    # 没有使用装饰器时，增加默认配置
     if not hasattr(_func, '__rawresp__'):
         setattr(_func, '__rawresp__', False)
+    if not hasattr(_func, '__record__'):
+        setattr(_func, '__record__', True)
 
     return _func
 
