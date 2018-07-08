@@ -139,8 +139,9 @@ def api_routing(request, version, method):
         request_info['success'] = success
         if settings.DEBUG is True and isinstance(api_ex, BaseException):
             # 生产环境中，建议将存储数据库的动作异步执行，以免影响接口响应速度
-            api_request = ApiZenRequest(**request_info)
-            api_request.save()
+            if record:
+                api_request = ApiZenRequest(**request_info)
+                api_request.save()
             raise api_ex
         else:
             if raw_resp is False:
