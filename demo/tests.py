@@ -111,7 +111,7 @@ class ApiZenTestCase(TestCase):
     def test_form_data(self):
         content_type = 'application/x-www-form-urlencoded'
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), data=payload, content_type=content_type)
+        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), payload, content_type=content_type)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['message'], '执行成功')
