@@ -3,6 +3,9 @@ from django.test import Client
 from django.test import TestCase
 
 
+CONTENT_TYPE = 'application/json'
+
+
 # Create your tests here.
 class ApiZenTestCase(TestCase):
 
@@ -115,19 +118,17 @@ class ApiZenTestCase(TestCase):
 
     # 测试application/json
     def test_app_json(self):
-        content_type = 'application/json'
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), json=json.dumps(payload), content_type=content_type)
+        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), json=json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['message'], '执行成功')
 
     # 测试json转换成dict
     def test_json_to_dict(self):
-        content_type = 'application/json'
         payload = json.dumps({'user': {'id': 1, 'name': 'jack'}})
         # json 字符串需要用data进行传输，如果是dict，可以直接用json进行传输
-        resp = self.client.post(self.get_request_url('matrix.api.json-to-dict'), data=payload, content_type=content_type)
+        resp = self.client.post(self.get_request_url('matrix.api.json-to-dict'), data=payload, content_type=CONTENT_TYPE)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertEqual(data['response']['name'], 'jack')
@@ -163,7 +164,7 @@ class ApiZenTestCase(TestCase):
     # 测试自定义参数类型异常问题
     def test_custom_arg_error(self):
         payload = {'email': [111, 222]}
-        resp = self.client.post(self.get_request_url('matrix.api.custom-arg-error'), json=payload)
+        resp = self.client.post(self.get_request_url('matrix.api.custom-arg-error'), data=json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：email <Email格式不正确>')
