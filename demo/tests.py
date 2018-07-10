@@ -50,7 +50,7 @@ class ApiZenTestCase(TestCase):
     # 测试参数默认值
     def test_default_arg_value(self):
         payload = {'name': 'tom', 'age': 19.1}
-        resp = self.client.get(self.get_request_url('matrix.api.register_user'), params=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.register_user'), data=payload)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertIsNone(data['response']['email'])
@@ -58,7 +58,7 @@ class ApiZenTestCase(TestCase):
     # 测试错误的参数类型
     def test_error_arg_type(self):
         payload = {'name': 'tom', 'age': 19.1, 'birthday': '2007/12/31'}
-        resp = self.client.get(self.get_request_url('matrix.api.register_user_plus'), params=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.register_user_plus'), data=payload)
         self.assertEqual(resp.status_code, 400)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '参数类型错误：age <Integer>')
@@ -66,12 +66,12 @@ class ApiZenTestCase(TestCase):
     # 测试自定义日期格式，符合格式要求
     def test_custom_date(self):
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007年12月31日', 'email': '123456@qq.com'}
-        resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), params=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), data=payload)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '执行成功')
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), params=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), data=payload)
         self.assertEqual(resp.status_code, 400)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '参数类型错误：birthday <Date>')
@@ -119,7 +119,7 @@ class ApiZenTestCase(TestCase):
     # 测试application/json
     def test_app_json(self):
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), json=json.dumps(payload), content_type=CONTENT_TYPE)
+        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), data=json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['message'], '执行成功')
@@ -259,12 +259,12 @@ class ApiZenTestCase(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(data['response'])
         payload = {'value': True}
-        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), data=payload)
+        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), data=json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(data['response'])
         payload = {'value': '123'}
-        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), data=payload)
+        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), data=json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：value <Bool>')
