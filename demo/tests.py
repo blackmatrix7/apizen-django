@@ -210,18 +210,18 @@ class ApiZenTestCase(TestCase):
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertEqual(data['meta']['code'], 1000)
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        resp = self.client.post(self.get_request_url('matrix.api.get-post'), headers=headers)
+        content_type = 'application/x-www-form-urlencoded'
+        resp = self.client.post(self.get_request_url('matrix.api.get-post'), content_type=content_type)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertEqual(data['meta']['code'], 1000)
 
     # 测试不合法的json格式
     def test_error_json(self):
-        headers = {'Content-Type': 'application/json'}
+        content_type = 'application/json'
         # 修改json字符串，使其错误
         payload = json.dumps({'user': {'id': 1, 'name': 'jack'}}).replace(',', '.')
-        resp = self.client.post(self.get_request_url('matrix.api.json-to-dict'), data=payload, headers=headers)
+        resp = self.client.post(self.get_request_url('matrix.api.json-to-dict'), data=payload, content_type=content_type)
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '错误或不合法的json格式')
@@ -253,17 +253,17 @@ class ApiZenTestCase(TestCase):
     # 测试布尔值类型
     def test_is_bool(self):
         payload = {'value': 'True'}
-        resp = self.client.get(self.get_request_url('matrix.api.is-bool'), params=payload)
-        self.assertEqual(resp.status_code, 200)
+        resp = self.client.get(self.get_request_url('matrix.api.is-bool'), data=payload)
         data = resp.json()
+        self.assertEqual(resp.status_code, 200)
         self.assertTrue(data['response'])
         payload = {'value': True}
-        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), json=payload)
-        self.assertEqual(resp.status_code, 200)
+        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), data=payload)
         data = resp.json()
+        self.assertEqual(resp.status_code, 200)
         self.assertTrue(data['response'])
         payload = {'value': '123'}
-        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), json=payload)
-        self.assertEqual(resp.status_code, 400)
+        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), data=payload)
         data = resp.json()
+        self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：value <Bool>')
