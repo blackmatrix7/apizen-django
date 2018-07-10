@@ -134,28 +134,28 @@ class ApiZenTestCase(TestCase):
 
     # 测试json转换成list
     def test_json_to_list(self):
-        headers = {'Content-Type': 'application/json'}
+        content_type = 'application/json'
         payload = json.dumps({'user': [{'id': 1, 'name': 'jack'}, {'id': 2, 'name': 'jim'}]})
         # json 字符串需要用data进行传输，如果是dict，可以直接用json进行传输
-        resp = self.client.post(self.get_request_url('matrix.api.json-to-list'), data=payload, headers=headers)
+        resp = self.client.post(self.get_request_url('matrix.api.json-to-list'), data=payload, content_type=content_type)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertTrue(isinstance(data['response'], list))
 
     # 测试List内元素的判断
     def test_email_list(self):
-        headers = {'Content-Type': 'application/json'}
+        content_type = 'application/json'
         payload = json.dumps({'email': ['123@qq.com', '456@qq.com']})
-        resp = self.client.post(self.get_request_url('matrix.api.email-list'), data=payload, headers=headers)
+        resp = self.client.post(self.get_request_url('matrix.api.email-list'), data=payload, content_type=content_type)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertTrue(isinstance(data['response'], list))
 
     # 测试List内元素的判断
     def test_date_list(self):
-        headers = {'Content-Type': 'application/json'}
+        content_type = 'application/json'
         payload = json.dumps({'date': ['2018-05-01', '2018-10-01']})
-        resp = self.client.post(self.get_request_url('matrix.api.date-list'), data=payload, headers=headers)
+        resp = self.client.post(self.get_request_url('matrix.api.date-list'), data=payload, content_type=content_type)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertTrue(isinstance(data['response'], list))
