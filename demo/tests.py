@@ -50,7 +50,7 @@ class ApiZenTestCase(TestCase):
     # 测试参数默认值
     def test_default_arg_value(self):
         payload = {'name': 'tom', 'age': 19.1}
-        resp = self.client.get(self.get_request_url('matrix.api.register_user'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.register_user'), payload)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertIsNone(data['response']['email'])
@@ -58,7 +58,7 @@ class ApiZenTestCase(TestCase):
     # 测试错误的参数类型
     def test_error_arg_type(self):
         payload = {'name': 'tom', 'age': 19.1, 'birthday': '2007/12/31'}
-        resp = self.client.get(self.get_request_url('matrix.api.register_user_plus'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.register_user_plus'), payload)
         self.assertEqual(resp.status_code, 400)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '参数类型错误：age <Integer>')
@@ -66,12 +66,12 @@ class ApiZenTestCase(TestCase):
     # 测试自定义日期格式，符合格式要求
     def test_custom_date(self):
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007年12月31日', 'email': '123456@qq.com'}
-        resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), payload)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '执行成功')
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), payload)
         self.assertEqual(resp.status_code, 400)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '参数类型错误：birthday <Date>')
@@ -79,22 +79,22 @@ class ApiZenTestCase(TestCase):
     # 测试自定义Money
     def test_money_to_decimal(self):
         payload = {'money': 19.2}
-        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['message'], '执行成功')
         payload = {'money': 19}
-        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '执行成功')
         payload = {'money': -19.2}
-        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
         self.assertEqual(resp.status_code, 400)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '参数类型错误：money <Money>')
         payload = {'money': 19.221}
-        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
         self.assertEqual(resp.status_code, 400)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '参数类型错误：money <Money>')
@@ -102,16 +102,16 @@ class ApiZenTestCase(TestCase):
     # 测试自定义类型判断
     def test_custom_arg_type(self):
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456'}
-        resp = self.client.get(self.get_request_url('matrix.api.validate_email'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.validate_email'), payload)
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：email <Email>')
 
     # 测试application/x-www-form-urlencoded请求方式
     def test_form_data(self):
-        content_type = 'application/x-www-form-urlencoded'
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), payload, content_type=content_type)
+        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), data=payload,
+                                content_type='application/x-www-form-urlencoded')
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['message'], '执行成功')
@@ -119,16 +119,16 @@ class ApiZenTestCase(TestCase):
     # 测试application/json
     def test_app_json(self):
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), data=json.dumps(payload), content_type=CONTENT_TYPE)
+        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['message'], '执行成功')
 
     # 测试json转换成dict
     def test_json_to_dict(self):
-        payload = json.dumps({'user': {'id': 1, 'name': 'jack'}})
+        payload = {'user': {'id': 1, 'name': 'jack'}}
         # json 字符串需要用data进行传输，如果是dict，可以直接用json进行传输
-        resp = self.client.post(self.get_request_url('matrix.api.json-to-dict'), data=payload, content_type=CONTENT_TYPE)
+        resp = self.client.post(self.get_request_url('matrix.api.json-to-dict'), json.dumps(payload), content_type=CONTENT_TYPE)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertEqual(data['response']['name'], 'jack')
@@ -138,7 +138,7 @@ class ApiZenTestCase(TestCase):
         content_type = 'application/json'
         payload = json.dumps({'user': [{'id': 1, 'name': 'jack'}, {'id': 2, 'name': 'jim'}]})
         # json 字符串需要用data进行传输，如果是dict，可以直接用json进行传输
-        resp = self.client.post(self.get_request_url('matrix.api.json-to-list'), data=payload, content_type=content_type)
+        resp = self.client.post(self.get_request_url('matrix.api.json-to-list'), payload, content_type=content_type)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertTrue(isinstance(data['response'], list))
@@ -147,7 +147,7 @@ class ApiZenTestCase(TestCase):
     def test_email_list(self):
         content_type = 'application/json'
         payload = json.dumps({'email': ['123@qq.com', '456@qq.com']})
-        resp = self.client.post(self.get_request_url('matrix.api.email-list'), data=payload, content_type=content_type)
+        resp = self.client.post(self.get_request_url('matrix.api.email-list'), payload, content_type=content_type)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertTrue(isinstance(data['response'], list))
@@ -156,7 +156,7 @@ class ApiZenTestCase(TestCase):
     def test_date_list(self):
         content_type = 'application/json'
         payload = json.dumps({'date': ['2018-05-01', '2018-10-01']})
-        resp = self.client.post(self.get_request_url('matrix.api.date-list'), data=payload, content_type=content_type)
+        resp = self.client.post(self.get_request_url('matrix.api.date-list'), payload, content_type=content_type)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertTrue(isinstance(data['response'], list))
@@ -164,7 +164,7 @@ class ApiZenTestCase(TestCase):
     # 测试自定义参数类型异常问题
     def test_custom_arg_error(self):
         payload = {'email': [111, 222]}
-        resp = self.client.post(self.get_request_url('matrix.api.custom-arg-error'), data=json.dumps(payload), content_type=CONTENT_TYPE)
+        resp = self.client.post(self.get_request_url('matrix.api.custom-arg-error'), json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：email <Email格式不正确>')
@@ -192,8 +192,7 @@ class ApiZenTestCase(TestCase):
 
     # 测试只允许get请求
     def test_only_get(self):
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        resp = self.client.post(self.get_request_url('matrix.api.only-get'), headers=headers)
+        resp = self.client.post(self.get_request_url('matrix.api.only-get'))
         self.assertEqual(resp.status_code, 405)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '不支持的http请求方式')
@@ -208,13 +207,12 @@ class ApiZenTestCase(TestCase):
     # 测试同时支持get和post
     def test_get_post(self):
         resp = self.client.get(self.get_request_url('matrix.api.get-post'))
-        self.assertEqual(resp.status_code, 200)
         data = resp.json()
+        self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['code'], 1000)
-        content_type = 'application/x-www-form-urlencoded'
-        resp = self.client.post(self.get_request_url('matrix.api.get-post'), content_type=content_type)
-        self.assertEqual(resp.status_code, 200)
+        resp = self.client.post(self.get_request_url('matrix.api.get-post'), content_type=CONTENT_TYPE)
         data = resp.json()
+        self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['code'], 1000)
 
     # 测试不合法的json格式
@@ -222,7 +220,7 @@ class ApiZenTestCase(TestCase):
         content_type = 'application/json'
         # 修改json字符串，使其错误
         payload = json.dumps({'user': {'id': 1, 'name': 'jack'}}).replace(',', '.')
-        resp = self.client.post(self.get_request_url('matrix.api.json-to-dict'), data=payload, content_type=content_type)
+        resp = self.client.post(self.get_request_url('matrix.api.json-to-dict'), payload, content_type=content_type)
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '错误或不合法的json格式')
@@ -254,17 +252,17 @@ class ApiZenTestCase(TestCase):
     # 测试布尔值类型
     def test_is_bool(self):
         payload = {'value': 'True'}
-        resp = self.client.get(self.get_request_url('matrix.api.is-bool'), data=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.is-bool'), payload)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(data['response'])
         payload = {'value': True}
-        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), data=json.dumps(payload), content_type=CONTENT_TYPE)
+        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(data['response'])
         payload = {'value': '123'}
-        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), data=json.dumps(payload), content_type=CONTENT_TYPE)
+        resp = self.client.post(self.get_request_url('matrix.api.is-bool'), json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：value <Bool>')
