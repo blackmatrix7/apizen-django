@@ -91,7 +91,7 @@ class ApiZenTestCase(TestCase):
         data = resp.json()
         self.assertEqual(data['meta']['message'], '参数类型错误：money <Money>')
         payload = {'money': 19.221}
-        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), params=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), data=payload)
         self.assertEqual(resp.status_code, 400)
         data = resp.json()
         self.assertEqual(data['meta']['message'], '参数类型错误：money <Money>')
@@ -99,7 +99,7 @@ class ApiZenTestCase(TestCase):
     # 测试自定义类型判断
     def test_custom_arg_type(self):
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456'}
-        resp = self.client.get(self.get_request_url('matrix.api.validate_email'), params=payload)
+        resp = self.client.get(self.get_request_url('matrix.api.validate_email'), data=payload)
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：email <Email>')
