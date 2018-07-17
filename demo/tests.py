@@ -109,8 +109,9 @@ class ApiZenTestCase(TestCase):
 
     # 测试application/x-www-form-urlencoded请求方式
     def test_form_data(self):
+        from urllib import parse
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
-        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), data=payload,
+        resp = self.client.post(self.get_request_url('matrix.api.validate_email'), data=parse.urlencode(payload),
                                 content_type='application/x-www-form-urlencoded')
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
