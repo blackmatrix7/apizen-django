@@ -66,7 +66,9 @@ methods = {
                     # API版本继承
                     'matrix.api.raise-error': {'func': views.raise_error},
                     # 获取request信息
-                    'matrix.api.get-request': {'func': views.get_request}
+                    'matrix.api.get-request': {'func': views.get_request},
+                    # 获取request信息
+                    'matrix.api.multi-types': {'func': views.multi_types}
                 }
         },
     '1.1':

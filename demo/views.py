@@ -204,6 +204,11 @@ def get_request(request=ApiRequest):
     return request.GET.dict()
 
 
+# 兼容多种类型
+def multi_types(id_list: (Integer, List)):
+    return id_list
+
+
 class ApiDemo:
 
     def __init__(self):
