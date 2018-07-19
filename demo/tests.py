@@ -312,3 +312,12 @@ class ApiZenTestCase(TestCase):
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：id_list <Integer,List>')
+
+    # 测试同一参数支持多种类型
+    def test_multi_types_str2(self):
+        # 传入str类型，如果str可以转换成int，则不抛出异常
+        payload = {'id_list': '10'}
+        resp = self.client.post(self.get_request_url('matrix.api.multi-types'), json.dumps(payload), content_type=CONTENT_TYPE)
+        data = resp.json()
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(data['meta']['message'], '执行成功')
