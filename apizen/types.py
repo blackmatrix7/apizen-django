@@ -132,7 +132,7 @@ class TypeList(list, TypeBase):
     def convert(self, *, value):
         obj_list = json.loads(value) if isinstance(value, str) else value
         try:
-            iter(obj_list)
+            assert isinstance(obj_list, list)
             if self.obj:
                 new_obj_list = []
                 for obj in obj_list:
@@ -140,7 +140,7 @@ class TypeList(list, TypeBase):
                 return new_obj_list
             else:
                 return obj_list
-        except TypeError:
+        except (TypeError, AssertionError):
             raise ValueError
 
     def __init__(self, obj=None):
@@ -300,11 +300,3 @@ def convert(key, value, default_value, type_hints):
         api_ex = ApiSysExceptions.error_args_type
         api_ex.err_msg = '{0}：{1} <{2}>'.format(api_ex.err_msg, key, ','.join([str(type_.typename) for type_ in _type_hints]))
         raise api_ex
-        # except JSONDecodeError:
-        #     raise ApiSysExceptions.invalid_json
-        # except ValueError:
-        #     api_ex = ApiSysExceptions.error_args_type
-        #     api_ex.err_msg = '{0}：{1} <{2}>'.format(api_ex.err_msg, key, _type_hints.typename)
-        #     raise api_ex
-        # else:
-        #     return value
