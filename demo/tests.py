@@ -267,3 +267,16 @@ class ApiZenTestCase(TestCase):
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：value <Bool>')
+
+    # 测试同一参数支持多种类型
+    def test_multi_types(self):
+        payload = {'id_list': 1}
+        resp = self.client.post(self.get_request_url('matrix.api.multi-types'), json.dumps(payload), content_type=CONTENT_TYPE)
+        data = resp.json()
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(data['response'])
+        payload = {'id_list': [2, 3, 4, 5]}
+        resp = self.client.post(self.get_request_url('matrix.api.multi-types'), json.dumps(payload), content_type=CONTENT_TYPE)
+        data = resp.json()
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(data['response'])
