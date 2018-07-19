@@ -282,16 +282,29 @@ def convert(key, value, default_value, type_hints):
         datetime: DateTime
     }.get(type_hints, type_hints)
     try:
-        if value != default_value:
-            instance = _type_hints if isinstance(_type_hints, Typed) else _type_hints() if issubclass(_type_hints, Typed) else object()
-            if isinstance(instance, Typed):
-                value = instance.convert(value=value)
+        iter(_type_hints)
+    except TypeError:
+        _type_hints = [_type_hints]
+    for type_ in _type_hints:
+        try:
+            if value != default_value:
+                instance = type_ if isinstance(type_, Typed) else type_() if issubclass(type_, Typed) else object()
+                if isinstance(instance, Typed):
+                    value = instance.convert(value=value)
             return value
-    except JSONDecodeError:
-        raise ApiSysExceptions.invalid_json
-    except ValueError:
-        api_ex = ApiSysExceptions.error_args_type
-        api_ex.err_msg = '{0}：{1} <{2}>'.format(api_ex.err_msg, key, _type_hints.typename)
-        raise api_ex
+        except JSONDecodeError:
+            raise ApiSysExceptions.invalid_json
+        except ValueError:
+            pass
     else:
-        return value
+        api_ex = ApiSysExceptions.error_args_type
+        api_ex.err_msg = '{0}：{1} <{2}>'.format(api_ex.err_msg, key, ','.join([str(type_.typename) for type_ in _type_hints]))
+        raise api_ex
+        # except JSONDecodeError:
+        #     raise ApiSysExceptions.invalid_json
+        # except ValueError:
+        #     api_ex = ApiSysExceptions.error_args_type
+        #     api_ex.err_msg = '{0}：{1} <{2}>'.format(api_ex.err_msg, key, _type_hints.typename)
+        #     raise api_ex
+        # else:
+        #     return value

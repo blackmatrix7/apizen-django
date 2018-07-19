@@ -51,8 +51,8 @@ class ApiZenTestCase(TestCase):
     def test_default_arg_value(self):
         payload = {'name': 'tom', 'age': 19.1}
         resp = self.client.get(self.get_request_url('matrix.api.register_user'), payload)
-        self.assertEqual(resp.status_code, 200)
         data = resp.json()
+        self.assertEqual(resp.status_code, 200)
         self.assertIsNone(data['response']['email'])
         
     # 测试错误的参数类型
