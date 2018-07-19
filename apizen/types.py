@@ -292,8 +292,6 @@ def convert(key, value, default_value, type_hints):
                 if isinstance(instance, Typed):
                     value = instance.convert(value=value)
             return value
-        except JSONDecodeError:
-            raise ApiSysExceptions.invalid_json
         except ValueError:
             pass
     else:
