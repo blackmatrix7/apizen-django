@@ -276,9 +276,6 @@ class ApiZenTestCase(TestCase):
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(data['response'])
-
-    # 测试同一参数支持多种类型
-    def test_multi_types_list(self):
         # 传入list类型，正常工作
         payload = {'id_list': [2, 3, 4, 5]}
         resp = self.client.post(self.get_request_url('matrix.api.multi-types'), json.dumps(payload), content_type=CONTENT_TYPE)
