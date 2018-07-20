@@ -270,25 +270,30 @@ ApiRequest = TypeApiRequest
 Email = TypeEmail
 
 
-def convert(key, value, default_value, type_hints):
+def convert(key, value, default_value, type_hints_list):
+    # 内建类型的 type hints 兼容 （兼顾历史接口代码）
+    buildin_type_hints = {
+        int: Integer,
+        float: Float,
+        str: String,
+        list: List,
+        dict: Dict,
+        date: Date,
+        datetime: DateTime
+    }
     try:
-        iter(type_hints)
+        # 传入多个类型时，将里面可能包含的内建类型，转换成框架支持的类型
+        type_hints_list = [buildin_type_hints.get(type_hints, type_hints) for type_hints in type_hints_list]
     except TypeError:
-        type_hints = [type_hints]
-    for type_ in type_hints:
-        # 内建类型的 type hints 兼容 （兼顾历史接口代码）
-        type_ = {
-            int: Integer,
-            float: Float,
-            str: String,
-            list: List,
-            dict: Dict,
-            date: Date,
-            datetime: DateTime
-        }.get(type_, type_)
+        # 不可迭代的对象，则作为list的元素
+        type_hints_list = [type_hints_list]
+    # 依次处理每个参数类型
+    for type_hints in type_hints_list:
         try:
             if value != default_value:
-                instance = type_ if isinstance(type_, Typed) else type_() if issubclass(type_, Typed) else object()
+                instance = type_hints if isinstance(type_hints, Typed) \
+                    else type_hints() if issubclass(type_hints, Typed) \
+                    else object()
                 if isinstance(instance, Typed):
                     value = instance.convert(value=value)
             return value
@@ -296,5 +301,6 @@ def convert(key, value, default_value, type_hints):
             pass
     else:
         api_ex = ApiSysExceptions.error_args_type
-        api_ex.err_msg = '{0}：{1} <{2}>'.format(api_ex.err_msg, key, ','.join([str(type_.typename) for type_ in type_hints]))
+        api_ex.err_msg = '{0}：{1} <{2}>'.format(api_ex.err_msg, key, ','.join([str(type_hints.typename)
+                                                                               for type_hints in type_hints_list]))
         raise api_ex
