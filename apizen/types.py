@@ -271,21 +271,21 @@ Email = TypeEmail
 
 
 def convert(key, value, default_value, type_hints):
-    # 内建类型的 type hints 兼容 （兼顾历史接口代码）
-    _type_hints = {
-        int: Integer,
-        float: Float,
-        str: String,
-        list: List,
-        dict: Dict,
-        date: Date,
-        datetime: DateTime
-    }.get(type_hints, type_hints)
     try:
-        iter(_type_hints)
+        iter(type_hints)
     except TypeError:
-        _type_hints = [_type_hints]
-    for type_ in _type_hints:
+        type_hints = [type_hints]
+    for type_ in type_hints:
+        # 内建类型的 type hints 兼容 （兼顾历史接口代码）
+        type_ = {
+            int: Integer,
+            float: Float,
+            str: String,
+            list: List,
+            dict: Dict,
+            date: Date,
+            datetime: DateTime
+        }.get(type_, type_)
         try:
             if value != default_value:
                 instance = type_ if isinstance(type_, Typed) else type_() if issubclass(type_, Typed) else object()
@@ -296,5 +296,5 @@ def convert(key, value, default_value, type_hints):
             pass
     else:
         api_ex = ApiSysExceptions.error_args_type
-        api_ex.err_msg = '{0}：{1} <{2}>'.format(api_ex.err_msg, key, ','.join([str(type_.typename) for type_ in _type_hints]))
+        api_ex.err_msg = '{0}：{1} <{2}>'.format(api_ex.err_msg, key, ','.join([str(type_.typename) for type_ in type_hints]))
         raise api_ex
