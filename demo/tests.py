@@ -269,7 +269,7 @@ class ApiZenTestCase(TestCase):
         self.assertEqual(data['meta']['message'], '参数类型错误：value <Bool>')
 
     # 测试同一参数支持多种类型
-    def test_multi_types_int(self):
+    def test_multi_types(self):
         # 传入int类型，正常工作
         payload = {'id_list': 1}
         resp = self.client.post(self.get_request_url('matrix.api.multi-types'), json.dumps(payload), content_type=CONTENT_TYPE)
