@@ -209,6 +209,11 @@ def multi_types(id_list: (Integer, List)):
     return id_list
 
 
+# 兼容多种类型，混合系统内建类型与框架类型
+def multi_types_2(id_list: (int, List)):
+    return id_list
+
+
 class ApiDemo:
 
     def __init__(self):
