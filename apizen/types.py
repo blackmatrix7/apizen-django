@@ -246,7 +246,7 @@ class TypeMoney(Decimal, TypeBase):
     @staticmethod
     def convert(*, value):
         value = Decimal(value)
-        if value >= 0 and value == round(value, 2):
+        if value == round(value, 2):
             return value
         else:
             raise ValueError
