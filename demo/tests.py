@@ -85,18 +85,13 @@ class ApiZenTestCase(TestCase):
         self.assertEqual(data['meta']['message'], '执行成功')
         payload = {'money': 19}
         resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
+        data = resp.json()
         self.assertEqual(resp.status_code, 200)
-        data = resp.json()
         self.assertEqual(data['meta']['message'], '执行成功')
-        payload = {'money': -19.2}
-        resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
-        self.assertEqual(resp.status_code, 400)
-        data = resp.json()
-        self.assertEqual(data['meta']['message'], '参数类型错误：money <Money>')
         payload = {'money': 19.221}
         resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
-        self.assertEqual(resp.status_code, 400)
         data = resp.json()
+        self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：money <Money>')
 
     # 测试自定义类型判断
