@@ -145,6 +145,7 @@ class TypeList(list, TypeBase):
 
     def __init__(self, obj=None):
         try:
+            obj = BUILDIN_TYPE_HINTS.get(obj, obj)
             if obj is None or isinstance(obj, Typed):
                 self.obj = obj
             elif issubclass(obj, Typed):
@@ -269,21 +270,22 @@ DateTime = TypeDatetime
 ApiRequest = TypeApiRequest
 Email = TypeEmail
 
+# 内建类型的 type hints 兼容 （兼顾历史接口代码）
+BUILDIN_TYPE_HINTS = {
+    int: Integer,
+    float: Float,
+    str: String,
+    list: List,
+    dict: Dict,
+    date: Date,
+    datetime: DateTime
+}
+
 
 def convert(key, value, default_value, type_hints_list):
-    # 内建类型的 type hints 兼容 （兼顾历史接口代码）
-    buildin_type_hints = {
-        int: Integer,
-        float: Float,
-        str: String,
-        list: List,
-        dict: Dict,
-        date: Date,
-        datetime: DateTime
-    }
     try:
         # 传入多个类型时，将里面可能包含的内建类型，转换成框架支持的类型
-        type_hints_list = [buildin_type_hints.get(type_hints, type_hints) for type_hints in type_hints_list]
+        type_hints_list = [BUILDIN_TYPE_HINTS.get(type_hints, type_hints) for type_hints in type_hints_list]
     except TypeError:
         # 不可迭代的对象，则作为list的元素
         type_hints_list = [type_hints_list]
