@@ -314,13 +314,25 @@ Date类型设定和转换规则同上，不过转换后是date，而不是dateti
 
 #### 多种类型混合
 
-每个参数除了单一类型支持外，也支持多个类型混合使用。ApiZen会依次判断每种类型并尝试转换，转换成功后就不会继续判断下一个类型。
+每个参数除了单一类型支持外，也支持多个类型混合使用。需要支持多种类型时，以tuple或list等可迭代对象的形式，传入需要支持的类型。ApiZen会依次判断每种类型并尝试转换，转换成功后就不会继续判断下一个类型。
 
-适用于一些特殊场景，例如接口需要传入单个id，也可以传入多个id组成的list的时候。
+适用于一些特殊场景，例如下面的例子，id_list参数，即支持单独传入int类型的id，也可以传入以int类型的id组成的list。
 
 ```python
 def multi_types(id_list: (Integer, List(int))):
     return id_list
+```
+
+像下面的几种报文可以是可以支持的：
+
+```python
+# 传入单个int
+payload = {'id_list': 1}
+# 传入int组成的list
+payload = {'id_list': [2, 3, 4, 5]}
+# 传入str组成的list
+# 因为有List(int)这个配置，所以list内的str会尝试转换成int
+payload = {'id_list': ['2', '3', '4', '5']}
 ```
 
 ### 函数的限制
