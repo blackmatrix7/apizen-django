@@ -145,6 +145,16 @@ def date_list(date: List(Date)):
     return date
 
 
+def str_list(date: List(str)):
+    """
+    list内元素合法性检查，除检查date参数的值能否转换成list外，还会检查list里每个元素是否符合Date的要求
+    list内的元素类型，也支持系统的部分内建类型
+    :param date:
+    :return:
+    """
+    return date
+
+
 def customer_args_err(email: Email(err_msg='Email格式不正确')):
     """
     单参数不合法时，可以自定义不合法的异常信息
