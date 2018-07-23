@@ -205,7 +205,7 @@ def get_request(request=ApiRequest):
 
 
 # 兼容多种类型
-def multi_types(id_list: (Integer, List)):
+def multi_types(id_list: (Integer, List(int))):
     return id_list
 
 
