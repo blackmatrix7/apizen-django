@@ -157,6 +157,15 @@ class ApiZenTestCase(TestCase):
         data = resp.json()
         self.assertTrue(isinstance(data['response'], list))
 
+    # 测试List内元素的判断
+    def test_str_list(self):
+        content_type = 'application/json'
+        payload = json.dumps({'date': ['hello', 'python']})
+        resp = self.client.post(self.get_request_url('matrix.api.str-list'), payload, content_type=content_type)
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertTrue(isinstance(data['response'], list))
+
     # 测试自定义参数类型异常问题
     def test_custom_arg_error(self):
         payload = {'email': [111, 222]}
