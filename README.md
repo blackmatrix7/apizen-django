@@ -294,6 +294,8 @@ def date_list(date: List(Date)):
 
 上面的例子中，除了会对date能否转换成list进行判断外，还会对list中的每个元素（如果能转换成list的话）进行判断，并转换称Date类型。如果有任意一个元素不符合要求，则会返回异常。
 
+List内的元素同时支持内建类型、框架类型和自定义类型。
+
 **Date 和 DateTime**
 
 对于字符串类型，根据设置的日期格式，转换成date或datetime类型并返回，如无法转换则引发ValueError异常。
