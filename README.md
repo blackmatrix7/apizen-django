@@ -321,11 +321,11 @@ Date类型设定和转换规则同上，不过转换后是date，而不是dateti
 适用于一些特殊场景，例如下面的例子，id_list参数，即支持单独传入int类型的id，也可以传入以int类型的id组成的list。
 
 ```python
-def multi_types(id_list: (Integer, List(int))):
+def multi_types(id_list: (int, List(int))):
     return id_list
 ```
 
-像下面的几种报文可以是可以支持的：
+像下面的几种报文都是可以支持的：
 
 ```python
 # 传入单个int
