@@ -6,7 +6,7 @@
 # @File    : controller.py
 # @Software: PyCharm
 from functools import wraps
-from .types import convert, TypeApiRequest
+from .types import convert, ApiRequest
 from inspect import signature, Parameter
 from apizen.errors import ApiSysExceptions
 
@@ -136,7 +136,7 @@ def run_api_func(api_method, request_params, request):
             raise ApiSysExceptions.error_api_config
         elif str(v.kind) in ('POSITIONAL_OR_KEYWORD', 'KEYWORD_ONLY'):
             # 如果参数默认值是Request类型，则将传入的值改为Django的request对象
-            if isinstance(v.default, TypeApiRequest):
+            if isinstance(v.default, ApiRequest):
                 value = request
             elif k not in request_params:
                 if v.default is Parameter.empty:
