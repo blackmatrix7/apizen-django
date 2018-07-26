@@ -58,7 +58,7 @@ class TypeBase(metaclass=TypeMeta):
         raise NotImplementedError
 
 
-class TypeInteger(int, TypeBase):
+class Integer(int, TypeBase):
 
     typename = 'Integer'
 
@@ -77,7 +77,7 @@ class TypeInteger(int, TypeBase):
         super().__init__()
 
 
-class TypeString(str, TypeBase):
+class String(str, TypeBase):
 
     typename = 'String'
 
@@ -91,7 +91,7 @@ class TypeString(str, TypeBase):
         super().__init__()
 
 
-class TypeFloat(float, TypeBase):
+class Float(float, TypeBase):
 
     typename = 'Float'
 
@@ -106,7 +106,7 @@ class TypeFloat(float, TypeBase):
         super().__init__()
 
 
-class TypeDict(dict, TypeBase):
+class Dict(dict, TypeBase):
 
     typename = 'Dict'
 
@@ -125,7 +125,7 @@ class TypeDict(dict, TypeBase):
         super().__init__()
 
 
-class TypeList(list, TypeBase):
+class List(list, TypeBase):
 
     typename = 'List'
 
@@ -157,7 +157,7 @@ class TypeList(list, TypeBase):
         super().__init__()
 
 
-class TypeDate(date, TypeBase):
+class Date(date, TypeBase):
 
     typename = 'Date'
 
@@ -173,7 +173,7 @@ class TypeDate(date, TypeBase):
         super().__init__()
 
 
-class TypeDatetime(datetime, TypeBase):
+class DateTime(datetime, TypeBase):
 
     typename = 'DateTime'
 
@@ -189,7 +189,7 @@ class TypeDatetime(datetime, TypeBase):
         super().__init__()
 
 
-class TypeBool(bool, TypeBase):
+class Bool(bool, TypeBase):
 
     typename = 'Bool'
 
@@ -208,7 +208,7 @@ class TypeBool(bool, TypeBase):
             raise ValueError
 
 
-class TypeApiRequest(TypeBase):
+class ApiRequest(TypeBase):
 
     typename = 'Request'
 
@@ -220,7 +220,7 @@ class TypeApiRequest(TypeBase):
         super().__init__()
 
 
-class TypeEmail(TypeString):
+class Email(TypeBase):
 
     typename = 'Email'
 
@@ -240,7 +240,7 @@ class TypeEmail(TypeString):
         super().__init__()
 
 
-class TypeMoney(Decimal, TypeBase):
+class Money(Decimal, TypeBase):
 
     typename = 'Money'
 
@@ -257,18 +257,6 @@ class TypeMoney(Decimal, TypeBase):
             self.typename = err_msg
         super().__init__()
 
-
-Integer = TypeInteger
-List = TypeList
-Money = TypeMoney
-Bool = TypeBool
-Float = TypeFloat
-String = TypeString
-Dict = TypeDict
-Date = TypeDate
-DateTime = TypeDatetime
-ApiRequest = TypeApiRequest
-Email = TypeEmail
 
 # 内建类型的 type hints 兼容 （兼顾历史接口代码）
 BUILDIN_TYPE_HINTS = {
