@@ -312,7 +312,30 @@ Date类型设定和转换规则同上，不过转换后是date，而不是dateti
 
 #### 自定义类型
 
-<u>另外还支持自定义类型，详细的配置方式见后。</u>
+除框架支持的类型外，也可以自定义类型。
+
+自定义类型需要继承自TypeBase，并实现其中的convert方法。
+
+例如，定义一个Email类型，通过正则验证Email字符串的格式是否合法。
+
+```python
+class Email(TypeBase):
+	
+    # 定义类型名称，用于在返回异常信息中显示
+    typename = 'Email'
+
+    @staticmethod
+    def convert(*, value):
+        try:
+            # 对字符串格式进行验证
+            if re.match('^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$', str(value), flags=0):
+                return value
+            else:
+                raise ValueError
+        # 出现异常时，统一抛出ValueError异常
+        except TypeError:
+            raise ValueError
+```
 
 #### 多种类型混合
 
