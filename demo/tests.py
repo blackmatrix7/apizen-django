@@ -67,13 +67,16 @@ class ApiZenTestCase(TestCase):
     def test_custom_date(self):
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007年12月31日', 'email': '123456@qq.com'}
         resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), payload)
-        self.assertEqual(resp.status_code, 200)
         data = resp.json()
+        self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['message'], '执行成功')
+
+    # 测试自定义日期格式，符合格式要求
+    def test_custom_date_2(self):
         payload = {'name': 'tom', 'age': 19, 'birthday': '2007-12-31', 'email': '123456@qq.com'}
         resp = self.client.get(self.get_request_url('matrix.api.custom_date_fmt'), payload)
-        self.assertEqual(resp.status_code, 400)
         data = resp.json()
+        self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：birthday <Date>')
 
     # 测试自定义Money
