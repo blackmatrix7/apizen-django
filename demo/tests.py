@@ -80,17 +80,23 @@ class ApiZenTestCase(TestCase):
         self.assertEqual(data['meta']['message'], '参数类型错误：birthday <Date>')
 
     # 测试自定义Money
-    def test_money_to_decimal(self):
+    def test_money_to_decimal_float(self):
         payload = {'money': 19.2}
         resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['message'], '执行成功')
+
+    # 测试自定义Money
+    def test_money_to_decimal_int(self):
         payload = {'money': 19}
         resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(data['meta']['message'], '执行成功')
+
+    # 测试自定义Money
+    def test_money_to_decimal_float_2(self):
         payload = {'money': 19.221}
         resp = self.client.get(self.get_request_url('matrix.api.money_to_decimal'), payload)
         data = resp.json()
@@ -276,13 +282,16 @@ class ApiZenTestCase(TestCase):
         self.assertEqual(data['meta']['message'], '参数类型错误：value <Bool>')
 
     # 测试同一参数支持多种类型
-    def test_multi_types(self):
+    def test_multi_types_int(self):
         # 传入int类型，正常工作
         payload = {'id_list': 1}
         resp = self.client.post(self.get_request_url('matrix.api.multi-types'), json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(data['response'])
+
+    # 测试同一参数支持多种类型
+    def test_multi_types_list(self):
         # 传入list类型，正常工作
         payload = {'id_list': [2, 3, 4, 5]}
         resp = self.client.post(self.get_request_url('matrix.api.multi-types'), json.dumps(payload), content_type=CONTENT_TYPE)
