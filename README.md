@@ -53,7 +53,7 @@ def register_user_view(request):
 
 代码量不到原来的十分之一
 
-所有的参数合法性检查，都通过Type Hints实现，并可以自动转换类型，例如函数接收到的age，实际上已经转换成int类型，birthday已经自动转成为Date类型。并且所有的类型检查都可以复用，比如其他接口函数，需要再转换成Date类型，一样在需要转换的参数后面增加一个Date的参数注解就可以。
+所有的参数合法性检查，都通过Type Hints实现，并可以自动转换类型，例如函数接收到的age，实际上已经转换成int类型，birthday已经自动转成为Date类型。并且所有的类型检查都可以复用，比如其他接口函数，需要再转换成Date类型，一样在需要转换的参数后面增加一个Date的类型提醒就可以。
 
 ```python
 def register_user_apizen(username: String, age: Integer, birthday: Date):
