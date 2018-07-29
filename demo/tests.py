@@ -363,11 +363,12 @@ class ApiZenTestCase(TestCase):
     # 测试同一参数支持多种类型
     def test_upload_files(self):
         # 传入str类型，如果str可以转换成int，则不抛出异常
-        attachment = open('test.file', 'rb')
-        import hashlib
-        md5 = hashlib.md5(attachment.read()).hexdigest()
-        payload = {'file_name': 'foo.txt', 'attachment': attachment}
-        resp = self.client.post(self.get_request_url('matrix.api.upload-files'), payload, enctype="multipart/form-data")
-        data = resp.json()
-        self.assertEqual(resp.status_code, 200)
-        self.assertEqual(data['response'], md5)
+        with open('test.file', 'rb') as attachment:
+            payload = {'file_name': 'foo.txt', 'attachment': attachment}
+            resp = self.client.post(self.get_request_url('matrix.api.upload-files'), payload, enctype="multipart/form-data")
+            data = resp.json()
+            # 对比md5
+            import hashlib
+            md5 = hashlib.md5(attachment.read()).hexdigest()
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(data['response'], md5)

@@ -222,18 +222,16 @@ def get_request(request=ApiRequest):
 def upload_files(file_name, request=ApiRequest):
     import os
     import hashlib
+
     file_path = os.path.join('upload', file_name)
     file = request.FILES['attachment']
 
-    def handle_uploaded_file(f):
-        with open('upload/name.txt', 'wb+') as destination:
-            for chunk in f.chunks():
-                destination.write(chunk)
+    with open(file_path, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
 
-    handle_uploaded_file(file)
-
-    # md5 = hashlib.md5(file.read()).hexdigest()
-    # return md5
+    md5 = hashlib.md5(file.read()).hexdigest()
+    return md5
 
 
 # 兼容多种类型
