@@ -100,7 +100,7 @@ def api_routing(request, version, method):
                 body = request.body.decode()
                 json_data = json.loads(body)
                 request_args.update(json_data)
-            elif 'application/x-www-form-urlencoded' in request.content_type:
+            elif 'application/x-www-form-urlencoded' in request.content_type or 'multipart/form-data' in request.content_type:
                 form_data = request.POST.dict()
                 request_args.update(form_data)
             else:
