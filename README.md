@@ -417,6 +417,22 @@ http://127.0.0.1:8000/api/router/1.0/matrix.api.get-request?request=123
 }
 ```
 
+获取WSGIRequest可以用来获取上传的文件，例如：
+
+```python
+# 上传文件
+def upload_files(file_name, request=ApiRequest):
+    import os
+    file_path = os.path.join('upload', file_name)
+    # 通过request获取上传的文件
+    file = request.FILES['attachment']
+	
+	# 存储到某个目录
+    with open(file_path, 'wb+') as destination:
+        for chunk in file.chunks():
+            destination.write(chunk)
+```
+
 ## 接口配置
 
 ### 基本配置
