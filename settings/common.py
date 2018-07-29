@@ -135,4 +135,7 @@ ANONYMOUS_USER_ID = -1
 
 APIZEN_WEBAPI = ['demo.methods']
 
+MEDIA_URL = '/upload/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "upload")
+
 
