@@ -136,7 +136,7 @@ def run_api_func(api_method, request_params, request):
             raise ApiSysExceptions.error_api_config
         elif str(v.kind) in ('POSITIONAL_OR_KEYWORD', 'KEYWORD_ONLY'):
             # 如果参数默认值是Request类型，则将传入的值改为Django的request对象
-            if isinstance(v.default, ApiRequest):
+            if v.default is ApiRequest:
                 value = request
             elif k not in request_params:
                 if v.default is Parameter.empty:
