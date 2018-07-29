@@ -360,7 +360,7 @@ class ApiZenTestCase(TestCase):
         self.assertTrue(resp.status_code, 200)
         self.assertEqual(data['response'], payload)
 
-    # 测试同一参数支持多种类型
+    # 测试文件上传
     def test_upload_files(self):
         # 传入str类型，如果str可以转换成int，则不抛出异常
         with open('test.file', 'rb') as attachment:
