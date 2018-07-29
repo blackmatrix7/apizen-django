@@ -210,8 +210,12 @@ def is_bool(value: Bool):
     return value
 
 
+# 获取request对象
 def get_request(request=ApiRequest):
-    return request.GET.dict()
+    if request.method == 'GET':
+        return request.GET.dict()
+    elif request.method == 'POST':
+        return request.POST.dict()
 
 
 # 上传文件
