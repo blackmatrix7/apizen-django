@@ -214,6 +214,11 @@ def get_request(request=ApiRequest):
     return request.GET.dict()
 
 
+# 上传文件
+def upload_files(file_name, request=ApiRequest):
+    assert file_name, request
+
+
 # 兼容多种类型
 def multi_types(id_list: (Integer, List(int))):
     return id_list

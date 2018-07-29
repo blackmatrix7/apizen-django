@@ -70,7 +70,9 @@ methods = {
                     # 获取request信息
                     'matrix.api.get-request': {'func': views.get_request},
                     # 获取request信息
-                    'matrix.api.multi-types': {'func': views.multi_types}
+                    'matrix.api.multi-types': {'func': views.multi_types},
+                    # 上传文件
+                    'matrix.api.upload-files': {'func': views.upload_files}
                 }
         },
     '1.1':
