@@ -98,7 +98,11 @@ def validate_email(name: String, age: Integer, birthday: Date, email: Email):
     return {'name': name, 'age': age, 'birthday': birthday, 'email': email}
 
 
-def custom_date_fmt(name: String, age: Integer, birthday: Date('%Y年%M月%d日'), email: Email):
+# 自定义年月日格式
+CustomDate = Date('%Y年%M月%d日')
+
+
+def custom_date_fmt(name: String, age: Integer, birthday: CustomDate, email: Email):
     """
     测试自定义日期格式
     :param age:  年龄，必填，原因同上
@@ -155,7 +159,11 @@ def str_list(date: List(str)):
     return date
 
 
-def customer_args_err(email: Email(err_msg='Email格式不正确')):
+# 自定义Email类型，显示特定的异常信息
+CustomEmail = Email(err_msg='Email格式不正确')
+
+
+def customer_args_err(email: CustomEmail):
     """
     单参数不合法时，可以自定义不合法的异常信息
     :param email:
