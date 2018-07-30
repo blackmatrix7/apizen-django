@@ -614,11 +614,11 @@ def custom_error(msg):
 
 业务参数根据接口设定，可以通过querystring或者formdata的形式传递，也可以支持以json的形式传递。
 
-### 两种Content-Type
+### 三种Content-Type
 
-对于POST的请求方式，可以同时支持application/json和application/x-www-form-urlencoded两种Content-Type。
+对于POST的请求方式，可以同时支持application/json和application/x-www-form-urlencoded、multipart/form-data等三种Content-Type。
 
-#### application/x-www-form-urlencoded
+#### application/x-www-form-urlencoded、multipart/form-data
 
 在form data中，以key/value的形式传递接口业务参数。
 
