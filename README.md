@@ -618,11 +618,15 @@ def custom_error(msg):
 
 对于POST的请求方式，可以同时支持application/json和application/x-www-form-urlencoded、multipart/form-data等三种Content-Type。
 
-#### application/x-www-form-urlencoded、multipart/form-data
+#### application/x-www-form-urlencoded
 
 在form data中，以key/value的形式传递接口业务参数。
 
 在此种请求方式下，接口函数的每个参数，都和form data中的key进行匹配。
+
+#### multipart/form-data
+
+multipart/form-data的支持与application/x-www-form-urlencoded大体相似，上传文件时，请使用multipart/form-data
 
 #### application/json
 
