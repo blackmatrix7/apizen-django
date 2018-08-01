@@ -70,9 +70,9 @@ class Integer(int, TypeBase):
         else:
             raise ValueError
 
-    def __init__(self, *, err_msg=None):
-        if err_msg:
-            self.typename = err_msg
+    def __init__(self, *, err=None):
+        if err:
+            self.typename = err
         super().__init__()
 
 
@@ -84,9 +84,9 @@ class String(str, TypeBase):
     def convert(*, value):
         return str(value)
 
-    def __init__(self, *, err_msg=None):
-        if err_msg:
-            self.typename = err_msg
+    def __init__(self, *, err=None):
+        if err:
+            self.typename = err
         super().__init__()
 
 
@@ -99,9 +99,9 @@ class Float(float, TypeBase):
         _value = copy.copy(value)
         return float(_value)
 
-    def __init__(self, *, err_msg=None):
-        if err_msg:
-            self.typename = err_msg
+    def __init__(self, *, err=None):
+        if err:
+            self.typename = err
         super().__init__()
 
 
@@ -118,9 +118,9 @@ class Dict(dict, TypeBase):
         else:
             raise ValueError
 
-    def __init__(self, *, err_msg=None):
-        if err_msg:
-            self.typename = err_msg
+    def __init__(self, *, err=None):
+        if err:
+            self.typename = err
         super().__init__()
 
 
@@ -142,7 +142,9 @@ class List(list, TypeBase):
         except (TypeError, AssertionError):
             raise ValueError
 
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, *, err=None):
+        if err:
+            self.typename = err
         try:
             obj = BUILDIN_TYPE_HINTS.get(obj, obj)
             if obj is None or isinstance(obj, Typed):
@@ -165,9 +167,9 @@ class Date(date, TypeBase):
         _value = datetime.strptime(_value, self.format_).date() if isinstance(_value, str) else _value
         return _value
 
-    def __init__(self, format_=None,  *, err_msg=None):
-        if err_msg:
-            self.typename = err_msg
+    def __init__(self, format_=None, *, err=None):
+        if err:
+            self.typename = err
         self.format_ = format_ or current_config.APIZEN_DATE_FMT
         super().__init__()
 
@@ -181,9 +183,9 @@ class DateTime(datetime, TypeBase):
         _value = datetime.strptime(_value, self.format_) if isinstance(_value, str) else _value
         return _value
 
-    def __init__(self, format_=None, *, err_msg=None):
-        if err_msg:
-            self.typename = err_msg
+    def __init__(self, format_=None, *, err=None):
+        if err:
+            self.typename = err
         self.format_ = format_ or current_config.APIZEN_DATETIME_FMT
         super().__init__()
 
@@ -221,9 +223,9 @@ class Email(TypeBase):
         except TypeError:
             raise ValueError
 
-    def __init__(self, *, err_msg=None):
-        if err_msg:
-            self.typename = err_msg
+    def __init__(self, *, err=None):
+        if err:
+            self.typename = err
         super().__init__()
 
 
@@ -239,9 +241,9 @@ class Money(Decimal, TypeBase):
         else:
             raise ValueError
 
-    def __init__(self, *, err_msg=None):
-        if err_msg:
-            self.typename = err_msg
+    def __init__(self, *, err=None):
+        if err:
+            self.typename = err
         super().__init__()
 
 
