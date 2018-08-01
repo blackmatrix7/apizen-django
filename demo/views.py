@@ -160,16 +160,25 @@ def str_list(date: List(str)):
 
 
 # 自定义Email类型，显示特定的异常信息
-CustomEmail = Email(err_msg='Email格式不正确')
+CustomEmail = Email(err='Email格式不正确')
 
 
-def customer_args_err(email: CustomEmail):
+def custom_email_error(email: CustomEmail):
     """
     单参数不合法时，可以自定义不合法的异常信息
     :param email:
     :return:
     """
     return email
+
+
+def custom_list_error(users: List(err='用户列表格式错误')):
+    """
+    参数类型不合法时，可以自定义不合法的异常信息
+    :param users:
+    :return:
+    """
+    return users
 
 
 # 演示抛出异常

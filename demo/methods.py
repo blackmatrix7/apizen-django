@@ -39,8 +39,9 @@ methods = {
                     'matrix.api.str-list': {'func': views.str_list},
                     # 抛出一个异常
                     'matrix.api.return-err': {'func': views.raise_error},
-                    # 自定义异常信息
-                    'matrix.api.custom-arg-error': {'func': views.customer_args_err},
+                    # 自定义类型异常的信息
+                    'matrix.api.custom-email-error': {'func': views.custom_email_error},
+                    'matrix.api.custom-list-error': {'func': views.custom_list_error},
                     # 自定义一个异常信息
                     'matrix.api.custom-error': {'func': views.custom_error},
                     # 自定义一个异常信息

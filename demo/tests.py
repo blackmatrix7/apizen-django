@@ -175,13 +175,21 @@ class ApiZenTestCase(TestCase):
         data = resp.json()
         self.assertTrue(isinstance(data['response'], list))
 
-    # 测试自定义参数类型异常问题
-    def test_custom_arg_error(self):
+    # 测试自定义参数类型异常的信息
+    def test_custom_email_error(self):
         payload = {'email': [111, 222]}
-        resp = self.client.post(self.get_request_url('matrix.api.custom-arg-error'), json.dumps(payload), content_type=CONTENT_TYPE)
+        resp = self.client.post(self.get_request_url('matrix.api.custom-email-error'), json.dumps(payload), content_type=CONTENT_TYPE)
         data = resp.json()
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(data['meta']['message'], '参数类型错误：email <Email格式不正确>')
+
+    # 测试自定义参数类型异常的信息
+    def test_custom_list_error(self):
+        payload = {'users': 'testusers'}
+        resp = self.client.post(self.get_request_url('matrix.api.custom-list-error'), json.dumps(payload), content_type=CONTENT_TYPE)
+        data = resp.json()
+        self.assertEqual(resp.status_code, 400)
+        self.assertEqual(data['meta']['message'], '参数类型错误：users <用户列表格式错误>')
 
     # 测试抛出异常
     def test_raise_error(self):
