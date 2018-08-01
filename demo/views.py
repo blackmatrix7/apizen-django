@@ -172,7 +172,10 @@ def custom_email_error(email: CustomEmail):
     return email
 
 
-def custom_list_error(users: List(err='用户列表格式错误')):
+CustomList = List(err='用户列表格式错误')
+
+
+def custom_list_error(users: CustomList):
     """
     参数类型不合法时，可以自定义不合法的异常信息
     :param users:
