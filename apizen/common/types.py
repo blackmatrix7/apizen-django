@@ -265,7 +265,7 @@ def convert(key, value, default_value, type_hints_list):
         type_hints_list = [BUILDIN_TYPE_HINTS.get(type_hints, type_hints) for type_hints in type_hints_list]
     except TypeError:
         # 不可迭代的对象，则作为list的元素
-        type_hints_list = [type_hints_list]
+        type_hints_list = [BUILDIN_TYPE_HINTS.get(type_hints_list, type_hints_list)]
     # 依次处理每个参数类型
     for type_hints in type_hints_list:
         try:
