@@ -360,6 +360,13 @@ payload = {'id_list': [2, 3, 4, 5]}
 payload = {'id_list': ['2', '3', '4', '5']}
 ```
 
+注意，部分类型不能混合使用，例如String和List，因为传入都是Json字符串，框架很难弄明白接收到的数据，是希望作为字符串使用，还是转换成List使用，在实际使用中应避免这种情况。
+
+```python
+def multi_types(id_list: (String, List)):
+    return id_list
+```
+
 ### 函数的限制
 
 ApiZen在设计之初，希望尽少减少对接口处理函数的限制，让实现业务的函数能更加自由，但是仍有一些规定需要在编写函数时遵守：
