@@ -20,7 +20,7 @@ class ApiZenRequest(models.Model):
     status = models.IntegerField('http status', null=True, blank=True)
     code = models.CharField('api code', max_length=10)
     success = models.BooleanField('success', default=False)
-    message = models.CharField('api message', max_length=512)
+    message = models.TextField('api message', null=True, blank=True)
     response = models.TextField('api response', null=True, blank=True)
 
     def __str__(self):
