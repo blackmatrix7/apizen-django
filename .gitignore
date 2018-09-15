@@ -95,3 +95,9 @@ ENV/
 
 # local config
 localconfig.py
+
+# Visual Studio
+*.pyproj
+*.sln
+bin/
+obj/
