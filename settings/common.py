@@ -22,10 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '_z6(@xce9$%9)3xs355xzx3xgn9jawcp8p^_dyvvy(#os6!73q'
 
-HOST = '0.0.0.0'
-
-PORT = 8001
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
