@@ -101,3 +101,4 @@ localconfig.py
 *.sln
 bin/
 obj/
+.vs/
